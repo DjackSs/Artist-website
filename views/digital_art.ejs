@@ -5,6 +5,7 @@
         if(produit.statut === "free") {%>
     
     <article id="<%= produit.id %>">
+        <img src="<%= produit.img %>" alt="<% produit.nom %>" >
         <p><%= produit.nom %></p>
         <p><%= produit.description %></p>
         <p><%= produit.prix %></p>
