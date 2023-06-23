@@ -34,8 +34,7 @@ app.set("views", "./views");
 // -------------session management middleware
 
 app.use(session({
-    //secret: process.env.SESSION_SECRET,
-    secret: "keyboard cat",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: 
@@ -75,9 +74,8 @@ app.use((req,res,next)=>
 app.use("/", router);
 
 
-//const PORT = process.env.PORT;
+const PORT = process.env.PORT;
 
-const PORT = 3000;
 
 app.listen(PORT,()=>
 {

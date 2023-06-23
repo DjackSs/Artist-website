@@ -18,9 +18,13 @@ import bcrypt from 'bcryptjs';
 
 export const login = (req, res) => 
 {
+	
+	let errorForm = {};
+	
     res.render('layout.ejs',
     {
-        template: 'login.ejs'
+        template: 'login.ejs',
+        errorForm: errorForm
         
     });
 };
@@ -33,8 +37,8 @@ export const loginPost = (req, res) =>
 {
     const login =
     {
-        email: req.body.email,
-        mdp: req.body.mdp
+        email: req.body.loginEmail,
+        mdp: req.body.loginMdp
     };
     
     const query = `select * from User where email = ?`;

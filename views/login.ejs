@@ -8,10 +8,10 @@
             <legend>Connectez-vous à votre espace :</legend>
             
             <label for="loginEmail">Adresse mail:</label>
-            <input type="email" name="email" id="loginEmail" autocomplete="on">
+            <input type="email" name="loginEmail" id="loginEmail" autocomplete="on">
             
             <label for="loginMdp">Mot de passe:</label>
-            <input type="password" name="mdp" id="loginMdp" autocomplete="on">
+            <input type="password" name="loginMdp" id="loginMdp" autocomplete="on">
             
             <input type="submit" value="Valider">
             
@@ -29,12 +29,15 @@
             
                 <label for="pseudo">Nom:</label>
                 <input type="text" name="pseudo" id="pseudo" autocomplete="on">
+                <div><%= errorForm.name %></div>
                 
                 <label for="email">Adresse mail:</label>
                 <input type="email" name="email" id="email" autocomplete="on">
+                <div><%= errorForm.email %></div>
                 
                 <label for="mdp">Mot de passe:</label>
                 <input type="password" name="mdp" id="mdp" autocomplete="on">
+                <div><%= errorForm.mdp %></div>
                 
                 <input type="submit" value="Valider">
              
