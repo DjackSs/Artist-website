@@ -96,7 +96,7 @@ export const profile = (req, res) =>
 	
 	const query2= `update Panier set Panier.prixPanier = ? where Panier.idUserPanier = ? and Panier.statut = "cree"`;
 	
-	const query3 = `select Commande.* from Commande where idUser = ? order by Commande.dateCommande`;
+	const query3 = `select Commande.* from Commande where idUser = ? order by Commande.dateCreationCommande`;
 	
 	const query4 = `select Dialogue.*, User.pseudo from Commande left join Dialogue on Dialogue.idCommande = Commande.id left join User on Dialogue.idUser = User.id where Commande.idUser = ? order by Dialogue.dateDialogue`;
 	
@@ -307,21 +307,21 @@ export const deleteCommande = (req,res) =>
 
 export const customOrder = (req,res) =>
 {
-	let customOrder;
-	
-	req.body.orderScrapbooking ? customOrder = req.body.orderScrapbooking : customOrder = req.body.orderDigitalArt;
 	
 	const newOrder =
 	{
 		id: uuidv4(),
 		idClient: req.params.id,
-		commande: customOrder
+		commande: req.body.commande,
+		devis: 0,
+		prixCommande: 0,
+		statut: "cree"
 		
 	};
 	
-	const query = `insert into Commande (id, idUser, commande, dateCommande) values (?, ?, ?, NOW())`;
+	const query = `insert into Commande (id, idUser, commande, devis, prixCommande, statut, dateCreationCommande, dateClotureCommande) values (?, ?, ?, ?, ?, ?, NOW(), NOW())`;
 	
-	pool.query(query, [newOrder.id, newOrder.idClient, newOrder.commande], function(error, result, feilds)
+	pool.query(query, [newOrder.id, newOrder.idClient, newOrder.commande, newOrder.devis, newOrder.prixCommande, newOrder.statut], function(error, result, feilds)
 	{
 		error ? console.log(error) : res.status(204).send();
 	});

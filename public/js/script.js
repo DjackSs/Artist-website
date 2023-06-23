@@ -413,6 +413,51 @@ if(deleteProductCardButtons.length != 0)
 }
 
 
+// CUSTOM COMMANDE FETCH
+
+const customOrderButton = document.querySelector(".js-customOrder-button");
+
+if(customOrderButton)
+{
+    customOrderButton.addEventListener("click", (e)=>
+    {
+        (e).preventDefault();
+        
+        const id = customOrderButton.getAttribute("data-userId");
+        
+        const textArea = document.querySelector(".customOrderArea");
+        
+        const commande = 
+        {
+            commande: textArea.value
+            
+        };
+        
+        const url = `/order/${id}`;
+        
+        const options = 
+            {
+                method: 'post',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify(commande)
+                
+            };
+                
+        fetch(url, options)
+        .then(res =>
+        {
+            textArea.value = "";
+                
+        })
+        .catch(err => console.error(err));
+                
+        
+    });
+}
+
+    
+
+
 // DELETE COMMANDE FETCH
 
 const deleteCommandeButtons = document.querySelectorAll(".js-removeCommande-button");

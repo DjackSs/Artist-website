@@ -15,7 +15,7 @@ import {home, art_page1, art_page2, inscriptionPost} from "../controllers/home.j
 
 import {login, loginPost, profile, logout, shoppingAdd, shoppingDelete, customOrder, clientDialogue, deleteCommande, editProfile, deleteProfile, dialogue, shoppingPay} from "../controllers/client.js";
 
-import {profileAdmin, addProductPost, deleteProduit, editProduit, deleteClient, closeBuying} from "../controllers/admin.js";
+import {profileAdmin, addProductPost, deleteProduit, editProduit, deleteClient, closeBuying, devis} from "../controllers/admin.js";
 
 
 
@@ -121,6 +121,8 @@ router.delete("/deleteClient/:id", adminCheck, deleteClient);
 router.put("/editProduct/:id", adminCheck, editProduit);
 
 router.put("/closeBuying/:id", adminCheck, closeBuying);
+
+router.post("/devisPost/:id", adminCheck, devis);
 
 
 

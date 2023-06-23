@@ -80,7 +80,12 @@ CREATE TABLE `Commande` (
   `id` char(36) NOT NULL PRIMARY KEY,
   `idUser` char(36) NOT NULL,
   `commande` varchar(255) NOT NULL,
-  `dateCommande` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `devis` varchar(255) NOT NULL,
+  `prixCommande` decimal(8,2) NOT NULL,
+  `statut` varchar(255) NOT NULL,
+  `dateCreationCommande` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateClotureCommande` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  
   Foreign KEY (idUser) REFERENCES User (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -29,7 +29,7 @@ export const profileAdmin = (req, res) =>
     
     const query2 = `select User.id, User.pseudo, User.email, User.dateInscription, User.role from User order by User.dateInscription`;
     
-    const query3 = `select Commande.*, User.pseudo, User.email from Commande inner join User on Commande.idUser = User.id order by Commande.dateCommande`;
+    const query3 = `select Commande.*, User.pseudo, User.email from Commande inner join User on Commande.idUser = User.id order by Commande.dateCreationCommande`;
     
     const query4 = `select Dialogue.*, User.pseudo from Dialogue inner join User on User.id = Dialogue.idUser order by Dialogue.dateDialogue`;
     
@@ -246,6 +246,30 @@ export const closeBuying = (req,res) =>
 	    
 
 	 });
+    
+};
+
+
+// ----------------------------------------------------
+
+export const devis = (req,res)=>
+{
+    
+    const idCommande = req.params.id;
+    
+    const newDevis =
+    {
+        devis: req.body.devis,
+        prixCommande: req.body.devisPrix
+    };
+    
+    const query = `update Commande set devis = ?, prixCommande = ? where id = ?`;
+    
+    pool.query(query, [newDevis.devis, newDevis.prixCommande, idCommande], function(error, result, fields)
+    {
+        error ? console.log(error) : res.status(204).send();
+    });
+    
     
 };
 

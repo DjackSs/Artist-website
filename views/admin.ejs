@@ -117,7 +117,7 @@
     
         <article id="<%= commande.id %>">
             
-            <p><%= commande.dateCommande.toLocaleString() %> </p>
+            <p><%= commande.dateCreationCommande.toLocaleString() %> </p>
             <p><%= commande.pseudo %></p>
             <p><%= commande.email %></p>
             <p><%= commande.commande %></p>
@@ -139,6 +139,29 @@
             <textarea name="commandeDialogue" id="commandeDialogue"></textarea>
             
             <button class="js-dialogue-button" data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
+            
+            <% if(commande.devis != 0) { %>
+            
+                <article>
+                    <p><%= commande.devis %></p>
+                    <p><%= commande.prixCommande %></p>
+                </article>
+                
+            <% } else { %>
+            
+                <form method="post" action="/devisPost/<%= commande.id %>">
+                    
+                    <input type="text" name="devis" placeholder="intitulé pour le devis">
+                    <input type="text" name="devisPrix"  placeholder="prix de la commande">
+                    
+                    <button class="js-devis-button">Générer un devis</button>
+                    
+                </form>
+                
+                
+            <% } %>
+                
+            
             
             <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
             

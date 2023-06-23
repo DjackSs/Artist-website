@@ -27,12 +27,11 @@
 <section>
     <h2>Commande</h2>
     
-    <form method="post" action="/order/<%= locals.user.id %>">
-        
+    <form>
         <label for="orderDigitalArt">Faite une commande personalisée!</label>
-        <textarea name="orderDigitalArt" id="orderDigitalArt" placeholder="formulez votre souhait"></textarea>
+        <textarea name="orderDigitalArt" id="orderDigitalArt" placeholder="formulez votre souhait" class="customOrderArea"></textarea>
         
-        <input type="submit" lavue="Envoyer">
+        <input type="submit" lavue="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
         
     </form>
 </section>

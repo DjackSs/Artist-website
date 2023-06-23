@@ -50,7 +50,7 @@
     <% for(let commande of commandes) { %>
     
         <article id="<%= commande.id %>">
-            <p> <%= commande.dateCommande.toLocaleString() %></p>
+            <p> <%= commande.dateCreationCommande.toLocaleString() %></p>
             <p> <%= commande.commande %></p>
         
         
@@ -72,6 +72,13 @@
         <button class="js-dialogue-button"  data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
         
         <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
+        <% if(commande.devis != 0) { %>
+        
+            <p><%= commande.devis %></p>
+            <p><%= commande.prixCommande %></p>
+            
+        <% } %>
+
         
         </article>
         
@@ -84,10 +91,10 @@
         if(produit.statut === "paye") { %>
         
         <article id="<%= produit.id %>">
-        <p><%= produit.nom %></p>
-        <p><%= produit.prix %></p>
+            <p><%= produit.nom %></p>
+            <p><%= produit.prix %></p>
 
-    </article>
+        </article>
         <% }
     } %>
     

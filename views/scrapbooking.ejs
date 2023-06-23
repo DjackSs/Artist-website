@@ -29,11 +29,12 @@
 <section>
     <h2>Commande</h2>
     
-    <form method="post" action="/order/<%= locals.user.id %>">
-        <label for="orderScrapbooking">Faite une commande personalisée!</label>
-        <textarea name="orderScrapbooking" id="orderScrapbooking" placeholder="formulez votre souhait"></textarea>
+    <form>
         
-        <input type="submit" lavue="Envoyer">
+        <label for="orderScrapbooking">Faite une commande personalisée!</label>
+        <textarea name="orderScrapbooking" id="orderScrapbooking" placeholder="formulez votre souhait" class="customOrderArea"></textarea>
+        
+        <input type="submit" value="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
         
     </form>
 </section>
