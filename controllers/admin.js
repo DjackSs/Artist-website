@@ -137,10 +137,6 @@ export const addProductPost = (req,res) =>
 	            
 	        });
         }
-        
-        
-        
-  
             
     });
  };
@@ -249,6 +245,24 @@ export const closeBuying = (req,res) =>
     
 };
 
+// ----------------------------------------------------
+
+export const closeCustom = (req, res) =>
+{
+    
+    const id = req.params.id;
+    
+    const panierStatus = "livre";
+    
+    const query = `update Commande set dateClotureCommande = NOW(), statut = ? where id = ?`;
+
+	pool.query(query, [panierStatus, id], function (error, result, fields)
+	{
+	    error ? console.log(error) : res.status(204).send();
+
+	 });
+    
+};
 
 // ----------------------------------------------------
 

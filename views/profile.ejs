@@ -28,6 +28,7 @@
         <p><%= produit.nom %></p>
         <p><%= produit.prix %></p>
         <p><button class="js-removeProduitPanier-button" data-produit="<%= produit.id %>">X</button> </p>
+        
     </article>
         <% }
     } %>
@@ -47,7 +48,8 @@
 <section>
     <h3>Mes commandes</h3>
     
-    <% for(let commande of commandes) { %>
+    <% for(let commande of commandes) {
+        if(commande.statut != "paye") { %>
     
         <article id="<%= commande.id %>">
             <p> <%= commande.dateCreationCommande.toLocaleString() %></p>
@@ -72,17 +74,24 @@
         <button class="js-dialogue-button"  data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
         
         <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
+        
+        
         <% if(commande.devis != 0) { %>
         
             <p><%= commande.devis %></p>
             <p><%= commande.prixCommande %></p>
+            
+            <form method="post" action="/buyCustom/<%= locals.user.id %>">
+                <input type="submit" value="Acheter">
+            </form>
             
         <% } %>
 
         
         </article>
         
-    <% } %>
+    <% }
+    } %>
 
 </section>
 <section>
@@ -99,6 +108,21 @@
     } %>
     
     <p>Prix total : <%= prixAchat %> </p>
+    
+   <!------------------------TODO -->
+    <form method="get" action="/downloadPDF">
+            <p><button>Facture</button></p>
+    </form>
+    
+    <% for (let commande of commandes) {
+        if(commande.statut === "paye") { %>
+        
+        <p><%= commande.devis %></p>
+        <p><%= commande.prixCommande %></p>
+        
+        <% }
+    } %>
+    
     
     
     

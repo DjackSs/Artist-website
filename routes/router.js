@@ -13,9 +13,9 @@ const router = express.Router();
 
 import {home, art_page1, art_page2, inscriptionPost} from "../controllers/home.js";
 
-import {login, loginPost, profile, logout, shoppingAdd, shoppingDelete, customOrder, clientDialogue, deleteCommande, editProfile, deleteProfile, dialogue, shoppingPay} from "../controllers/client.js";
+import {login, loginPost, profile, logout, shoppingAdd, shoppingDelete, customOrder, deleteCommande, editProfile, deleteProfile, dialogue, shoppingPay, customPay, downloadBill} from "../controllers/client.js";
 
-import {profileAdmin, addProductPost, deleteProduit, editProduit, deleteClient, closeBuying, devis} from "../controllers/admin.js";
+import {profileAdmin, addProductPost, deleteProduit, editProduit, deleteClient, closeBuying, closeCustom, devis} from "../controllers/admin.js";
 
 
 
@@ -84,8 +84,6 @@ router.get("/profile/:id", sessiontCheck, profile);
 
 router.post("/logout", logout);
 
-router.post("/clientDialogue/:id", sessiontCheck, clientDialogue);
-
 router.put("/editProfile/:id", sessiontCheck, editProfile);
 
 router.post("/deleteProfile/:id", sessiontCheck, deleteProfile);
@@ -105,6 +103,10 @@ router.delete("/deleteCommande/:id", sessiontCheck, deleteCommande);
 
 router.post("/buy/:id", sessiontCheck, shoppingPay);
 
+router.post("/buyCustom/:id", sessiontCheck, customPay);
+
+
+router.get("/downloadPDF/:id", sessiontCheck, downloadBill);
 
 
 
@@ -121,6 +123,8 @@ router.delete("/deleteClient/:id", adminCheck, deleteClient);
 router.put("/editProduct/:id", adminCheck, editProduit);
 
 router.put("/closeBuying/:id", adminCheck, closeBuying);
+
+router.put("/closeCustom/:id", adminCheck, closeCustom);
 
 router.post("/devisPost/:id", adminCheck, devis);
 

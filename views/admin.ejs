@@ -113,7 +113,8 @@
 <section>
     <h3>Gestion des commandes :</h3>
     
-    <% for(let commande of commandes) { %>
+    <% for(let commande of commandes) { 
+        if(commande.statut === "paye") { %>
     
         <article id="<%= commande.id %>">
             
@@ -167,7 +168,8 @@
             
         </article>
         
-    <% } %>
+    <% }
+    } %>
     
 </section>
 <section>
@@ -186,9 +188,24 @@
             
             <p><%= panier.prixPanier %></p>
             
-            <button class="js-closebuying-button" data-card="<%= panier.idPanier %>">Achats livrés</button>
+            <button class="js-closeBuying-button" data-card="<%= panier.idPanier %>">Achats livrés</button>
             
         </article>
         
     <% } %>
+    
+    <% for(let commande of commandes) {
+        if(commande.statut === "paye") { %>
+        <article id="<%= commande.id %>">
+            <p><%= commande.pseudo %></p>
+            <p><%= commande.email %></p>
+            <p><%= commande.devis %></p>
+            <p><%= commande.prix %></p>
+            
+            <button class="js-closeCustom-button" data-custom="<%= commande.id %>">Commande livrés</button>
+            
+        </article>
+        
+    <% }
+    } %>
 </section>

@@ -267,11 +267,11 @@ if (editProductButtons.length != 0)
 
 // CLOSE BUYING FETCH
 
-const closeBuyingButton = document.querySelectorAll(".js-closebuying-button");
+const closeBuyingButtons = document.querySelectorAll(".js-closeBuying-button");
 
-if(closeBuyingButton.length != 0)
+if(closeBuyingButtons.length != 0)
 {
-    for(let button of closeBuyingButton)
+    for(let button of closeBuyingButtons)
     {
         button.addEventListener("click", (e)=>
         {
@@ -307,6 +307,50 @@ if(closeBuyingButton.length != 0)
         });
     }
 }
+
+// CLOSE CUSTOM FETCH
+
+const closeCustomButtons = document.querySelectorAll(".js-closeCustom-button");
+
+if(closeCustomButtons.length != 0)
+{
+    for(let button of closeCustomButtons)
+    {
+        button.addEventListener("click", (e)=>
+        {
+            (e).preventDefault();
+            
+            const id = button.getAttribute("data-custom");
+            
+            
+            // ----------------------DOM settings
+            
+            const article = document.querySelector(`article[id="${id}`);
+            
+            // ----------------------fecth settings
+            
+            const url = `/closeCustom/${id}`;
+            
+            const options = 
+               {
+                    method: 'put',
+                    headers: {'content-type': 'application/json'}
+                };
+                
+            fetch(url, options)
+            .then(res =>
+            {
+                    
+                article.remove();
+                    
+                    
+            })
+            .catch(err => console.error(err));
+            
+        });
+    }
+}
+
 
 
 // ======================================================

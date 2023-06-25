@@ -11,6 +11,12 @@ import { v4 as uuidv4 } from 'uuid';
 // -----------------------import the data encryptor
 import bcrypt from 'bcryptjs';
 
+// -----------------------import the files system manager from node
+import fs from "fs";
+
+// -----------------------import the pdf generator
+import PDFDocument from "pdfkit";
+
 
 // ==============================================
 // CONTROLLERS
@@ -242,6 +248,7 @@ export const shoppingDelete = (req,res) =>
 	pool.query(query, [idProduit], function(error, result, fields)
 	{
 		error ? console.log(error) : res.status(204).send();
+		
 	});
 };
 
@@ -257,6 +264,8 @@ export const shoppingPay = (req,res) =>
 	
 	const query2 = `update Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id set Produit.statut = Panier.statut where Panier.idUserPanier = ?`;
 	
+	const query3 = `delete from Produit_Panier where Produit_Panier.idPanier not in (select Panier.id from Panier where Panier.idUserPanier = ?)`;
+	
 	const newCard =
             	{
             		id: uuidv4(),
@@ -265,25 +274,55 @@ export const shoppingPay = (req,res) =>
             		statut: "cree"
             	};
 	
-	const query3 = `insert into Panier (id, idUserPanier, prixPanier, statut, dateCreation) value (?, ?, ?, ?, NOW())`;
+	const query4 = `insert into Panier (id, idUserPanier, prixPanier, statut, dateCreation) value (?, ?, ?, ?, NOW())`;
+	
+	const query5 = `select Produit.nom, Produit.description, Produit.prix, Produit.statut, Panier.id, Panier.statut from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id where Panier.idUserPanier = ? and Panier.statut = "paye"`;
 
 	
 	pool.query(query1, [panierStatus, idClient], function(error, result, fields)
 	{
 		if(error) console.log(error);
 		
-		pool.query(query2, [idClient], function(error, result, fields)
+		pool.query(query2, [idClient], function(error, result2, fields)
 		{
 			if(error) console.log(error);
 			
-			pool.query(query3, [newCard.id, newCard.idUserPanier, newCard.prixPanier, newCard.statut], function(error, result, fields)
+			pool.query(query3, [idClient], function(error, result3, fields)
 			{
 				if(error) console.log(error);
 				
-				res.redirect(`/profile/${idClient}`);
+				pool.query(query4, [newCard.id, newCard.idUserPanier, newCard.prixPanier, newCard.statut], function(error, result, fields)
+				{
+					if(error) console.log(error);
+					
+					pool.query(query5, [idClient], function(error, produitPaye, fields)
+					{
+						if(error) console.log(error);
+						
+						// ---------------------------creat a bill's pdf;
+						const doc = new PDFDocument();
+						
+						doc.pipe(fs.createWriteStream(`./public/assets/bills/facture${produitPaye[0].id}.pdf`));
+						
+						doc
+						  .fontSize(25)
+						  .text(`${produitPaye}`, 100, 100);
+						  
+						doc.end();
+						
+					
+						
+						res.redirect(`/profile/${idClient}`);
+							
+						
+					});
+					
+				});
+			
 				
 			});
 			
+		
 		});
 	});
 };
@@ -301,6 +340,49 @@ export const deleteCommande = (req,res) =>
         error ? console.log(error) : res.status(204).send();
     });
     
+};
+
+// ----------------------------------------------------
+
+export const customPay = (req,res) =>
+{
+	const idClient = req.params.id;
+	
+	const statut = "paye";
+	
+	const query1 = `update Commande set Commande.statut = ? where Commande.IdUser = ? and Commande.statut = "cree"`;
+	
+	const query2 = `select Commande.* from Commande where Commande.idUser = ? and Commande.statut = ?`;
+	
+	pool.query(query1, [statut, idClient], function(error, result, fields)
+	{
+		if(error) console.log(error);
+		
+		pool.query(query2, [idClient, statut], function(error, commandePaye, fields)
+		{
+			if(error) console.log(error);
+			
+			// ---------------------------creat a bill's pdf;
+			const doc = new PDFDocument();
+						
+			doc.pipe(fs.createWriteStream(`./public/assets/bills/facture${commandePaye[0].id}.pdf`));
+						
+			doc
+			.fontSize(25)
+			.text(`${commandePaye}`, 100, 100);
+						  
+			doc.end();
+			
+			
+			res.redirect(`/profile/${idClient}`);
+			
+			
+		});
+		
+		
+	});
+	
+	
 };
 
 // ----------------------------------------------------
@@ -328,27 +410,6 @@ export const customOrder = (req,res) =>
 	
 };
 
-// ----------------------------------------------------
-
-export const clientDialogue = (req,res) =>
-{
-	const newClientReply =
-    {
-        id: uuidv4(),
-        idCommande: req.params.id,
-        comment: req.body.comment,
-        idUser: req.body.idTransmitter
-    };
-    
-    
-    const query = "insert into Dialogue (id, idCommande, idUser, comment, dateDialogue) values (?, ?,(select User.id from User where id = ?), ?, NOW())";
-    
-    pool.query(query, [newClientReply.id, newClientReply.idCommande, newClientReply.idUser, newClientReply.comment], function(error, result, fields)
-    {
-        error ? console.log(error) : res.status(204).send();
-    });
-    
-};
 
 // ----------------------------------------------------
 
@@ -371,4 +432,13 @@ export const dialogue = (req,res) =>
         error ? console.log(error) : res.status(204).send();
     });
     
+};
+
+// ----------------------------------------------------
+
+export const downloadBill = (req,res)=>
+{
+	const filePath = `./public/assets/bills/bill${req.params.id}.pdf`;
+	
+	res.download(filePath);
 };
