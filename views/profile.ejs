@@ -49,7 +49,7 @@
     <h3>Mes commandes</h3>
     
     <% for(let commande of commandes) {
-        if(commande.statut != "paye") { %>
+        if(commande.statut === "cree") { %>
     
         <article id="<%= commande.id %>">
             <p> <%= commande.dateCreationCommande.toLocaleString() %></p>
@@ -102,6 +102,10 @@
         <article id="<%= produit.id %>">
             <p><%= produit.nom %></p>
             <p><%= produit.prix %></p>
+            
+            <form method="get" action="/downloadPDF/<%= produit.idPanier %>">
+                <p><button>Facture</button></p>
+            </form>
 
         </article>
         <% }
@@ -109,16 +113,17 @@
     
     <p>Prix total : <%= prixAchat %> </p>
     
-   <!------------------------TODO -->
-    <form method="get" action="/downloadPDF">
-            <p><button>Facture</button></p>
-    </form>
+    
     
     <% for (let commande of commandes) {
         if(commande.statut === "paye") { %>
         
         <p><%= commande.devis %></p>
         <p><%= commande.prixCommande %></p>
+        
+        <form method="get" action="/downloadPDF/<%= commande.id %>">
+            <p><button>Facture</button></p>
+        </form>
         
         <% }
     } %>

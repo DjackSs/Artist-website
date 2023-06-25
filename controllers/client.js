@@ -98,7 +98,7 @@ export const profile = (req, res) =>
 {
 	const userId = req.params.id;
 	
-	const query1 = `select Produit.* from Produit inner join Produit_Panier on idProduit = Produit.id inner join Panier on idPanier = Panier.id where idUserPanier = ? order by Produit.nom`;
+	const query1 = `select Produit.*, Produit_Panier.idPanier from Produit inner join Produit_Panier on idProduit = Produit.id inner join Panier on idPanier = Panier.id where idUserPanier = ? order by Produit.nom`;
 	
 	const query2= `update Panier set Panier.prixPanier = ? where Panier.idUserPanier = ? and Panier.statut = "cree"`;
 	
@@ -301,15 +301,31 @@ export const shoppingPay = (req,res) =>
 						
 						// ---------------------------creat a bill's pdf;
 						const doc = new PDFDocument();
-						
+									
 						doc.pipe(fs.createWriteStream(`./public/assets/bills/facture${produitPaye[0].id}.pdf`));
 						
 						doc
-						  .fontSize(25)
-						  .text(`${produitPaye}`, 100, 100);
-						  
-						doc.end();
+						.fontSize(15)
+						.text(`${new Date().toLocaleString()}`, 100, 80);
 						
+						doc
+						.fontSize(25)
+						.text(`Votre facture :`, 100, 100);
+						
+						produitPaye.forEach((item)=>
+						{
+							doc
+							.fontSize(15)
+							.text(`${item.nom}`, 100, 150);
+							
+							doc
+							.fontSize(15)
+							.text(`${item.prix}`, 100, 180);
+							
+						});
+									
+									  
+						doc.end();
 					
 						
 						res.redirect(`/profile/${idClient}`);
@@ -366,10 +382,26 @@ export const customPay = (req,res) =>
 			const doc = new PDFDocument();
 						
 			doc.pipe(fs.createWriteStream(`./public/assets/bills/facture${commandePaye[0].id}.pdf`));
-						
+			
+			doc
+			.fontSize(15)
+			.text(`${new Date().toLocaleString()}`, 100, 80);
+			
 			doc
 			.fontSize(25)
-			.text(`${commandePaye}`, 100, 100);
+			.text(`Votre facture :`, 100, 100);
+			
+			commandePaye.forEach((item)=>
+			{
+				doc
+				.fontSize(15)
+				.text(`${item.devis}`, 100, 150);
+				
+				doc
+				.text(`${item.prixCommande}`, 100, 180);
+				
+			});
+						
 						  
 			doc.end();
 			
@@ -438,7 +470,7 @@ export const dialogue = (req,res) =>
 
 export const downloadBill = (req,res)=>
 {
-	const filePath = `./public/assets/bills/bill${req.params.id}.pdf`;
+	const filePath = `./public/assets/bills/facture${req.params.id}.pdf`;
 	
 	res.download(filePath);
 };
