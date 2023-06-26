@@ -49,6 +49,7 @@ CREATE TABLE `Panier` (
   `dateCreation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dateCloture` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `statut` varchar(255) NOT NULL,
+  `facturePanier` varchar(255) NOT NULL,
   Foreign KEY (idUserPanier) REFERENCES User (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -83,6 +84,7 @@ CREATE TABLE `Commande` (
   `devis` varchar(255) NOT NULL,
   `prixCommande` decimal(8,2) NOT NULL,
   `statut` varchar(255) NOT NULL,
+  `factureCommande` varchar(255) NOT NULL,
   `dateCreationCommande` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dateClotureCommande` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   

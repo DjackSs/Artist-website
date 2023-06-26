@@ -192,20 +192,21 @@ export const inscriptionPost = (req, res) =>
                 		id: uuidv4(),
                 		idUserPanier: newClient.id,
                 		prixPanier: 0,
-                		statut: "cree"
+                		statut: "cree",
+                		facturePanier: ""
                 	};
                 	
                     
                 const query1 = "insert into User (id, pseudo, email, mdp, role, dateInscription) value (?, ?, ?, ?, ?, NOW())";
                 
-                const query2 =`insert into Panier (id, idUserPanier, prixPanier, statut, dateCreation) value (?, ?, ?, ?, NOW())`;
+                const query2 =`insert into Panier (id, idUserPanier, prixPanier, statut, facturePanier, dateCreation) value (?, ?, ?, ?, ?, NOW())`;
         
         
                 pool.query( query1, [newClient.id, newClient.pseudo, newClient.email, newClient.mdp, newClient.role], function (error, result1, fields) 
                 {
                     if(error) console.log(error); 
                     
-                    pool.query(query2, [newCard.id, newCard.idUserPanier,newCard.prixPanier, newCard.statut], function (error,result2, fields)
+                    pool.query(query2, [newCard.id, newCard.idUserPanier,newCard.prixPanier, newCard.statut, newCard.facturePanier], function (error,result2, fields)
                     {
                         if(error) console.log(error);
                         

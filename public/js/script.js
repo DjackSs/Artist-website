@@ -352,6 +352,86 @@ if(closeCustomButtons.length != 0)
 }
 
 
+// POST DEVIS FETCH
+
+const devisButtons = document.querySelectorAll(".js-devis-button");
+
+if(devisButtons.length != 0)
+{
+    for(let button of devisButtons)
+    {
+        button.addEventListener("click", (e)=>
+        {
+            (e).preventDefault();
+            
+            const id = button.getAttribute("data-commande");
+            
+            
+            // ----------------------DOM settings
+            
+            const article = document.querySelector(`section article[id="${id}"]`);
+            
+            const formDevis = document.querySelector(`article[id="${id}"] form[data-id="${id}"]`);
+            
+            const inputDevis = document.querySelector(`form[data-id="${id}"] input[name="devis"]`);
+            
+            
+            const inputPrice = document.querySelector(`form[data-id="${id}"] input[name="devisPrix"]`);
+            
+            
+            const articleDevis = document.createElement("article");
+            
+            const pDevis = document.createElement("p");
+            
+            const pPrice = document.createElement("p");
+            
+            // ----------------------
+            
+            pDevis.innerText = inputDevis.value;
+            
+            pPrice.innerText = inputPrice.value;
+            
+            articleDevis.append(pDevis);
+            articleDevis.append(pPrice);
+            
+            // ----------------------fecth settings
+            
+            
+            const url = `/devisPost/${id}`;
+            
+            const newDevis =
+            {
+                devis: inputDevis.value,
+                devisPrix: inputPrice.value
+            };
+            
+            
+            const options = 
+               {
+                    method: 'post',
+                    headers: {'content-type': 'application/json'},
+                    body: JSON.stringify(newDevis)
+                };
+                
+            
+            fetch(url, options)
+            .then(res =>
+            {
+                    
+                formDevis.remove();
+                
+                article.append(articleDevis);
+                
+                    
+            })
+            .catch(err => console.error(err));
+            
+ 
+        });
+    }
+}
+
+
 
 // ======================================================
     // CLIENT FETCH

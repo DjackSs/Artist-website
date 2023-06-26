@@ -271,10 +271,11 @@ export const shoppingPay = (req,res) =>
             		id: uuidv4(),
             		idUserPanier: idClient,
             		prixPanier: 0,
-            		statut: "cree"
+            		statut: "cree",
+            		facturePanier: "",
             	};
 	
-	const query4 = `insert into Panier (id, idUserPanier, prixPanier, statut, dateCreation) value (?, ?, ?, ?, NOW())`;
+	const query4 = `insert into Panier (id, idUserPanier, prixPanier, statut, facturePanier, dateCreation) value (?, ?, ?, ?, ?, NOW())`;
 	
 	const query5 = `select Produit.nom, Produit.description, Produit.prix, Produit.statut, Panier.id, Panier.statut from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id where Panier.idUserPanier = ? and Panier.statut = "paye"`;
 
@@ -291,7 +292,7 @@ export const shoppingPay = (req,res) =>
 			{
 				if(error) console.log(error);
 				
-				pool.query(query4, [newCard.id, newCard.idUserPanier, newCard.prixPanier, newCard.statut], function(error, result, fields)
+				pool.query(query4, [newCard.id, newCard.idUserPanier, newCard.prixPanier, newCard.statut, newCard.facturePanier], function(error, result, fields)
 				{
 					if(error) console.log(error);
 					
@@ -299,14 +300,16 @@ export const shoppingPay = (req,res) =>
 					{
 						if(error) console.log(error);
 						
+						const newBill = `/facture${produitPaye[0].id}.pdf`;
+						
 						// ---------------------------creat a bill's pdf;
 						const doc = new PDFDocument();
 									
-						doc.pipe(fs.createWriteStream(`./public/assets/bills/facture${produitPaye[0].id}.pdf`));
+						doc.pipe(fs.createWriteStream(`./public/assets/bills${newBill}`));
 						
 						doc
 						.fontSize(15)
-						.text(`${new Date().toLocaleString()}`, 100, 80);
+						.text(`${new Date().toLocaleString("fr-FR")}`, 100, 80);
 						
 						doc
 						.fontSize(25)
@@ -326,10 +329,14 @@ export const shoppingPay = (req,res) =>
 									
 									  
 						doc.end();
-					
 						
-						res.redirect(`/profile/${idClient}`);
+						const query6 = `update Panier set Panier.facturePanier = ? where Panier.IdUserPanier = ? and Panier.id = ?`;
+						
+						pool.query(query6, [newBill, idClient, produitPaye[0].id], function(error, result4, fields)
+						{
+							error ? console.log(error) : res.redirect(`/profile/${idClient}`);
 							
+						});
 						
 					});
 					
@@ -378,14 +385,16 @@ export const customPay = (req,res) =>
 		{
 			if(error) console.log(error);
 			
+			const newBill = `/facture${commandePaye[0].id}.pdf`;
+			
 			// ---------------------------creat a bill's pdf;
 			const doc = new PDFDocument();
 						
-			doc.pipe(fs.createWriteStream(`./public/assets/bills/facture${commandePaye[0].id}.pdf`));
+			doc.pipe(fs.createWriteStream(`./public/assets/bills${newBill}`));
 			
 			doc
 			.fontSize(15)
-			.text(`${new Date().toLocaleString()}`, 100, 80);
+			.text(`${new Date().toLocaleString("fr-FR")}`, 100, 80);
 			
 			doc
 			.fontSize(25)
@@ -405,8 +414,13 @@ export const customPay = (req,res) =>
 						  
 			doc.end();
 			
+			const query3 = `update Commande set Commande.factureCommande = ? where Commande.IdUser = ? and Commande.id = ?`;
 			
-			res.redirect(`/profile/${idClient}`);
+			pool.query(query3, [newBill, idClient, commandePaye[0].id], function (error, result2, fields)
+			{
+				error ? console.log(error) : res.redirect(`/profile/${idClient}`);
+				
+			});
 			
 			
 		});
@@ -429,13 +443,14 @@ export const customOrder = (req,res) =>
 		commande: req.body.commande,
 		devis: 0,
 		prixCommande: 0,
-		statut: "cree"
+		statut: "cree",
+		factureCommande: "",
 		
 	};
 	
-	const query = `insert into Commande (id, idUser, commande, devis, prixCommande, statut, dateCreationCommande, dateClotureCommande) values (?, ?, ?, ?, ?, ?, NOW(), NOW())`;
+	const query = `insert into Commande (id, idUser, commande, devis, prixCommande, statut, factureCommande, dateCreationCommande, dateClotureCommande) values (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`;
 	
-	pool.query(query, [newOrder.id, newOrder.idClient, newOrder.commande, newOrder.devis, newOrder.prixCommande, newOrder.statut], function(error, result, feilds)
+	pool.query(query, [newOrder.id, newOrder.idClient, newOrder.commande, newOrder.devis, newOrder.prixCommande, newOrder.statut, newOrder.factureCommande], function(error, result, feilds)
 	{
 		error ? console.log(error) : res.status(204).send();
 	});

@@ -150,12 +150,12 @@
                 
             <% } else { %>
             
-                <form method="post" action="/devisPost/<%= commande.id %>">
+                <form data-id="<%= commande.id %>">
                     
                     <input type="text" name="devis" placeholder="intitulé pour le devis">
                     <input type="text" name="devisPrix"  placeholder="prix de la commande">
                     
-                    <button class="js-devis-button">Générer un devis</button>
+                    <button class="js-devis-button" data-commande="<%= commande.id %>">Générer un devis</button>
                     
                 </form>
                 
