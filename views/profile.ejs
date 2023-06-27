@@ -1,134 +1,149 @@
-<h2>Profile page : </h2>
-<section>
-    <article id="<%= locals.user.id %>">
-        
-        <p><%= locals.user.pseudo %></p>
-        <p><%= locals.user.email %></p>
-        <button class="js-editProfile-button" data-profile="<%= locals.user.id %>">Edit Profile</button>
-        
-    </article>
-    
+<h1 class="container">Mon profil : </h1>
 
-    <form method="post" action="/logout">
-        <input type="submit" value="Deconnexion">
-    </form>
+<section class="profileGrid container">
     
-    <form method="post" action="/deleteProfile/<%= locals.user.id %>">
-        <input type="submit" value="Suprimer le compte">
-    </form>
-
-</section>
-
-<section>
-    <H3>Panier</H3>
-    
-    <% for(let produit of produits) { 
-        if(produit.statut === "free") { %>
-        <article id="<%= produit.id %>">
-        <p><%= produit.nom %></p>
-        <p><%= produit.prix %></p>
-        <p><button class="js-removeProduitPanier-button" data-produit="<%= produit.id %>">X</button> </p>
+    <section class="profileDetail">
         
-    </article>
-        <% }
-    } %>
+        <article id="<%= locals.user.id %>">
+            
+            <h2><%= locals.user.pseudo %></h2>
+            <h3><%= locals.user.email %></h3>
+            <button class="js-editProfile-button" data-profile="<%= locals.user.id %>">Edit Profile</button>
+            
+        </article>
+        
     
-    <p>Prix total : <%= prixPanier %> </p>
-    
-    <% if(prixPanier) { %>
-    
-        <form method="post" action="/buy/<%= locals.user.id %>">
-            <input type="submit" value="Acheter">
+        <form method="post" action="/logout">
+            <input type="submit" value="Deconnexion">
+        </form>
+        
+        <form method="post" action="/deleteProfile/<%= locals.user.id %>">
+            <input type="submit" value="Suprimer le compte">
         </form>
     
-    <% } %>
+    </section>
     
-</section>
-
-<section>
-    <h3>Mes commandes</h3>
-    
-    <% for(let commande of commandes) {
-        if(commande.statut === "cree") { %>
-    
-        <article id="<%= commande.id %>">
-            <p> <%= commande.dateCreationCommande.toLocaleString() %></p>
-            <p> <%= commande.commande %></p>
+    <section class="profilePanier">
+        <H2>Panier</H2>
         
-        
-        <div>
-            <% for(let dialogue of dialogues) { %>
-                <div>
+        <% for(let produit of produits) { 
+            if(produit.statut === "free") { %>
             
-                    <p><%= dialogue.pseudo %></p>
-                    <p><%= dialogue.dateDialogue %></p>
-                    <p><%= dialogue.comment %></p>
+            <article id="<%= produit.id %>" class="articlePanier">
+                
+            <h3><%= produit.nom %></h3>
+            <p><%= produit.prix %></p>
+            <p><button class="js-removeProduitPanier-button" data-produit="<%= produit.id %>">Retirer</button> </p>
+            
+        </article>
+            <% }
+        } %>
+        
+        <p class="price">Prix total : <%= prixPanier %> </p>
+        
+        <% if(prixPanier) { %>
+        
+            <form method="post" action="/buy/<%= locals.user.id %>">
+                <input type="submit" value="Acheter">
+            </form>
+        
+        <% } %>
+        
+    </section>
+    
+    <section class="profileCommande">
+        <h2>Mes commandes</h2>
+        
+        <% for(let commande of commandes) {
+            if(commande.statut === "cree") { %>
+        
+            <article id="<%= commande.id %>" class="articleCommande">
+                <div>
+                    
+                    <h3><%= commande.commande %></h3>
+                    
+                    <% if(commande.devis != 0) { %>
+                    
+                        
+                        <h3>Devis pour la commande :</h3>
+                    
+                        <p><%= commande.devis %></p>
+                        <p><%= commande.prixCommande %></p>
+                        
+                        <form method="post" action="/buyCustom/<%= locals.user.id %>">
+                            <input type="submit" value="Acheter">
+                        </form>
+                        
+                    <% } %>
                 </div>
-            <% } %>
-        </div>
-       
-        <label for="commandeDialogueClient">Dialoguer avec l'artiste :</label>
+            
+            
+                <div>
+                    
+                    <% for(let dialogue of dialogues) {
+                         if(dialogue.id != null && dialogue.idCommande === commande.id) { %>
+                         
+                            <p><%= dialogue.pseudo %><span class="timeStamp"><%= dialogue.dateDialogue %></span></p>
+                            <p><%= dialogue.comment %></p>
+                    <% }
+                    } %>
+                </div>
+            
+                <div>
+               
+                    <label for="commandeDialogueClient">Dialoguer avec l'artiste :</label>
+                            
+                    <textarea name="commandeDialogueClient" id="commandeDialogueClient"></textarea>
+                            
+                    <button class="js-dialogue-button"  data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
                 
-        <textarea name="commandeDialogueClient" id="commandeDialogueClient"></textarea>
+                </div>
+            
+                <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
+    
+            
+            </article>
+            
+        <% }
+        } %>
+    
+    </section>
+    <section class="profileAchats">
+        <h2>Mes achats</h2>
+        <% for(let produit of produits) { 
+            if(produit.statut === "paye") { %>
+            
+            <article id="<%= produit.id %>">
+                <p><%= produit.nom %></p>
+                <p><%= produit.prix %></p>
                 
-        <button class="js-dialogue-button"  data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
+                <form method="get" action="/downloadPDF/<%= produit.idPanier %>">
+                    <p><button>Facture</button></p>
+                </form>
+    
+            </article>
+            <% }
+        } %>
         
-        <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
+        <p class="price">Prix total : <%= prixAchat %> </p>
         
         
-        <% if(commande.devis != 0) { %>
         
+        <% for (let commande of commandes) {
+            if(commande.statut === "paye") { %>
+            
             <p><%= commande.devis %></p>
             <p><%= commande.prixCommande %></p>
             
-            <form method="post" action="/buyCustom/<%= locals.user.id %>">
-                <input type="submit" value="Acheter">
-            </form>
-            
-        <% } %>
-
-        
-        </article>
-        
-    <% }
-    } %>
-
-</section>
-<section>
-    <h3>Mes achats</h3>
-    <% for(let produit of produits) { 
-        if(produit.statut === "paye") { %>
-        
-        <article id="<%= produit.id %>">
-            <p><%= produit.nom %></p>
-            <p><%= produit.prix %></p>
-            
-            <form method="get" action="/downloadPDF/<%= produit.idPanier %>">
+            <form method="get" action="/downloadPDF/<%= commande.id %>">
                 <p><button>Facture</button></p>
             </form>
-
-        </article>
-        <% }
-    } %>
-    
-    <p>Prix total : <%= prixAchat %> </p>
-    
-    
-    
-    <% for (let commande of commandes) {
-        if(commande.statut === "paye") { %>
+            
+            <% }
+        } %>
         
-        <p><%= commande.devis %></p>
-        <p><%= commande.prixCommande %></p>
         
-        <form method="get" action="/downloadPDF/<%= commande.id %>">
-            <p><button>Facture</button></p>
-        </form>
         
-        <% }
-    } %>
-    
-    
-    
-    
+        
+    </section>
 </section>

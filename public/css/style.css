@@ -76,7 +76,7 @@ html {
 
 body {
     margin: 0;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 24px;
     font-family: var(--main-font);
     font-variant-ligatures: contextual;
@@ -120,6 +120,17 @@ h3 {
     color: var(--accentuation-color);
     font-weight: normal;
     
+}
+
+::-webkit-scrollbar {
+  width: 0.5em;
+  height: 90%;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: var(--second-color);
+  border-radius: 2em;
 }
 
 /*==================HEADER*/
@@ -372,6 +383,10 @@ main section {
    border-radius: 1em;
 }
 
+/*============================================================*/
+        /*SIGN IN / LOGIN
+/*============================================================*/
+
 .container form {
     max-width: 80%;
     padding: 1em;
@@ -400,16 +415,13 @@ legend {
     
 }
 
-label {
-    font-size: 1.5em;
-}
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 80%;
     padding: 1em;
-    font-size: 1.5em;
+    font-size: 1.3em;
     border: 0.15em solid var(--second-color);
     border-radius: 3em;
     
@@ -424,6 +436,26 @@ input[type="password"]:focus {
     outline-color: var(--chicken-color);
 }
 
+input[type="file"] {
+    width: fit-content;
+    color: #444;
+    padding: 1em;
+    border-radius: 0.5em;
+    border: 0.15em solid var(--second-color);
+}
+
+input[type=file]::file-selector-button {
+  border: none;
+  background: var(--chicken-color);
+  padding: 0.5em;
+  border-radius: 0.5em;
+  color: var(--white-color);
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+    
+
+
 
 input[type="submit"],
 button {
@@ -434,7 +466,7 @@ button {
     border-radius: 3em;
     cursor: pointer;
     
-    font-size: 2em;
+    font-size: 1.3em;
     font-family:var(--title-font);
     color: var(--white-color);
     transition: all 0.5s;
@@ -449,7 +481,244 @@ button:hover {
 }
 
 
-/*==================HEADER*/
+/*============================================================*/
+        /*PROFILE
+/*============================================================*/
+
+/*----------span for timestamp*/
+.timeStamp {
+    margin: 0.5em;
+    font-size: 0.7em;
+    color: var(--accentuation-color);
+}
+
+
+.profileGrid {
+    display: grid;
+    grid-template-areas:
+    "d p"
+    "c c"
+    "a a";
+    gap: 1em;
+    
+}
+
+.profileGrid section {
+    min-width: fit-content;
+    border: 0.2em solid var(--second-color);
+    border-radius: 1em;
+    
+    text-align: center;
+    
+}
+
+.profileDetail {
+    grid-area: d;
+    /*height: fit-content;*/
+    
+}
+
+.profileDetail input[type="text"] {
+    font-size: 1rem;
+    
+}
+
+.profilePanier {
+    grid-area: p;
+    
+    
+}
+
+.profileCommande {
+    grid-area: c;
+   
+    
+}
+
+.profileAchats {
+    grid-area: a;
+    
+}
+
+.articlePanier {
+    width: 70%;
+    margin: auto;
+    padding: 0.5em;
+    background-color: var(--chicken-color);
+    border-radius: 1em;
+}
+
+.articleCommande {
+    display: grid;
+    align-items: start;
+    justify-items: center;
+    grid-template-areas:
+    "co di"
+    "an ta";
+    gap: 0.5em;
+    
+    margin: 1em;
+    padding: 1em;
+    
+    border: 0.2em solid var(--chicken-color);
+    border-radius: 1em;
+}
+
+.articleCommande div:first-child {
+    grid-area: co;
+    /*display: flex;*/
+}
+
+
+.articleCommande div:first-child h3:before,
+.articleCommande div:first-child h3:after {
+    content: '"';
+    color: var(--chicken-color);
+    font-size: 2em;
+}
+
+.articleCommande div:nth-child(2) {
+    grid-area: di;
+    justify-self: stretch;
+    padding: 1em 2em;
+    min-height: 5em;
+    max-height: 10em;
+    overflow: scroll;
+    
+    border: 0.2em solid var(--accentuation-color);
+    border-radius: 1em;
+}
+
+
+
+.articleCommande div:nth-child(2) p:nth-child(odd) {
+    padding: 0.5em;
+    border-top: 0.1em solid var(--chicken-color);
+    color: var(--second-color);
+    font-weight: bold;
+    text-align: left;
+}
+
+
+.articleCommande div:nth-child(3) {
+    grid-area: ta;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    
+}
+
+
+.articleCommande button {
+    grid-area: an;
+    align-self: center;
+}
+
+.articleCommande textArea {
+    resize: none;
+    width: 80%;
+    min-height: 5em;
+    
+    padding: 0.5em;
+    border-radius: 1em;
+    
+}
+
+
+.price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--chicken-color);
+    
+}
+
+
+/*============================================================*/
+        /*ADMIN PROFILE
+/*============================================================*/
+
+.adminGrid {
+    display: grid;
+    grid-template-areas:
+    "d u"
+    "a a"
+    "e e";
+    gap: 1em;
+}
+
+.adminGrid section {
+    min-width: fit-content;
+    border: 0.2em solid var(--second-color);
+    border-radius: 1em;
+    
+    text-align: center;
+    
+}
+
+.adminGrid table {
+    border-collapse: collapse;
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+
+.adminGrid table th,
+.adminGrid table td {
+    border: 0.2em solid var(--chicken-color);
+    height: 2.5em;
+    padding: 0.5em;
+}
+
+.adminGrid thead {
+    background-color: var(--second-color);
+}
+
+
+.users {
+    grid-area: u;
+}
+
+
+.addProduct {
+    grid-area:a;
+}
+
+.addProduct form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.editProduct table input[type="text"],
+.editProduct table select {
+    width: 80%;
+    border: none;
+    padding: 0.3em;
+    
+}
+
+select {
+    background-color: var(--chicken-color);
+    border-radius: 0.2em;
+    border:none;
+    color: var(--white-color);
+    padding: 1em;
+
+
+}
+
+.editProduct {
+    grid-area: e;
+}
+
+
+
+
+
+/*==================FOOTER*/
 
 footer {
     padding: 2em;
@@ -530,14 +799,14 @@ footer article div img {
 
     input[type="submit"],
     button {
-        width: 30%;
+        width: fit-content;
        
     }
 
     input[type="text"],
     input[type="email"],
     input[type="password"] {
-        width: 60%;
+        width: fit-content;
         padding: 0.5em;
         font-size: 1em;
     

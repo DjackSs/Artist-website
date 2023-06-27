@@ -43,13 +43,42 @@ export const profileAdmin = (req, res) =>
         {
             if(error) console.log(error);
             
+            users.forEach((user)=>
+			{
+				if(user.dateInscription)
+				{
+					user.dateInscription = user.dateInscription.toLocaleString("fr-FR");
+				}
+						
+						
+			});
+            
             pool.query(query3, function(error, commandes, fields)
             {
                 if(error) console.log(error);
                 
+                commandes.forEach((commande)=>
+    			{
+    				if(commande.dateCreationCommande)
+    				{
+    					commande.dateCreationCommande = commande.dateCreationCommande.toLocaleString("fr-FR");
+    				}
+    						
+    						
+    			});
+                
                 pool.query(query4, function(error, dialogues, field)
                 {
                     if(error) console.log(error);
+                    
+                    dialogues.forEach((dialogue)=>
+					{
+						if(dialogue.dateDialogue)
+						{
+							dialogue.dateDialogue = dialogue.dateDialogue.toLocaleString("fr-FR");
+						}
+						
+					});
                     
                     pool.query(query5, function(error, achats, fields)
                     {

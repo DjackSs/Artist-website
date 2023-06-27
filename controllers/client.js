@@ -140,6 +140,19 @@ export const profile = (req, res) =>
 				{
 					if(error) console.log(error);
 					
+					
+					dialogues.forEach((dialogue)=>
+					{
+						if(dialogue.dateDialogue)
+						{
+							dialogue.dateDialogue = dialogue.dateDialogue.toLocaleString("fr-FR");
+						}
+						
+						
+					});
+					
+					
+					
 					res.render('layout.ejs',
 					{
 					    template: 'profile.ejs',
@@ -309,7 +322,7 @@ export const shoppingPay = (req,res) =>
 						
 						doc
 						.fontSize(15)
-						.text(`${new Date().toLocaleString("fr-FR")}`, 100, 80);
+						.text(`${new Date("fr-FR").toLocaleString("fr-FR")}`, 100, 80);
 						
 						doc
 						.fontSize(25)
@@ -394,7 +407,7 @@ export const customPay = (req,res) =>
 			
 			doc
 			.fontSize(15)
-			.text(`${new Date().toLocaleString("fr-FR")}`, 100, 80);
+			.text(`${new Date("fr-FR").toLocaleString("fr-FR")}`, 100, 80);
 			
 			doc
 			.fontSize(25)

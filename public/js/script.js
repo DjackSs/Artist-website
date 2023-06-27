@@ -671,26 +671,27 @@ if(dialogueButtons.length != 0)
                 
                 textArea.value = "";
                 
-                const dialogueDiv = document.querySelector(`article[id="${id}"] > div`);
+                const dialogueDiv = document.querySelector(`article[id="${id}"]  div:nth-child(2)`);
                 
                 
                 const pseudoP = document.createElement("p");
-                const pseudo =document.querySelector(`article[id="${reply.idTransmitter}"] p:first-child`).innerHTML;
+                const pseudo = document.querySelector(`.profileDetail article h2`).innerText;
                 
                 pseudoP.append(pseudo);
                 
-                const dateP = document.createElement("p");
-                const date = new Date().toDateString();
+                const dateSpan = document.createElement("span");
+                const date = new Date().toLocaleString("fr-FR");
                 
-                dateP.append(date);
+                dateSpan.append(date);
+                dateSpan.classList.add("timeStamp");
+                
+                pseudoP.append(dateSpan);
                 
                 const comentP = document.createElement("p");
                 
                 comentP.append(reply.comment);
                 
                 dialogueDiv.append(pseudoP);
-                
-                dialogueDiv.append(dateP);
                 
                 dialogueDiv.append(comentP);
                
@@ -722,9 +723,9 @@ if(editProfileButton)
         
         const article = document.querySelector(`article[id="${id}"]`);
         
-        const oldPseudo = document.querySelector(`article[id="${id}"] p:first-child`);
+        const oldPseudo = document.querySelector(`article[id="${id}"] h2`);
         
-        const oldEmail = document.querySelector(`article[id="${id}"] p:nth-child(2)`);
+        const oldEmail = document.querySelector(`article[id="${id}"] h3`);
         
         
         const newPseudo = document.createElement('input');
