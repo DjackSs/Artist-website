@@ -110,40 +110,48 @@
     </section>
     <section class="profileAchats">
         <h2>Mes achats</h2>
-        <% for(let produit of produits) { 
-            if(produit.statut === "paye") { %>
-            
-            <article id="<%= produit.id %>">
-                <p><%= produit.nom %></p>
-                <p><%= produit.prix %></p>
+        
+            <% for(let panier of paniers) { 
+                if(panier.statut != "cree") { %>
                 
-                <form method="get" action="/downloadPDF/<%= produit.idPanier %>">
-                    <p><button>Facture</button></p>
-                </form>
-    
-            </article>
-            <% }
-        } %>
-        
-        <p class="price">Prix total : <%= prixAchat %> </p>
-        
-        
-        
-        <% for (let commande of commandes) {
-            if(commande.statut === "paye") { %>
+                <article id="<%= panier.id %>">
+                    <p><%= panier.dateCloture %></p>
+                    
+                    <% if(panier.statut != "livre") { %>
+                        <p>Merci pour votre achat ! Nous préparons votre livraison.</p>
+                    <% } %>
+                    
+                    <form method="get" action="/downloadPDF/<%= panier.id %>">
+                        <p><button>Facture</button></p>
+                    </form>
+          
+                </article>
+                
+                
+                <% }
+            } %>
             
-            <p><%= commande.devis %></p>
-            <p><%= commande.prixCommande %></p>
+      
             
-            <form method="get" action="/downloadPDF/<%= commande.id %>">
-                <p><button>Facture</button></p>
-            </form>
+            <% for (let commande of commandes) {
+                if(commande.statut != "cree") { %>
+                
+                <article id="<%= commande.id %>">
+                    
+                    <p><%= commande.dateClotureCommande %></p>
+                    
+                    <% if(commande.statut != "livre") { %>
+                        <p>Merci pour votre achat ! Nous préparons votre livraison.</p>
+                    <% } %>
+                    
+                    <form method="get" action="/downloadPDF/<%= commande.id %>">
+                        <p><button>Facture</button></p>
+                    </form>
+                
+                </article>
+                <% }
+            } %>
             
-            <% }
-        } %>
-        
-        
-        
         
     </section>
 </section>

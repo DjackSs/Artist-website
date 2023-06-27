@@ -122,110 +122,115 @@
     </section>
 
     
-</section>
+
     <section class="profileCommande">
     <h2>Gestion des commandes :</h2>
-    
-    <% for(let commande of commandes) { 
-        if(commande.statut === "cree") { %>
-    
-        <article id="<%= commande.id %>" class="articleCommande">
-            
-            <div>
-                <h3><%= commande.commande %><span class="timeStamp"><%= commande.dateCreationCommande %></span></h3>
-                <p><%= commande.pseudo %></p>
-                <p><%= commande.email %></p>
-                
-                 <% if(commande.devis != 0) { %>
-                 
-                    <h3>Devis pour la commande :</h3>
-                    <p><%= commande.devis %></p>
-                    <p><%= commande.prixCommande %></p>
-                    
-                
-            <% } else { %>
-            
-                <form data-id="<%= commande.id %>">
-                    
-                    <input type="text" name="devis" placeholder="intitulé pour le devis">
-                    <input type="text" name="devisPrix"  placeholder="prix de la commande">
-                    
-                    <button class="js-devis-button" data-commande="<%= commande.id %>">Générer un devis</button>
-                    
-                </form>
-           
-            
-            <% } %>
-            
-            </div>
-            
-            
-            <div>
-            <% for(let dialogue of dialogues) {
-                    if(dialogue.id != null && dialogue.idCommande === commande.id) { %>
-                    
-                        <p><%= dialogue.pseudo %><span class="timeStamp"><%= dialogue.dateDialogue %></span></p>
-                            <p><%= dialogue.comment %></p>
-                <% }
-            } %>
-            </div>
-            <div>
-                <label for="commandeDialogue">Dialoguer avec votre client :</label>
-            
-                <textarea name="commandeDialogue" id="commandeDialogue"></textarea>
-            
-                <button class="js-dialogue-button" data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
-                
-            </div>
-                
-            <% } %>
-                
-            
-            
-            <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
-            
-        </article>
         
-    
-    <% } %>
-    
+        <% for(let commande of commandes) { 
+            if(commande.statut === "cree") { %>
+        
+            <article id="<%= commande.id %>" class="articleCommande">
+                
+                <div>
+                    <h3><%= commande.commande %><span class="timeStamp"><%= commande.dateCreationCommande %></span></h3>
+                    <p><%= commande.pseudo %></p>
+                    <p><%= commande.email %></p>
+                    
+                     <% if(commande.devis != 0) { %>
+                     
+                        <h3>Devis pour la commande :</h3>
+                        <p><%= commande.devis %></p>
+                        <p><%= commande.prixCommande %></p>
+                        
+                    
+                <% } else { %>
+                
+                    <form data-id="<%= commande.id %>">
+                        
+                        <input type="text" name="devis" placeholder="intitulé pour le devis">
+                        <input type="text" name="devisPrix"  placeholder="prix de la commande">
+                        
+                        <button class="js-devis-button" data-commande="<%= commande.id %>">Générer un devis</button>
+                        
+                    </form>
+               
+                
+                <% } %>
+                
+                </div>
+                
+                
+                <div>
+                <% for(let dialogue of dialogues) {
+                        if(dialogue.id != null && dialogue.idCommande === commande.id) { %>
+                        
+                            <p><%= dialogue.pseudo %><span class="timeStamp"><%= dialogue.dateDialogue %></span></p>
+                                <p><%= dialogue.comment %></p>
+                    <% }
+                } %>
+                </div>
+                <div>
+                    <label for="commandeDialogue">Dialoguer avec votre client :</label>
+                
+                    <textarea name="commandeDialogue" id="commandeDialogue"></textarea>
+                
+                    <button class="js-dialogue-button" data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
+                    
+                </div>
+                
+                    <button class="js-removeCommande-button" data-commande="<%= commande.id %>">Annuler la commande</button>
+                
+                </article>
+                    
+                <% } %>
+                    
+        
+        <% } %>
     </section>
-    <section>
-    <h2>Gestion des achats :</h2>
-    <% for(let panier of achats) { %>
-        <article id="<%= panier.idPanier %>">
-            
-            <p><%= panier.pseudoClient %></p>
-            <p><%= panier.email %></p>
-            
-            <% for(let produit of panier.produits) { %>
-                <p><%= produit.nom %></p>
-                <p><%= produit.category %></p>
-                <p><%= produit.prix %></p>
-            <% } %>
-            
-            <p><%= panier.prixPanier %></p>
-            
-            <button class="js-closeBuying-button" data-card="<%= panier.idPanier %>">Achats livrés</button>
-            
-        </article>
         
-    <% } %>
-    
-    <% for(let commande of commandes) {
-        if(commande.statut === "paye") { %>
-        <article id="<%= commande.id %>">
-            <p><%= commande.pseudo %></p>
-            <p><%= commande.email %></p>
-            <p><%= commande.devis %></p>
-            <p><%= commande.prix %></p>
+    <section class="adminAchats">
             
-            <button class="js-closeCustom-button" data-custom="<%= commande.id %>">Commande livrés</button>
-            
-        </article>
+        <h2>Gestion des achats :</h2>
         
-    <% }
-    } %>
+        <div>
+        <% for(let panier of achats) { %>
+        
+            <article id="<%= panier.idPanier %>">
+                
+                <h3><%= panier.pseudoClient %></h3>
+                <p><%= panier.email %></p>
+                
+                <% for(let produit of panier.produits) { %>
+                    <p><%= produit.nom %></p>
+                    <p><%= produit.category %></p>
+                    <p><%= produit.prix %></p>
+                <% } %>
+                
+                <p>Prix total : <%= panier.prixPanier %></p>
+                
+                <button class="js-closeBuying-button" data-card="<%= panier.idPanier %>">Achats livrés</button>
+                
+            </article>
+            
+        <% } %>
+        
+        <% for(let commande of commandes) {
+            if(commande.statut === "paye") { %>
+            
+            <article id="<%= commande.id %>">
+                <h3><%= commande.pseudo %><span class="timeStamp"><%= commande.email %></span></h3>
+                <p><%= commande.devis %></p>
+                <p><%= commande.prix %></p>
+                
+                <button class="js-closeCustom-button" data-custom="<%= commande.id %>">Commande livrés</button>
+                
+            </article>
+            
+            </div>
+            
+        <% }
+        } %>
     </section>
+</section>
 
 

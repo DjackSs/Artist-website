@@ -4,7 +4,7 @@
 
 const themeButtons = document.querySelectorAll(`.header-top input[type="radio"]`);
 
-console.log(themeButtons);
+// console.log(themeButtons);
 
 const activeTheme = window.localStorage.getItem("theme");
 
@@ -369,7 +369,7 @@ if(devisButtons.length != 0)
             
             // ----------------------DOM settings
             
-            const article = document.querySelector(`section article[id="${id}"]`);
+            const divCommande = document.querySelector(`section article[id="${id}"] div:first-child`);
             
             const formDevis = document.querySelector(`article[id="${id}"] form[data-id="${id}"]`);
             

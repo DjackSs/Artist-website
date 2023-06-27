@@ -106,6 +106,8 @@ export const profile = (req, res) =>
 	
 	const query4 = `select Dialogue.*, User.pseudo from Commande left join Dialogue on Dialogue.idCommande = Commande.id left join User on Dialogue.idUser = User.id where Commande.idUser = ? order by Dialogue.dateDialogue`;
 	
+	const query5 = `select Panier.* from Panier where Panier.idUserPanier = ? and Panier.statut in("paye","livre") order by Panier.dateCloture`;
+	
 	
 	pool.query(query1, [userId], function(error, produits, fields)
 	{
@@ -113,17 +115,12 @@ export const profile = (req, res) =>
 		if(error) console.log(error);
 		
 		let totalPricePanier= 0;
-		let totalPricePaye= 0;
 		
 		for(let produit of produits)
 		{
 			if(produit.statut === "free")
 			{
 				totalPricePanier += produit.prix;
-			}
-			if(produit.statut === "paye")
-			{
-				totalPricePaye += produit.prix;
 			}
 			
 		}
@@ -136,34 +133,35 @@ export const profile = (req, res) =>
 			{
 				if(error) console.log(error);
 				
+				commandes = rightDate(commandes, "dateClotureCommande");
+				
 				pool.query(query4, [userId], function(error, dialogues, fields)
 				{
 					if(error) console.log(error);
 					
+					dialogues = rightDate(dialogues, "dateDialogue");
 					
-					dialogues.forEach((dialogue)=>
+					
+					pool.query(query5, [userId], function(error, paniers, fields)
 					{
-						if(dialogue.dateDialogue)
-						{
-							dialogue.dateDialogue = dialogue.dateDialogue.toLocaleString("fr-FR");
-						}
+						if(error) console.log(error);
 						
+						paniers = rightDate(paniers, "dateCloture");
+						
+						res.render('layout.ejs',
+						{
+						    template: 'profile.ejs',
+						    produits: produits,
+						    prixPanier: totalPricePanier,
+						    commandes: commandes,
+						    dialogues: dialogues,
+						    paniers: paniers
+						        
+						});
 						
 					});
 					
-					
-					
-					res.render('layout.ejs',
-					{
-					    template: 'profile.ejs',
-					    produits: produits,
-					    prixPanier: totalPricePanier,
-					    prixAchat: totalPricePaye,
-					    commandes: commandes,
-					    dialogues: dialogues
-					        
-					   });
-					
+			
 				});
 				
 			});
@@ -273,7 +271,7 @@ export const shoppingPay = (req,res) =>
 	
 	const panierStatus = "paye";
 	
-	const query1 = `update Panier set Panier.statut = ? where Panier.IdUserPanier = ? and Panier.statut = "cree"`;
+	const query1 = `update Panier set Panier.statut = ?, Panier.dateCloture = NOW() where Panier.IdUserPanier = ? and Panier.statut = "cree"`;
 	
 	const query2 = `update Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id set Produit.statut = Panier.statut where Panier.idUserPanier = ?`;
 	
@@ -315,6 +313,8 @@ export const shoppingPay = (req,res) =>
 						
 						const newBill = `/facture${produitPaye[0].id}.pdf`;
 						
+						let lineBreak = 150;
+						
 						// ---------------------------creat a bill's pdf;
 						const doc = new PDFDocument();
 									
@@ -322,7 +322,7 @@ export const shoppingPay = (req,res) =>
 						
 						doc
 						.fontSize(15)
-						.text(`${new Date("fr-FR").toLocaleString("fr-FR")}`, 100, 80);
+						.text(`${new Date().toLocaleString("fr-FR")}`, 100, 80);
 						
 						doc
 						.fontSize(25)
@@ -332,11 +332,13 @@ export const shoppingPay = (req,res) =>
 						{
 							doc
 							.fontSize(15)
-							.text(`${item.nom}`, 100, 150);
+							.text(`${item.nom}`, 100, lineBreak);
 							
 							doc
 							.fontSize(15)
-							.text(`${item.prix}`, 100, 180);
+							.text(`${item.prix}`, 100, lineBreak+20);
+							
+							lineBreak+=100;
 							
 						});
 									
@@ -386,7 +388,7 @@ export const customPay = (req,res) =>
 	
 	const statut = "paye";
 	
-	const query1 = `update Commande set Commande.statut = ? where Commande.IdUser = ? and Commande.statut = "cree"`;
+	const query1 = `update Commande set Commande.statut = ?, dateClotureCommande = NOW() where Commande.IdUser = ? and Commande.statut = "cree"`;
 	
 	const query2 = `select Commande.* from Commande where Commande.idUser = ? and Commande.statut = ?`;
 	
@@ -502,3 +504,20 @@ export const downloadBill = (req,res)=>
 	
 	res.download(filePath);
 };
+
+
+
+
+// ----------------------------------------------------this function retunr a date in the desired format within an array of object or a json
+
+function rightDate (array, key)
+{
+	let newArray = array.map((item)=>
+	{
+	  item[key] = item[key].toLocaleString("fr-FR");
+	  return item;
+	});
+	
+	return newArray;
+						
+}					

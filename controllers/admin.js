@@ -43,42 +43,22 @@ export const profileAdmin = (req, res) =>
         {
             if(error) console.log(error);
             
-            users.forEach((user)=>
-			{
-				if(user.dateInscription)
-				{
-					user.dateInscription = user.dateInscription.toLocaleString("fr-FR");
-				}
-						
-						
-			});
+            users = rightDate(users, "dateInscription");
+    
             
             pool.query(query3, function(error, commandes, fields)
             {
                 if(error) console.log(error);
                 
-                commandes.forEach((commande)=>
-    			{
-    				if(commande.dateCreationCommande)
-    				{
-    					commande.dateCreationCommande = commande.dateCreationCommande.toLocaleString("fr-FR");
-    				}
-    						
-    						
-    			});
+                commandes = rightDate(commandes, "dateCreationCommande");
+                
                 
                 pool.query(query4, function(error, dialogues, field)
                 {
                     if(error) console.log(error);
                     
-                    dialogues.forEach((dialogue)=>
-					{
-						if(dialogue.dateDialogue)
-						{
-							dialogue.dateDialogue = dialogue.dateDialogue.toLocaleString("fr-FR");
-						}
-						
-					});
+                    dialogues = rightDate(dialogues, "dateDialogue");
+                    
                     
                     pool.query(query5, function(error, achats, fields)
                     {
@@ -255,7 +235,7 @@ export const closeBuying = (req,res) =>
     
     const panierStatus = "livre";
     
-    const query = `update Panier set dateCloture = NOW(), statut = ? where id = ?`;
+    const query = `update Panier set statut = ? where id = ?`;
     
     const query2 = `update Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id set Produit.statut = Panier.statut where Panier.id = ?`;
 
@@ -283,7 +263,7 @@ export const closeCustom = (req, res) =>
     
     const panierStatus = "livre";
     
-    const query = `update Commande set dateClotureCommande = NOW(), statut = ? where id = ?`;
+    const query = `update Commande set statut = ? where id = ?`;
 
 	pool.query(query, [panierStatus, id], function (error, result, fields)
 	{
@@ -383,3 +363,19 @@ function processAchats (array)
   return newArray;
   
 }
+
+
+// ----------------------------------------------------this function retunr a date in the desired format within an array of object or a json
+
+
+function rightDate (array, key)
+{
+	let newArray = array.map((item)=>
+	{
+	  item[key] = item[key].toLocaleString("fr-FR");
+	  return item;
+	});
+	
+	return newArray;
+						
+}					

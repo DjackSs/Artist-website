@@ -566,7 +566,6 @@ button:hover {
 
 .articleCommande div:first-child {
     grid-area: co;
-    /*display: flex;*/
 }
 
 
@@ -582,7 +581,7 @@ button:hover {
     justify-self: stretch;
     padding: 1em 2em;
     min-height: 5em;
-    max-height: 10em;
+    /*max-height: 10em;*/
     overflow: scroll;
     
     border: 0.2em solid var(--accentuation-color);
@@ -643,7 +642,9 @@ button:hover {
     grid-template-areas:
     "d u"
     "a a"
-    "e e";
+    "e e"
+    "c c"
+    "b b";
     gap: 1em;
 }
 
@@ -700,6 +701,11 @@ button:hover {
     
 }
 
+.editProduct table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 select {
     background-color: var(--chicken-color);
     border-radius: 0.2em;
@@ -712,6 +718,26 @@ select {
 
 .editProduct {
     grid-area: e;
+}
+
+.adminAchats {
+    grid-area: b;
+    
+}
+
+.adminAchats div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    
+}
+
+.adminAchats div article {
+    padding: 1em;
+    border: 0.2em solid var(--chicken-color);
+    border-radius: 1em;
 }
 
 
