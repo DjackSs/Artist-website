@@ -1,15 +1,19 @@
-<section>
+<section class="scrapbooking container">
     
-    <h2>Scrapbooking</h2>
+    <h1>Scrapbooking</h1>
     
     <% for(let produit of produits) { 
         if(produit.statut === "free") {%>
         
-       <article id="<%= produit.id %>">
+       <article id="<%= produit.id %>" class="product">
            <img src="<%= produit.img %>" alt="<%= produit.nom %>" >
-            <p><%= produit.nom %></p>
-            <p><%= produit.description %></p>
-            <p><%= produit.prix %></p>
+           <div>
+               
+                <h2><%= produit.nom %></h2>
+                <p><%= produit.description %></p>
+                <p><%= produit.prix %> €</p>
+            
+            </div>
         
         <% if((locals.user.role === "client") && (produit.idUserPanier != locals.user.id)) { %>
         
@@ -26,7 +30,8 @@
 
 <% if(locals.user.role === "client") { %>
 
-<section>
+<section class="orderPrompt container">
+    
     <h2>Commande</h2>
     
     <form>
@@ -37,6 +42,7 @@
         <input type="submit" value="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
         
     </form>
+    
 </section>
 
 <% } %>

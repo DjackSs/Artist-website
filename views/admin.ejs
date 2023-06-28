@@ -226,10 +226,19 @@
                 
             </article>
             
-            </div>
-            
         <% }
         } %>
+        </div>
+    </section>
+    <section>
+        <h2>Historique des achats :</h2>
+        <article>
+            <% for(let archive of archives) { %>
+            
+            <p><a href="/downloadPDF<%= archive.facture %>"><%= archive.date %></a></p>
+            
+            <% } %>
+        </article>
     </section>
 </section>
 

@@ -32,14 +32,14 @@
             <article id="<%= produit.id %>" class="articlePanier">
                 
             <h3><%= produit.nom %></h3>
-            <p><%= produit.prix %></p>
+            <p><%= produit.prix %> €</p>
             <p><button class="js-removeProduitPanier-button" data-produit="<%= produit.id %>">Retirer</button> </p>
             
         </article>
             <% }
         } %>
         
-        <p class="price">Prix total : <%= prixPanier %> </p>
+        <p class="price">Prix total : <%= prixPanier %> €</p>
         
         <% if(prixPanier) { %>
         
@@ -68,7 +68,7 @@
                         <h3>Devis pour la commande :</h3>
                     
                         <p><%= commande.devis %></p>
-                        <p><%= commande.prixCommande %></p>
+                        <p><%= commande.prixCommande %> €</p>
                         
                         <form method="post" action="/buyCustom/<%= locals.user.id %>">
                             <input type="hidden" name="idCommande" value="<%= commande.id %>">
@@ -122,7 +122,7 @@
                         <p>Merci pour votre achat ! Nous préparons votre livraison.</p>
                     <% } %>
                     
-                    <form method="get" action="/downloadPDF/<%= panier.id %>">
+                    <form method="get" action="/downloadPDF<%= panier.facturePanier %>">
                         <p><button>Facture</button></p>
                     </form>
           
@@ -145,7 +145,7 @@
                         <p>Merci pour votre achat ! Nous préparons votre livraison.</p>
                     <% } %>
                     
-                    <form method="get" action="/downloadPDF/<%= commande.id %>">
+                    <form method="get" action="/downloadPDF<%= commande.factureCommande %>">
                         <p><button>Facture</button></p>
                     </form>
                 

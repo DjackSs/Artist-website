@@ -749,6 +749,42 @@ select {
     border-radius: 1em;
 }
 
+/*============================================================*/
+        /*Art PAGES
+/*============================================================*/
+
+.scrapbooking article:nth-child(even) {
+    flex-direction: row-reverse;
+}
+    
+.product {
+    display: flex;
+    align-items:center;
+    
+    gap: 2em;
+}
+
+.product img {
+    width: 50%;
+}
+
+.orderPrompt form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    width: 80%;
+}
+
+.orderPrompt form textarea {
+    width: 80%;
+    height: 10em;
+    padding: 0.5em;
+    resize: none;
+    border-radius:1em;
+}
+
 
 
 
@@ -804,6 +840,7 @@ footer article div img {
         width: fit-content;
         border: none;
     }
+
 
     
 

@@ -386,9 +386,24 @@ export const shoppingPay = (req,res) =>
 						
 						const query6 = `update Panier set Panier.facturePanier = ? where Panier.IdUserPanier = ? and Panier.id = ?`;
 						
+						const newArchive =
+						{
+							id: uuidv4(),
+							category: "boutique",
+							facture: newBill
+						};
+						
+						const query7 = `insert into Archive (id, date, category, facture) values (?, NOW(), ?, ?)`;
+						
 						pool.query(query6, [newBill, idClient, produitPaye[0].id], function(error, result4, fields)
 						{
-							error ? console.log(error) : res.redirect(`/profile/${idClient}`);
+							if(error) console.log(error);
+							
+							pool.query(query7, [newArchive.id, newArchive.category, newArchive.facture], function(error, result7, fields)
+							{
+								error ? console.log(error) : res.redirect(`/profile/${idClient}`);
+								
+							});
 							
 						});
 						
@@ -516,9 +531,24 @@ export const customPay = (req,res) =>
 			
 			const query3 = `update Commande set Commande.factureCommande = ? where Commande.IdUser = ? and Commande.id = ?`;
 			
+			const newArchive =
+						{
+							id: uuidv4(),
+							category: "boutique",
+							facture: newBill
+						};
+						
+			const query4 = `insert into Archive (id, date, category, facture) values (?, NOW(), ?, ?)`;
+			
 			pool.query(query3, [newBill, idClient, commandePaye[0].id], function (error, result2, fields)
 			{
-				error ? console.log(error) : res.redirect(`/profile/${idClient}`);
+				if(error) console.log(error);
+							
+				pool.query(query4, [newArchive.id, newArchive.category, newArchive.facture], function(error, result7, fields)
+				{
+					error ? console.log(error) : res.redirect(`/profile/${idClient}`);
+					
+				});
 				
 			});
 			
@@ -585,7 +615,8 @@ export const dialogue = (req,res) =>
 
 export const downloadBill = (req,res)=>
 {
-	const filePath = `./public/assets/bills/facture${req.params.id}.pdf`;
+	
+	const filePath = `./public/assets/bills/${req.params.id}`;
 	
 	res.download(filePath);
 };

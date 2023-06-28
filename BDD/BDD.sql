@@ -123,6 +123,19 @@ CREATE TABLE `Produit_Panier` (
 
 -- --------------------------------------------------------
 
+--
+-- Structure de la table `Archive`
+--
+
+CREATE TABLE `Archive` (
+    `id` char(36) NOT NULL,
+    `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `category` varchar(255) NOT NULL,
+    `facture` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

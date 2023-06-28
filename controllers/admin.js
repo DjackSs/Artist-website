@@ -33,7 +33,9 @@ export const profileAdmin = (req, res) =>
     
     const query4 = `select Dialogue.*, User.pseudo from Dialogue inner join User on User.id = Dialogue.idUser order by Dialogue.dateDialogue`;
     
-    const query5 = `select Produit.*, Panier.*, User.pseudo, User.email from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id inner join User on Panier.idUserPanier = User.id where Panier.statut = "paye" order by User.email`; 
+    const query5 = `select Produit.*, Panier.*, User.pseudo, User.email from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id inner join User on Panier.idUserPanier = User.id where Panier.statut = "paye" order by User.email`;
+    
+    const query6 = `select Archive.* from Archive order by date`;
     
     pool.query(query1, function (error, produits, fields)
     {
@@ -66,21 +68,29 @@ export const profileAdmin = (req, res) =>
                         
                         const processedAchats = processAchats(achats);
                         
-                        res.render("layout.ejs",
+                        pool.query(query6, function(error, archives, fields)
                         {
-                            template: "admin.ejs",
-                            produits: produits,
-                            users: users,
-                            commandes: commandes,
-                            achats: processedAchats,
-                            dialogues: dialogues
+                            if(error) console.log(error);
+                            
+                            archives = rightDate(archives, "date");
+                            
+                            res.render("layout.ejs",
+                            {
+                                template: "admin.ejs",
+                                produits: produits,
+                                users: users,
+                                commandes: commandes,
+                                achats: processedAchats,
+                                dialogues: dialogues,
+                                archives: archives
+                                
+                            });
                             
                         });
-                        
+              
                     });
             
                 });
-                
                 
             });
             
@@ -372,8 +382,16 @@ function rightDate (array, key)
 {
 	let newArray = array.map((item)=>
 	{
-	  item[key] = item[key].toLocaleString("fr-FR");
-	  return item;
+		if(item[key])
+		{
+			item[key] = item[key].toLocaleString("fr-FR");
+			return item;
+		}
+		else
+		{
+			return item;
+		}
+	  
 	});
 	
 	return newArray;
