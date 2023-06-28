@@ -379,7 +379,8 @@ if(devisButtons.length != 0)
             const inputPrice = document.querySelector(`form[data-id="${id}"] input[name="devisPrix"]`);
             
             
-            const articleDevis = document.createElement("article");
+            // const articleDevis = document.createElement("article");
+            const hDevis = document.createElement("h3");
             
             const pDevis = document.createElement("p");
             
@@ -387,12 +388,14 @@ if(devisButtons.length != 0)
             
             // ----------------------
             
+            hDevis.innerText = "Devis pour la commande :";
+            
             pDevis.innerText = inputDevis.value;
             
             pPrice.innerText = inputPrice.value;
             
-            articleDevis.append(pDevis);
-            articleDevis.append(pPrice);
+            // articleDevis.append(pDevis);
+            // articleDevis.append(pPrice);
             
             // ----------------------fecth settings
             
@@ -420,7 +423,11 @@ if(devisButtons.length != 0)
                     
                 formDevis.remove();
                 
-                article.append(articleDevis);
+                divCommande.append(hDevis);
+                
+                divCommande.append(pDevis);
+                
+                divCommande.append(pPrice);
                 
                     
             })

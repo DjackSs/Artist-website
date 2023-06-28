@@ -71,6 +71,7 @@
                         <p><%= commande.prixCommande %></p>
                         
                         <form method="post" action="/buyCustom/<%= locals.user.id %>">
+                            <input type="hidden" name="idCommande" value="<%= commande.id %>">
                             <input type="submit" value="Acheter">
                         </form>
                         

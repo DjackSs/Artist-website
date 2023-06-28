@@ -288,7 +288,7 @@ export const shoppingPay = (req,res) =>
 	
 	const query4 = `insert into Panier (id, idUserPanier, prixPanier, statut, facturePanier, dateCreation) value (?, ?, ?, ?, ?, NOW())`;
 	
-	const query5 = `select Produit.nom, Produit.description, Produit.prix, Produit.statut, Panier.id, Panier.statut from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id where Panier.idUserPanier = ? and Panier.statut = "paye"`;
+	const query5 = `select Produit.nom, Produit.description, Produit.prix, Produit.statut, Panier.id, Panier.statut, Panier.dateCloture, Panier.prixPanier from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit inner join Panier on Produit_Panier.idPanier = Panier.id where Panier.idUserPanier = ? and Panier.statut = "paye"`;
 
 	
 	pool.query(query1, [panierStatus, idClient], function(error, result, fields)
@@ -313,7 +313,7 @@ export const shoppingPay = (req,res) =>
 						
 						const newBill = `/facture${produitPaye[0].id}.pdf`;
 						
-						let lineBreak = 150;
+						let lineBreak = 500;
 						
 						// ---------------------------creat a bill's pdf;
 						const doc = new PDFDocument();
@@ -322,11 +322,46 @@ export const shoppingPay = (req,res) =>
 						
 						doc
 						.fontSize(15)
-						.text(`${new Date().toLocaleString("fr-FR")}`, 100, 80);
+						.text(`${produitPaye[0].dateCloture.toLocaleString("fr-FR")}`, 100, 80);
+						
+						doc
+						.fontSize(40)
+						.text(`Votre facture :`, 100, 100);
+						
+						doc
+						.image("./public/assets/image/CDP_logo.png", 400, 50, {scale: 0.10});
+						
+						// ---------------------------seller
 						
 						doc
 						.fontSize(25)
-						.text(`Votre facture :`, 100, 100);
+						.text("Vendeur :", 100, 250);
+						
+						doc
+						.fontSize(15)
+						.text("Cuisse de Poupou",250 , 280);
+						doc
+						.fontSize(15)
+						.text("Adress du vendeur", 250, 300);
+						doc
+						.fontSize(15)
+						.text("44000 Nantes", 250, 320);
+						
+						// ---------------------------customer
+						
+						doc
+						.fontSize(25)
+						.text("Client :", 100, 350);
+						
+						doc
+						.fontSize(15)
+						.text("Nom client", 250, 380);
+						doc
+						.fontSize(15)
+						.text("Adress du client", 250, 400);
+						doc
+						.fontSize(15)
+						.text("Code FEDEX", 250, 420);
 						
 						produitPaye.forEach((item)=>
 						{
@@ -336,11 +371,15 @@ export const shoppingPay = (req,res) =>
 							
 							doc
 							.fontSize(15)
-							.text(`${item.prix}`, 100, lineBreak+20);
+							.text(`${item.prix} €`, 400, lineBreak);
 							
-							lineBreak+=100;
+							lineBreak+=25;
 							
 						});
+						
+						doc
+						.fontSize(25)
+						.text(`Total : ${produitPaye[0].prixPanier} €`, 250, lineBreak+50);
 									
 									  
 						doc.end();
@@ -386,21 +425,25 @@ export const customPay = (req,res) =>
 {
 	const idClient = req.params.id;
 	
+	const idCommande = req.body.idCommande;
+	
 	const statut = "paye";
 	
-	const query1 = `update Commande set Commande.statut = ?, dateClotureCommande = NOW() where Commande.IdUser = ? and Commande.statut = "cree"`;
+	const query1 = `update Commande set Commande.statut = ?, dateClotureCommande = NOW() where Commande.Id = ? and Commande.statut = "cree"`;
 	
-	const query2 = `select Commande.* from Commande where Commande.idUser = ? and Commande.statut = ?`;
+	const query2 = `select Commande.* from Commande where Commande.idUser = ? and Commande.id= ? and Commande.statut = ?`;
 	
-	pool.query(query1, [statut, idClient], function(error, result, fields)
+	pool.query(query1, [statut, idCommande], function(error, result, fields)
 	{
 		if(error) console.log(error);
 		
-		pool.query(query2, [idClient, statut], function(error, commandePaye, fields)
+		pool.query(query2, [idClient, idCommande, statut], function(error, commandePaye, fields)
 		{
 			if(error) console.log(error);
 			
 			const newBill = `/facture${commandePaye[0].id}.pdf`;
+			
+			let lineBreak = 500;
 			
 			// ---------------------------creat a bill's pdf;
 			const doc = new PDFDocument();
@@ -409,22 +452,64 @@ export const customPay = (req,res) =>
 			
 			doc
 			.fontSize(15)
-			.text(`${new Date("fr-FR").toLocaleString("fr-FR")}`, 100, 80);
+			.text(`${commandePaye[0].dateClotureCommande.toLocaleString("fr-FR")}`, 100, 80);
+			
+			doc
+			.fontSize(40)
+			.text(`Votre facture :`, 100, 100);
+			
+			doc
+			.image("./public/assets/image/CDP_logo.png", 400, 50, {scale: 0.10});
+			
+			// ---------------------------seller
 			
 			doc
 			.fontSize(25)
-			.text(`Votre facture :`, 100, 100);
+			.text("Vendeur :", 100, 250);
+			
+			doc
+			.fontSize(15)
+			.text("Cuisse de Poupou",250 , 280);
+			doc
+			.fontSize(15)
+			.text("Adress du vendeur", 250, 300);
+			doc
+			.fontSize(15)
+			.text("44000 Nantes", 250, 320);
+			
+			// ---------------------------customer
+			
+			doc
+			.fontSize(25)
+			.text("Client :", 100, 350);
+			
+			doc
+			.fontSize(15)
+			.text("Nom client", 250, 380);
+			doc
+			.fontSize(15)
+			.text("Adress du client", 250, 400);
+			doc
+			.fontSize(15)
+			.text("Code FEDEX", 250, 420);
+			
 			
 			commandePaye.forEach((item)=>
 			{
 				doc
 				.fontSize(15)
-				.text(`${item.devis}`, 100, 150);
+				.text(`${item.devis}`, 100, lineBreak);
 				
 				doc
-				.text(`${item.prixCommande}`, 100, 180);
+				.text(`${item.prixCommande} €`, 400, lineBreak);
+				
+				lineBreak += 25;
 				
 			});
+			
+			doc
+			.fontSize(25)
+			.text(`Total : ${commandePaye[0].prixCommande} €`, 250, lineBreak+50);
 						
 						  
 			doc.end();
@@ -514,8 +599,16 @@ function rightDate (array, key)
 {
 	let newArray = array.map((item)=>
 	{
-	  item[key] = item[key].toLocaleString("fr-FR");
-	  return item;
+		if(item[key])
+		{
+			item[key] = item[key].toLocaleString("fr-FR");
+			return item;
+		}
+		else
+		{
+			return item;
+		}
+	  
 	});
 	
 	return newArray;
