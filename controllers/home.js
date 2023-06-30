@@ -11,6 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 // -----------------------import the data encryptor
 import bcrypt from 'bcryptjs';
 
+// -----------------------import the xss sanitation tools
+import xss from "xss";
+
 
 // ==============================================
 // CONTROLLERS
@@ -47,14 +50,8 @@ export const art_page1 = (req, res) =>
         
         let sortedProduits = produits;
         
-        if(req.session.user)
-        {
-            sortedProduits = processData (produits, req.session.idClient);
-        }
-        
-        
-
-        
+        if(req.session.user)    sortedProduits = processData (produits, req.session.idClient);
+ 
         res.render('layout.ejs',
         {
             template: 'scrapbooking.ejs',
@@ -87,10 +84,8 @@ export const art_page2 = (req, res) =>
         
         let sortedProduits = produits;
         
-        if(req.session.user)
-        {
-            sortedProduits = processData (produits, req.session.idClient);
-        }
+        if(req.session.user) sortedProduits = processData (produits, req.session.idClient);
+
         
         res.render('layout.ejs',
         {
@@ -108,9 +103,13 @@ export const art_page2 = (req, res) =>
 
 export const inscriptionPost = (req, res) =>
 {
+    // ----------------------------------------------------data's sanitation
+    req.body.pseudo = xss(req.body.pseudo);
+    req.body.email = xss(req.body.email);
+    req.body.mdp = xss(req.body.mdp);
+    
     // ----------------------------------------------------data's validation
 
-    
     let errorForm = {};
     
     let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

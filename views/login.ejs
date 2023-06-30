@@ -2,6 +2,10 @@
 <section class="container">
     <h2>Connexion</h2>
     
+    <% if(errorForm.loginFail) { %>
+        <div><%= errorForm.loginFail %></div>
+    <% } %>
+    
     <form method="post" action="/login/post" autocomplete="on">
         
         <fieldset>
@@ -9,9 +13,15 @@
             
             <label for="loginEmail">Adresse mail:</label>
             <input type="email" name="loginEmail" id="loginEmail" autocomplete="on">
+             <% if(errorForm.loginEmail) { %>
+                    <div><%= errorForm.loginEmail %></div>
+                <% } %>
             
             <label for="loginMdp">Mot de passe:</label>
             <input type="password" name="loginMdp" id="loginMdp" autocomplete="on">
+             <% if(errorForm.loginMdp) { %>
+                    <div><%= errorForm.loginMdp %></div>
+                <% } %>
             
             <input type="submit" value="Valider">
             
@@ -29,15 +39,21 @@
             
                 <label for="pseudo">Nom:</label>
                 <input type="text" name="pseudo" id="pseudo" autocomplete="on">
-                <div><%= errorForm.name %></div>
+                <% if(errorForm.name) { %>
+                    <div><%= errorForm.name %></div>
+                <% } %>
                 
                 <label for="email">Adresse mail:</label>
                 <input type="email" name="email" id="email" autocomplete="on">
-                <div><%= errorForm.email %></div>
+                <% if(errorForm.email) { %>
+                    <div><%= errorForm.email %></div>
+                <% } %>
                 
                 <label for="mdp">Mot de passe:</label>
                 <input type="password" name="mdp" id="mdp" autocomplete="on">
-                <div><%= errorForm.mdp %></div>
+                <% if(errorForm.mdp) { %>
+                    <div><%= errorForm.mdp %></div>
+                <% } %>
                 
                 <input type="submit" value="Valider">
              

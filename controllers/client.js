@@ -17,6 +17,9 @@ import fs from "fs";
 // -----------------------import the pdf generator
 import PDFDocument from "pdfkit";
 
+// -----------------------import the xss sanitation tools
+import xss from "xss";
+
 
 // ==============================================
 // CONTROLLERS
@@ -41,6 +44,35 @@ export const login = (req, res) =>
 
 export const loginPost = (req, res) => 
 {
+	// ----------------------------------------------------data's sanitation
+    req.body.loginEmail = xss(req.body.loginEmail);
+    req.body.loginMdp = xss(req.body.loginMdp);
+    
+     // ----------------------------------------------------data's validation
+    let errorForm = {};
+    
+    if(!req.body.loginEmail.trim())
+    {
+        errorForm.loginEmail = "email invalide";
+    }
+    
+    if(!req.body.loginMdp.trim())
+    {
+        errorForm.loginMdp = "Mots de passe invalide";
+    }
+    
+    
+    if(Object.keys(errorForm).length != 0)
+    {
+        return res.render('layout.ejs',
+        {
+            template: 'login.ejs',
+            errorForm : errorForm
+                    
+        });
+            
+    }
+    
     const login =
     {
         email: req.body.loginEmail,
@@ -49,43 +81,61 @@ export const loginPost = (req, res) =>
     
     const query = `select * from User where email = ?`;
     
-    pool.query(query,[login.email], function (error, result, fields) 
+    pool.query(query,[login.email], function (error, user, fields) 
     {
             if (error) console.log(error);
             
+            if(!user.length)
+            {
+            	errorForm.loginFail = "Utilisateur inconue";
+	            		
+	            return res.render('layout.ejs',
+				{
+					template: 'login.ejs',
+				    errorForm : errorForm
+				                    
+				}); 
+            	
+            }
 	       
-	            bcrypt.compare(login.mdp, result[0].mdp, function (error, isAllowed)
-	            {
-	            	if(isAllowed)
-	            	{
-	            		req.session.user =
-		                {
-			                   id: result[0].id,
-			                   pseudo: result[0].pseudo,
-			                   email: result[0].email,
-			                   role: result[0].role
-		                };
+	        bcrypt.compare(login.mdp, user[0].mdp, function (error, isAllowed)
+	        {
+	        	if(isAllowed)
+	        	{
+	            	req.session.user =
+		            {
+			        	id: user[0].id,
+			            pseudo: user[0].pseudo,
+			            email: user[0].email,
+			            role: user[0].role
+		            };
 	            		// -----------------Setting up session's profile for each role:
 	            		
-	            		if(result[0].role === "client")
-		                {
+	            	if(user[0].role === "client")
+		            {
 		                   
-	                		res.redirect(`/profile/${result[0].id}`);
+	                	res.redirect(`/profile/${user[0].id}`);
 		                    
-		                }
-		                else if(result[0].role === "admin")
-		                {
-		                    
-		                    res.redirect("/admin");
-		                }
+		            }
+		            else if(user[0].role === "admin")
+		            {
+		            	res.redirect("/admin");
+		            }
 		                
-	            	}
-	            	else
-	            	{
-	            		res.redirect('/login'); 
-	            	}
+	            }
+	            else
+	            {
+	            	errorForm.loginFail = "Mot de passe incorrecte";
+	            		
+	            	res.render('layout.ejs',
+				    {
+				    	template: 'login.ejs',
+				        errorForm : errorForm
+				                    
+				    }); 
+	            }
 	            	
-	            });
+	        });
 
 	  });
     
@@ -96,7 +146,7 @@ export const loginPost = (req, res) =>
 
 export const profile = (req, res) => 
 {
-	const userId = req.params.id;
+	const userId = xss(req.params.id);
 	
 	const query1 = `select Produit.*, Produit_Panier.idPanier from Produit inner join Produit_Panier on idProduit = Produit.id inner join Panier on idPanier = Panier.id where idUserPanier = ? order by Produit.nom`;
 	
@@ -178,6 +228,11 @@ export const profile = (req, res) =>
 
 export const editProfile = (req,res) =>
 {
+	// ----------------------------------------------------data's sanitation
+    req.body.pseudo = xss(req.body.pseudo);
+    req.body.email = xss(req.body.email);
+    
+    // ----------------------------------------------------data's validation
 	let errorForm = {};
 	
 	let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -217,7 +272,7 @@ export const editProfile = (req,res) =>
             
         }
     
-	    let id = req.params.id;
+	    let id = xss(req.params.id);
 	    
 	    const editProfile =
 	    {
@@ -259,7 +314,7 @@ export const logout = (req, res) =>
 
 export const deleteProfile = (req,res) =>
 {
-    const deleteProfile = req.params.id;
+    const deleteProfile = xss(req.params.id);
     
     const query = `delete from User where id = ?`;
         
@@ -281,10 +336,11 @@ export const deleteProfile = (req,res) =>
 
 export const shoppingAdd = (req,res) =>
 {
+    
 	const shopItem =
 	{
-		idUserPanier: req.params.id,
-		idProduit: req.body.idProduit
+		idUserPanier: xss(req.params.id),
+		idProduit: xss(req.body.idProduit)
 	};
 	
 	const query = `insert into Produit_Panier (idPanier, idProduit) values ((select id from Panier where Panier.idUserPanier = ? and Panier.statut = "cree"), ?)`;
@@ -300,7 +356,7 @@ export const shoppingAdd = (req,res) =>
 
 export const shoppingDelete = (req,res) =>
 {
-	const idProduit = req.params.id;
+	const idProduit = xss(req.params.id);
 	
 	const query = "delete from Produit_Panier where idProduit = ?";
 	
@@ -315,7 +371,7 @@ export const shoppingDelete = (req,res) =>
 
 export const shoppingPay = (req,res) =>
 {
-	const idClient = req.params.id;
+	const idClient = xss(req.params.id);
 	
 	const panierStatus = "paye";
 	
@@ -471,7 +527,7 @@ export const shoppingPay = (req,res) =>
 
 export const deleteCommande = (req,res) =>
 {
-    const deleteCommande = req.params.id;
+    const deleteCommande = xss(req.params.id);
     
     const query = `delete from Commande where id = ?`;
     
@@ -486,9 +542,9 @@ export const deleteCommande = (req,res) =>
 
 export const customPay = (req,res) =>
 {
-	const idClient = req.params.id;
+	const idClient = xss(req.params.id);
 	
-	const idCommande = req.body.idCommande;
+	const idCommande = xss(req.body.idCommande);
 	
 	const statut = "paye";
 	
@@ -614,7 +670,11 @@ export const customPay = (req,res) =>
 
 export const customOrder = (req,res) =>
 {
+	// ----------------------------------------------------data's sanitation
+	req.body.commande = xss(req.body.commande);
+	req.params.id = xss(req.params.id);
 	
+	// ----------------------------------------------------data's validation
 	let errorForm = {};
 	
 	if(!req.body.commande.trim())
@@ -654,6 +714,12 @@ export const customOrder = (req,res) =>
 
 export const dialogue = (req,res) =>
 {
+	// ----------------------------------------------------data's sanitation
+	req.body.comment = xss(req.body.comment);
+	req.body.idTransmitter = xss(req.body.idTransmitter);
+	req.params.id = xss(req.params.id)
+	
+	// ----------------------------------------------------data's validation
 	let errorForm = {};
 	
 	if(!req.body.comment.trim())
@@ -664,7 +730,6 @@ export const dialogue = (req,res) =>
     if(Object.keys(errorForm).length != 0)
     {
         return res.status(400).send(errorForm);
-            
     }
     
     const newReply =
@@ -689,6 +754,7 @@ export const dialogue = (req,res) =>
 
 export const downloadBill = (req,res)=>
 {
+	req.params.id = xss(req.params.id);
 	
 	const filePath = `./public/assets/bills/${req.params.id}`;
 	

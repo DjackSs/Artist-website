@@ -64,7 +64,7 @@
             <input type="text" name="name" id="name">
             <% if(locals.user.error) { %>
             
-                <p><%= locals.user.error.name %></p>
+                <div><%= locals.user.error.name %></div>
                 
             <% } %>
             
@@ -72,7 +72,7 @@
             <input type="text" name="description" id="description">
             <% if(locals.user.error) { %>
             
-                <p><%= locals.user.error.description %></p>
+                <div><%= locals.user.error.description %></div>
                 
             <% } %>
             
@@ -86,16 +86,17 @@
             <input type="text" name="price" id="price">
             <% if(locals.user.error) { %>
             
-                <p><%= locals.user.error.price %></p>
+                <div><%= locals.user.error.price %></div>
                 
             <% } %>
             
             <label for="image">Ajouter une image :</label>
             <input type="file" name="image" id="image">
-            <% if(locals.user.error) { %>
             
-                <p><%= locals.user.error.img %></p>
-                
+            <% if(locals.user.error) { %>
+                <div><%= locals.user.error.img %></div>
+                <div><%= locals.user.error.size %></div>
+                <div><%= locals.user.error.mime %></div>
             <% } %>
             
             <input type="submit" value="Ajouter">

@@ -17,6 +17,9 @@ import formidable from "formidable";
 // -----------------------import the files system manager from node
 import fs from "fs";
 
+// -----------------------import the xss sanitation tools
+import xss from "xss";
+
 
 // ==============================================
 // CONTROLLERS
@@ -114,7 +117,21 @@ export const addProductPost = (req,res) =>
     
     form.parse(req, (error, field, files)=>
     {
+        // ----------------------------------------------------data's sanitation
         
+        field.name.forEach((name)=>{ name = xss(name)});
+        field.description.forEach((description)=>{ description = xss(description)});
+        field.name.forEach((price)=>{ price = xss(price)});
+        
+        files.image.forEach((image)=>
+        { 
+            image.originalFilename = xss(image.originalFilename);
+            image.filepath = xss(image.filepath);
+            image.newFilename = xss(image.newFilename);
+            image.mimetype = xss(image.mimetype);
+        });
+         
+        // ----------------------------------------------------data's validation
         if(!field.name[0].trim())
         {
             errorForm.name = "Nom invalide";
@@ -135,6 +152,21 @@ export const addProductPost = (req,res) =>
         {
             errorForm.img = "Choisissez une image svp";
         }
+        
+        // -----------------------max weight that can be upload, here is 5Mo
+        const maxLoad = 5*1024*1024;
+        
+        const acceptedMIME = ["text/csv","image/gif","image/jpeg","video/mpeg","video/ogg","image/png","application/pdf","video/webm","image/webp"];
+        
+        if(files.image.size > maxLoad)
+        {
+        	errorForm.size = "Image trop lourde";
+        }
+        
+        if(!acceptedMIME.includes(files.image[0].mimetype))
+        {
+        	errorForm.mime = "Format non pris en charge";
+        }
 
         
         if(Object.keys(errorForm).length != 0)
@@ -149,53 +181,37 @@ export const addProductPost = (req,res) =>
         const extention = "."+files.image[0].originalFilename.split(".").pop();
         const oldPath = files.image[0].filepath;
         const newPath = "./public/upload/upload"+files.image[0].newFilename+extention;
-        
-        // -----------------------max weight that can be upload, here is 5Mo
-        const maxLoad = 5*1024*1024;
-        
-        const acceptedMIME = ["text/csv","image/gif","image/jpeg","video/mpeg","video/ogg","image/png","application/pdf","video/webm","image/webp"];
-        
-        
-        if(files.image.size > maxLoad)
-        {
-        	console.log("trop gros!");
-        }
-        else if(!acceptedMIME.includes(files.image[0].mimetype))
-        {
-        	console.log("erreur MIME");
-        }
-        else
-        {
-            // ------------if requires are meets, the file is uploaded
-        	fs.copyFile(oldPath, newPath, (error) =>
-	        {
-	            if(error) console.log("erreur d'upload");
+  
+        // ------------if requires are meets, the file is uploaded
+        fs.copyFile(oldPath, newPath, (error) =>
+	    {
+	        if(error) console.log("erreur d'upload");
 	            
-	            const newProduct =
-                {
-                    id: uuidv4(),
-                    nom: field.name,
-                    description: field.description,
-                    category: field.category,
-                    prix: field.price,
-                    img: "/upload/upload"+files.image[0].newFilename+extention,
-                    statut: "free"
-                };
+	        const newProduct =
+            {
+                id: uuidv4(),
+                nom: field.name,
+                description: field.description,
+                category: field.category,
+                prix: field.price,
+                img: "/upload/upload"+files.image[0].newFilename+extention,
+                statut: "free"
+            };
                 
-                const query = `insert into Produit set ?`;
+            const query = `insert into Produit set ?`;
             
-                pool.query(query,[newProduct], function(error, result, fields)
-                {
-                    if(error) console.log(error)
+            pool.query(query,[newProduct], function(error, result, fields)
+            {
+                if(error) console.log(error)
                     
-                    req.session.user.error ="";
+                req.session.user.error = "";
                     
-                    res.redirect("/admin");
-                });
+                res.redirect("/admin");
+            });
 	            
 	            
-	        });
-        }
+	   });
+    
             
     });
  };
@@ -206,7 +222,7 @@ export const addProductPost = (req,res) =>
 
 export const deleteProduit = (req,res) =>
 {
-    const deleteProduct = req.params.id;
+    const deleteProduct = xss(req.params.id);
     
     const query1 =`select Produit.* from Produit where Produit.id = ?`;
     
@@ -217,7 +233,7 @@ export const deleteProduit = (req,res) =>
     {
         if(error) console.log(error);
         
-        // ---------------Here we delte the file in the upload directory
+        // ---------------delte the file in the upload directory
         fs.unlink("./public"+produit[0].img,function(error)
         {
             if(error) console.log(error);
@@ -239,7 +255,7 @@ export const deleteProduit = (req,res) =>
 
 export const deleteClient = (req,res) =>
 {
-    const deleteClient = req.params.id;
+    const deleteClient = xss(req.params.id);
     
     const query = `delete from User where id = ?`;
     
@@ -256,6 +272,13 @@ export const deleteClient = (req,res) =>
 
 export const editProduit = (req,res) =>
 {
+    // ----------------------------------------------------data's sanitation
+    req.body.nom = xss(req.body.nom);
+    req.body.description = xss(req.body.description);
+    req.body.prix = xss(req.body.prix);
+    
+    // ----------------------------------------------------data's validation
+    
     let errorForm = {};
     
     //  ------------------------------empty fields or invalid
@@ -281,9 +304,7 @@ export const editProduit = (req,res) =>
             
     }
     
-    
-    
-    let id = req.params.id;
+    let id = xss(req.params.id);
     
     const editProduct =
     {
@@ -308,7 +329,7 @@ export const editProduit = (req,res) =>
 
 export const closeBuying = (req,res) =>
 {
-    const id = req.params.id;
+    const id = xss(req.params.id);
     
     const panierStatus = "livre";
     
@@ -336,7 +357,7 @@ export const closeBuying = (req,res) =>
 export const closeCustom = (req, res) =>
 {
     
-    const id = req.params.id;
+    const id = xss(req.params.id);
     
     const panierStatus = "livre";
     
@@ -354,6 +375,11 @@ export const closeCustom = (req, res) =>
 
 export const devis = (req,res)=>
 {
+    // ----------------------------------------------------data's sanitation
+    req.body.devis = xss(req.body.devis);
+    req.body.devisPrix = xss(req.body.devisPrix);
+    
+    // ----------------------------------------------------data's validation
     let errorForm = {};
     
     if(!req.body.devis.trim() || req.body.devis.length > 35)
@@ -372,8 +398,7 @@ export const devis = (req,res)=>
             
     }
     
-    
-    const idCommande = req.params.id;
+    const idCommande = xss(req.params.id);
     
     const newDevis =
     {
