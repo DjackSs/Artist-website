@@ -108,6 +108,7 @@ export const profile = (req, res) =>
 	
 	const query5 = `select Panier.* from Panier where Panier.idUserPanier = ? and Panier.statut in("paye","livre") order by Panier.dateCloture`;
 	
+	const errorForm = "";
 	
 	pool.query(query1, [userId], function(error, produits, fields)
 	{
@@ -155,7 +156,8 @@ export const profile = (req, res) =>
 						    prixPanier: totalPricePanier,
 						    commandes: commandes,
 						    dialogues: dialogues,
-						    paniers: paniers
+						    paniers: paniers,
+						    errorForm: errorForm
 						        
 						});
 						
@@ -176,21 +178,67 @@ export const profile = (req, res) =>
 
 export const editProfile = (req,res) =>
 {
-    let id = req.params.id;
+	let errorForm = {};
+	
+	let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    // https://www.w3resource.com/javascript/form/email-validation.php
     
-    const editProfile =
+    //  ------------------------------empty fields or invalid with regex
+    
+    if(!req.body.pseudo.trim())
     {
-        pseudo: req.body.pseudo,
-        email: req.body.email,
-    };
-
-    const query = `update User set ? where id = ?`;
-
-	pool.query(query, [editProfile, id], function (error, result, fields)
-	{
-	    error ? console.log(error) : res.status(204).send();
-
-	 });
+        errorForm.name = "Nom invalide";
+    }
+    
+    if(!req.body.email.trim() || !regexEmail.test(req.body.email))
+    {
+        errorForm.email = "Address email invalide";
+    }
+    
+     //  ------------------------------user already existe
+    
+    const queryUser = `select User.* from User where User.email = ?`;
+   
+    pool.query(queryUser, [req.body.email], function(error, userCheck, fields)
+    {
+        if(error) console.log(error);
+        
+        if(userCheck.length != 0 && userCheck[0].email != req.body.email) 
+        {
+            errorForm.email = "Ce compte existe déja";
+        }
+        
+        
+        // ----------------------------------------------------if an error occured, redirect for a retry
+    
+        if(Object.keys(errorForm).length != 0)
+        {
+            return res.status(400).send(errorForm);
+            
+        }
+    
+	    let id = req.params.id;
+	    
+	    const editProfile =
+	    {
+	        pseudo: req.body.pseudo,
+	        email: req.body.email,
+	    };
+	
+	    const query = `update User set ? where id = ?`;
+	
+		pool.query(query, [editProfile, id], function (error, result, fields)
+		{
+		    if(error) console.log(error)
+		    
+		    // ---------------------------update the session's variable for ejs
+		    req.session.user.pseudo = editProfile.pseudo;
+		    req.session.user.email = editProfile.email;
+		    
+		    res.status(204).send();
+	
+		 });
+    });
     
 };
 
@@ -366,11 +414,11 @@ export const shoppingPay = (req,res) =>
 						produitPaye.forEach((item)=>
 						{
 							doc
-							.fontSize(15)
+							.fontSize(10)
 							.text(`${item.nom}`, 100, lineBreak);
 							
 							doc
-							.fontSize(15)
+							.fontSize(10)
 							.text(`${item.prix} €`, 400, lineBreak);
 							
 							lineBreak+=25;
@@ -512,10 +560,11 @@ export const customPay = (req,res) =>
 			commandePaye.forEach((item)=>
 			{
 				doc
-				.fontSize(15)
+				.fontSize(10)
 				.text(`${item.devis}`, 100, lineBreak);
 				
 				doc
+				.fontSize(10)
 				.text(`${item.prixCommande} €`, 400, lineBreak);
 				
 				lineBreak += 25;
@@ -566,6 +615,19 @@ export const customPay = (req,res) =>
 export const customOrder = (req,res) =>
 {
 	
+	let errorForm = {};
+	
+	if(!req.body.commande.trim())
+    {
+        errorForm.commande = "Commande invalide";
+    }
+    
+    if(Object.keys(errorForm).length != 0)
+    {
+        return res.status(400).send(errorForm);
+            
+    }
+	
 	const newOrder =
 	{
 		id: uuidv4(),
@@ -592,6 +654,18 @@ export const customOrder = (req,res) =>
 
 export const dialogue = (req,res) =>
 {
+	let errorForm = {};
+	
+	if(!req.body.comment.trim())
+    {
+        errorForm.comment = "Commentaire invalide";
+    }
+    
+    if(Object.keys(errorForm).length != 0)
+    {
+        return res.status(400).send(errorForm);
+            
+    }
     
     const newReply =
     {

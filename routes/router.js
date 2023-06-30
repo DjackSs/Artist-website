@@ -105,7 +105,6 @@ router.post("/buy/:id", sessiontCheck, shoppingPay);
 
 router.post("/buyCustom/:id", sessiontCheck, customPay);
 
-
 router.get("/downloadPDF/:id", sessiontCheck, downloadBill);
 
 

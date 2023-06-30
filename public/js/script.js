@@ -142,6 +142,8 @@ if (editProductButtons.length != 0)
             
             // ----------------------DOM settings
             
+            const productSection =document.querySelector(".editProduct");
+            
             const oldName = document.querySelector(`#productTable tr[id="${id}"] td:first-child`);
                 
             const oldDescription = document.querySelector(`#productTable tr[id="${id}"] td:nth-child(2)`);
@@ -185,6 +187,8 @@ if (editProductButtons.length != 0)
             const newButton = document.createElement("input");
                 newButton.type="submit";
                 newButton.name="Enregistrer";
+                
+            const errorP = document.createElement("p");
                 
                 
             oldName.innerHTML="";
@@ -231,27 +235,57 @@ if (editProductButtons.length != 0)
                 fetch(url, options)
                 .then(res =>
                 {
-                    
-                    oldName.removeChild(newName);
-                    oldName.append(newName.value);
-                    
-                    oldDescription.removeChild(newDescription);
-                    oldDescription.append(newDescription.value);
-                    
-                    oldCategory.removeChild(newCategory);
-                    oldCategory.append(newCategory.value);
-                    
-                    oldPrice.removeChild(newPrice);
-                    oldPrice.append(newPrice.value);
-                    
-                    oldButtons.removeChild(newButton);
-                    
-                    for(let oldbutton of oldButtonList)
+                    errorP.innerText = "";
+                    // --------------------if bad input, check res.json
+                    if(!res.ok)
                     {
-                        oldButtons.append(oldbutton);
-                        
+                        res.json()
+                        .then(data =>
+                        {
+                            console.log(data);
+                            
+                            if(data.name)
+                            {
+                                errorP.append(" "+data.name);
+                                
+                            }
+                            
+                            if(data.descri)
+                            {
+                                errorP.append(" "+data.descri);
+                            }
+                            
+                            if(data.price)
+                            {
+                                errorP.append(" "+data.price);
+                            }
+                            
+                            productSection.append(errorP);
+                            
+                        })
                     }
-                    
+                    else
+                    {
+                        oldName.removeChild(newName);
+                        oldName.append(newName.value);
+                        
+                        oldDescription.removeChild(newDescription);
+                        oldDescription.append(newDescription.value);
+                        
+                        oldCategory.removeChild(newCategory);
+                        oldCategory.append(newCategory.value);
+                        
+                        oldPrice.removeChild(newPrice);
+                        oldPrice.append(newPrice.value);
+                        
+                        oldButtons.removeChild(newButton);
+                        
+                        for(let oldbutton of oldButtonList)
+                        {
+                            oldButtons.append(oldbutton);
+                            
+                        }
+                    }
                     
                 })
                 .catch(err => console.error(err));
@@ -379,12 +413,13 @@ if(devisButtons.length != 0)
             const inputPrice = document.querySelector(`form[data-id="${id}"] input[name="devisPrix"]`);
             
             
-            // const articleDevis = document.createElement("article");
             const hDevis = document.createElement("h3");
             
             const pDevis = document.createElement("p");
             
             const pPrice = document.createElement("p");
+            
+            const errorP = document.createElement("p");
             
             // ----------------------
             
@@ -394,8 +429,6 @@ if(devisButtons.length != 0)
             
             pPrice.innerText = inputPrice.value;
             
-            // articleDevis.append(pDevis);
-            // articleDevis.append(pPrice);
             
             // ----------------------fecth settings
             
@@ -420,14 +453,43 @@ if(devisButtons.length != 0)
             fetch(url, options)
             .then(res =>
             {
+                
+                errorP.innerText = "";
+                    // --------------------if bad input, check res.json
+                    if(!res.ok)
+                    {
+                        res.json()
+                        .then(data =>
+                        {
+                            
+                            if(data.devis)
+                            {
+                                errorP.append(" "+data.devis);
+                                
+                            }
+                            
+                            if(data.price)
+                            {
+                                errorP.append(" "+data.price);
+                            }
+                            
+                            divCommande.append(errorP);
+                            
+                        })
+                    }
+                    else
+                    {
+                        formDevis.remove();
+                
+                        divCommande.append(hDevis);
+                        
+                        divCommande.append(pDevis);
+                        
+                        divCommande.append(pPrice);
+                
+                        
+                    }
                     
-                formDevis.remove();
-                
-                divCommande.append(hDevis);
-                
-                divCommande.append(pDevis);
-                
-                divCommande.append(pPrice);
                 
                     
             })
@@ -577,7 +639,28 @@ if(customOrderButton)
         fetch(url, options)
         .then(res =>
         {
-            textArea.value = "";
+            
+            if(!res.ok)
+            {
+                res.json()
+                .then(data =>
+                {
+                            
+                    if(data.commande)
+                    {
+                        textArea.placeholder = data.commande.toString();
+                                
+                    }
+                            
+                            
+                })
+            }
+            else
+            {
+        
+                textArea.value = "";
+                textArea.placeholder = "formulez votre souhait"
+            }
                 
         })
         .catch(err => console.error(err));
@@ -673,34 +756,55 @@ if(dialogueButtons.length != 0)
             fetch(url, options)
             .then(res =>
             {
-                
                 const textArea = document.querySelector(`article[id="${id}"] textarea`);
                 
-                textArea.value = "";
+                if(!res.ok)
+                    {
+                        res.json()
+                        .then(data =>
+                        {
+                            
+                            if(data.comment)
+                            {
+                                textArea.placeholder = data.comment.toString();
+                                
+                            }
+                            
+                            
+                        })
+                    }
+                    else
+                    {
+                        textArea.value = "";
+                        textArea.placeholder ="";
+                        
+                        const dialogueDiv = document.querySelector(`article[id="${id}"]  div:nth-child(2)`);
+                        
+                        
+                        const pseudoP = document.createElement("p");
+                        const pseudo = document.querySelector(`.profileDetail article h2`).innerText;
+                        
+                        pseudoP.append(pseudo);
+                        
+                        const dateSpan = document.createElement("span");
+                        const date = new Date().toLocaleString("fr-FR");
+                        
+                        dateSpan.append(date);
+                        dateSpan.classList.add("timeStamp");
+                        
+                        pseudoP.append(dateSpan);
+                        
+                        const comentP = document.createElement("p");
+                        
+                        comentP.append(reply.comment);
+                        
+                        dialogueDiv.append(pseudoP);
+                        
+                        dialogueDiv.append(comentP);
+                        
+                    }
                 
-                const dialogueDiv = document.querySelector(`article[id="${id}"]  div:nth-child(2)`);
                 
-                
-                const pseudoP = document.createElement("p");
-                const pseudo = document.querySelector(`.profileDetail article h2`).innerText;
-                
-                pseudoP.append(pseudo);
-                
-                const dateSpan = document.createElement("span");
-                const date = new Date().toLocaleString("fr-FR");
-                
-                dateSpan.append(date);
-                dateSpan.classList.add("timeStamp");
-                
-                pseudoP.append(dateSpan);
-                
-                const comentP = document.createElement("p");
-                
-                comentP.append(reply.comment);
-                
-                dialogueDiv.append(pseudoP);
-                
-                dialogueDiv.append(comentP);
                
                 
             })
@@ -749,12 +853,14 @@ if(editProfileButton)
             newButton.type="submit";
             newButton.value="Modifier";
             
+            
+        const errorP = document.createElement("p");
         
         
-        oldPseudo.innerHTML="";
+        oldPseudo.innerText="";
             oldPseudo.append(newPseudo);
                 
-        oldEmail.innerHTML="";
+        oldEmail.innerText="";
             oldEmail.append(newEmail);
             
         article.removeChild(editProfileButton);
@@ -782,23 +888,51 @@ if(editProfileButton)
             };
                     
             fetch(url, options)
-            .then(res =>
+            .then((res) =>
             {
+                errorP.innerText = "";
+                // --------------------if bad input, check res.json
+                if(!res.ok)
+                {
+                    res.json()
+                    .then(data =>
+                    {
                         
-                oldPseudo.removeChild(newPseudo);
-                oldPseudo.append(newPseudo.value);
+                        if(data.name)
+                        {
+                            errorP.append(" "+data.name);
+                            
+                        }
                         
-                oldEmail.removeChild(newEmail);
-                oldEmail.append(newEmail.value);
+                        if(data.email)
+                        {
+                            errorP.append(" "+data.email);
+                        }
                         
+                        article.prepend(errorP);
                         
-                article.removeChild(newButton);
-                        
-                article.append(editProfileButton);
-                        
-                        
+                    })
+                }
+                else
+                {
+                    oldPseudo.removeChild(newPseudo);
+                    oldPseudo.append(newPseudo.value);
+                                
+                    oldEmail.removeChild(newEmail);
+                    oldEmail.append(newEmail.value);
+                                
+                                
+                    article.removeChild(newButton);
+                                
+                    article.append(editProfileButton);
+                    
+                }
             })
-            .catch(err => console.error(err));
+            .catch(err => 
+            {
+                console.log(err);
+  
+            });
                     
             
         });

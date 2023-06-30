@@ -25,6 +25,8 @@ import fs from "fs";
 
 export const profileAdmin = (req, res) =>
 {
+    
+    
     const query1 = `select Produit.* from Produit order by Produit.nom`;
     
     const query2 = `select User.id, User.pseudo, User.email, User.dateInscription, User.role from User order by User.dateInscription`;
@@ -103,11 +105,45 @@ export const profileAdmin = (req, res) =>
 
 export const addProductPost = (req,res) =>
 {
+    
+    let errorForm = {};
+    
     // -------------formibable 3.0 = new synthax
     const form = formidable({});
     
+    
     form.parse(req, (error, field, files)=>
     {
+        
+        if(!field.name[0].trim())
+        {
+            errorForm.name = "Nom invalide";
+        }
+        
+        if(!field.description[0].trim())
+        {
+            errorForm.description = "Description invalide";
+        }
+        
+        if(!field.price[0].trim() || isNaN(field.price[0]))
+        {
+            errorForm.price = "Prix invalide";
+        }
+        
+        
+        if(!Object.keys(files).length)
+        {
+            errorForm.img = "Choisissez une image svp";
+        }
+
+        
+        if(Object.keys(errorForm).length != 0)
+        {
+            // -------------session is used to pass the error through redirect
+            req.session.user.error = errorForm;
+            return res.redirect("/admin");
+            
+        }
         
         // -----------------------formatting the file's name
         const extention = "."+files.image[0].originalFilename.split(".").pop();
@@ -150,7 +186,11 @@ export const addProductPost = (req,res) =>
             
                 pool.query(query,[newProduct], function(error, result, fields)
                 {
-                    error ? console.log(error) : res.redirect("/admin");
+                    if(error) console.log(error)
+                    
+                    req.session.user.error ="";
+                    
+                    res.redirect("/admin");
                 });
 	            
 	            
@@ -216,6 +256,33 @@ export const deleteClient = (req,res) =>
 
 export const editProduit = (req,res) =>
 {
+    let errorForm = {};
+    
+    //  ------------------------------empty fields or invalid
+    
+    if(!req.body.nom.trim() || req.body.nom.length > 35)
+    {
+        errorForm.name = "Nom invalide";
+    }
+    
+    if(!req.body.description.trim())
+    {
+        errorForm.descri = "description invalide";
+    }
+    
+    if(!req.body.prix.trim() || isNaN(req.body.prix))
+    {
+        errorForm.price = "Prix invalide";
+    }
+    
+    if(Object.keys(errorForm).length != 0)
+    {
+        return res.status(400).send(errorForm);
+            
+    }
+    
+    
+    
     let id = req.params.id;
     
     const editProduct =
@@ -287,6 +354,24 @@ export const closeCustom = (req, res) =>
 
 export const devis = (req,res)=>
 {
+    let errorForm = {};
+    
+    if(!req.body.devis.trim() || req.body.devis.length > 35)
+    {
+        errorForm.devis = "Intitulé invalide";
+    }
+    
+    if(!req.body.devisPrix.trim() || isNaN(req.body.devisPrix))
+    {
+        errorForm.price = "Prix invalide";
+    }
+    
+    if(Object.keys(errorForm).length != 0)
+    {
+        return res.status(400).send(errorForm);
+            
+    }
+    
     
     const idCommande = req.params.id;
     

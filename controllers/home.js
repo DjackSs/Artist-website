@@ -116,9 +116,9 @@ export const inscriptionPost = (req, res) =>
     let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     // https://www.w3resource.com/javascript/form/email-validation.php
     
-    let regexMdp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+    let regexMdp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,15}$/;
     // https://www.w3resource.com/javascript/form/password-validation.php
-    // To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
+    // To check a password between 6 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character
     
     //  ------------------------------empty fields or invalid with regex
     
@@ -151,8 +151,6 @@ export const inscriptionPost = (req, res) =>
         {
             errorForm.email = "Ce compte existe déja";
         }
-        
-        console.log(errorForm);
         
         // ----------------------------------------------------if an error occured, redirect for a retry
     
@@ -215,7 +213,8 @@ export const inscriptionPost = (req, res) =>
     			                   id: newClient.id,
     			                   pseudo: newClient.pseudo,
     			                   email: newClient.email,
-    			                   role: newClient.role
+    			                   role: newClient.role,
+    			                   error:""
     		                };
     		                
     		            res.redirect(`/profile/${newClient.id}`);

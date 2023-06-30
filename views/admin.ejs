@@ -62,9 +62,19 @@
             
             <label for="name">Nom du produit</label>
             <input type="text" name="name" id="name">
+            <% if(locals.user.error) { %>
+            
+                <p><%= locals.user.error.name %></p>
+                
+            <% } %>
             
             <label for="description">Description</label>
             <input type="text" name="description" id="description">
+            <% if(locals.user.error) { %>
+            
+                <p><%= locals.user.error.description %></p>
+                
+            <% } %>
             
             <label for="category">Catégorie</label>
             <select name="category" id="category">
@@ -74,9 +84,19 @@
             
             <label for="price">Prix</label>
             <input type="text" name="price" id="price">
+            <% if(locals.user.error) { %>
+            
+                <p><%= locals.user.error.price %></p>
+                
+            <% } %>
             
             <label for="image">Ajouter une image :</label>
             <input type="file" name="image" id="image">
+            <% if(locals.user.error) { %>
+            
+                <p><%= locals.user.error.img %></p>
+                
+            <% } %>
             
             <input type="submit" value="Ajouter">
             
