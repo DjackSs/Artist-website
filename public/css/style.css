@@ -157,6 +157,7 @@ header a {
 
 header > div:last-child {
     border-bottom: 0.2em solid var(--second-color);
+    border-radius: 2em;
 }
 
 .header-top {
@@ -266,7 +267,7 @@ header a:focus {
 }
 
 .logo img {
-    width: 100%;
+    width: 60%;
     border-radius: 50%;
     
 }
@@ -276,50 +277,20 @@ header a:focus {
 
 /*==================MAIN*/
 
-/*------------------------------sticky-nav*/
- .sticky-nav {
-    position: sticky;
-    top: 0;
-    z-index: -1;
+
+
+.fade {
+    opacity: 0;
+    
+    animation: fadeOut 1s;
     
 }
 
-.sticky-nav nav {
-    /*visibility: hidden;*/
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 20%;
-
-    display: none;
+.fadeIn {
+    opacity: 1;
     
+    animation: fadeIn 3s;
     
-    padding: 1em;
-    
-    text-align: center;
-    
-    background-image: url("/assets/image/fond_site.svg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.sticky-nav nav a {
-    font-size: 1.5em;
-    font-family: var(--title-font);
-}
-
-.sticky-nav nav img {
-    width: 40%;
-}
-
-.sticky-fadeIn {
-    visibility: visible;
-    
-    z-index: 0;
-    
-    animation: fadeIn 1s;
-    transition: all 2s;
     
 }
 
@@ -334,6 +305,17 @@ header a:focus {
   }
 }
 
+@keyframes fadeOut {
+  0% { 
+      opacity: 1; 
+      
+  }
+  100% { 
+      opacity: 0; 
+      
+  }
+}
+
 
 /*============================================================*/
         /*HOME
@@ -344,15 +326,80 @@ main section {
     padding: 1em;
 }
 
+/*-------------------carousel*/
+
 .carousel {
-    min-height: 20em;
+    position: relative;
+    
+    margin-bottom: 2em;
+    min-height: 25em;
+
+
+}
+
+.carousel ul {
+    width: 100%;
+    margin:0;
+    padding: 0;
+    list-style-type: none;
+    
+}
+
+.carousel ul li:first-child {
     background-image: url("/assets/carousel/maison.jpg");
+}
+
+.carousel ul li:nth-child(2) {
+    background-image: url("/assets/carousel/hoogie.jpg");
+}
+
+.carousel ul li:nth-child(3) {
+    background-image: url("/assets/carousel/la_vie.jpg");
+}
+
+.carousel ul li:nth-child(4) {
+    background-image: url("/assets/carousel/jars.jpg");
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    
+    display: block;
+    width: 100%;
+    
+
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    
+    transition: 0.8s;
+    
+}
 
 
+#active {
+    opacity: 1;
+}
+    
+
+
+.carousel button {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    
+    background-color: rgba(90, 47, 134, 0.3);
+}
+
+.carouselNext {
+    right: 5%;
+}
+
+.carouselPrev {
+    left: 5%;
 }
 
 .intro {
@@ -361,22 +408,52 @@ main section {
     justify-content: center;
     flex-wrap: wrap;
     gap: 2em;
-
+    
+    padding:1em;
     
 
 }
 
 .intro article {
     flex-basis: none;
+    display: grid;
+    align-items: center;
+    gap: 1em;
+    grid-template-areas:
+    "h h"
+    "d p";
 }
 
 .intro article h1 {
     margin-top: 0;
     margin-bottom: 0.5em;
+    
+    grid-area: h;
 }
 
 .intro article p {
     margin: 0;
+    
+    grid-area: p;
+}
+
+.intro div {
+    grid-area: d;
+    width: 10em;
+    min-height: 10em;
+    border: 0.2em solid var(--chicken-color);
+    border-radius: 50%;
+    
+    background-image:url("/assets/image/portrait.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    overflow: hidden;
+}
+
+.intro img {
+    width: 50%;
 }
 .intro video {
     min-width:40%;
@@ -753,6 +830,87 @@ select {
         /*Art PAGES
 /*============================================================*/
 
+
+.scrapbooking .scrapGrid {
+    display: grid;
+    grid-template-areas:
+    "a a b b c c"
+    "d e e e f f"
+    "d e e e f f"
+    "g h h h h i";
+    gap: 0.5em;
+}
+
+.scrapGrid img {
+    width: 100%;
+    height: 100%;
+    object-position: center;
+    object-fit: cover;
+    
+    border-radius: 1em;
+    transition: 0.5s;
+    
+}
+
+.scrapGrid img:hover {
+    transform: scale(1.1);
+    
+}
+
+.scrapGrid img:nth-child(odd) {
+    border: 0.2em solid var(--second-color);
+}
+
+.scrapGrid img:nth-child(even) {
+    border: 0.2em solid var(--chicken-color);
+}
+
+
+.scrapGrid img:first-child {
+    grid-area: a;
+    
+}
+
+.scrapGrid img:nth-child(2) {
+    grid-area: b;
+
+    
+}
+
+.scrapGrid img:nth-child(3) {
+    grid-area: c;
+
+    
+}
+.scrapGrid img:nth-child(4) {
+    grid-area: d;
+
+    
+}
+.scrapGrid img:nth-child(5) {
+    grid-area: e;
+    
+}
+.scrapGrid img:nth-child(6) {
+    grid-area: f;
+    
+}
+.scrapGrid img:nth-child(7) {
+    grid-area: g;
+    
+}
+
+.scrapGrid img:nth-child(8) {
+    grid-area: h;
+    
+}
+
+.scrapGrid img:nth-child(9) {
+    grid-area: i;
+    
+}
+
+
 .scrapbooking article:nth-child(even) {
     flex-direction: row-reverse;
 }
@@ -793,13 +951,13 @@ select {
 
 footer {
     padding: 2em;
+    border-top: 0.2em solid var(--second-color);
+    border-radius: 2em;
 
 }
 
 footer article {
     padding: 1em;
-    border: 0.2em solid var(--second-color);
-    border-radius: 2em;
     text-align: center;
 }
 

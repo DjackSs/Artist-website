@@ -36,6 +36,115 @@ if (themeButtons.length != 0)
 
 
 
+// ======================================================
+    // CAROUSEL
+// ======================================================
+
+
+const carouselButtons = document.querySelectorAll(".carousel button");
+
+if(carouselButtons.length != 0)
+{
+    const carouselSlides = document.querySelectorAll(".slide");
+    
+    let index = 0;
+    
+    let slide = setInterval(diapo, 5000);
+    
+    for(let button of carouselButtons)
+    {
+        button.addEventListener("click", ()=>
+        {
+            clearInterval(slide);
+            
+            carouselSlides[index].removeAttribute("id","active");
+            
+            if(button.className == "carouselNext")
+            {
+                index++;
+            }
+            
+            if(button.className == "carouselPrev")
+            {
+                index--;
+            }
+            
+            if(index < 0)
+            {
+                index = carouselSlides.length-1;
+            }
+            
+            if(index > carouselSlides.length-1)
+            {
+                index = 0;
+            }
+            
+            carouselSlides[index].setAttribute("id","active");
+            
+            slide = setInterval(diapo, 3000);
+            
+            
+        });
+    }
+    
+    
+    function diapo ()
+    {
+        carouselSlides[index].removeAttribute("id","active");
+        
+        index++;
+        
+        if(index < 0)
+        {
+            index = carouselSlides.length-1;
+        }
+        
+        if(index > carouselSlides.length-1)
+        {
+            index = 0;
+        }
+        
+        carouselSlides[index].setAttribute("id","active");
+        
+    }
+}
+
+
+
+// ======================================================
+    // FADE ANIMATIONS
+// ======================================================
+
+const fadeElements = document.querySelectorAll(".fade");
+
+if(fadeElements.length != 0)
+{
+    window.addEventListener("scroll", fadeIn);
+}
+
+function fadeIn ()
+{
+    const windowHeight = window.innerHeight;
+    
+    const threshold = 150;
+    
+    for(let element of fadeElements)
+    {
+        let elementTop = element.getBoundingClientRect().top;
+        
+        if(elementTop < windowHeight - threshold)
+        {
+            element.classList.add("fadeIn");
+        }
+        else
+        {
+            element.classList.remove("fadeIn");
+        }
+        
+    }
+}
+
+
 
 // ======================================================
     // ADMIN FETCH 
