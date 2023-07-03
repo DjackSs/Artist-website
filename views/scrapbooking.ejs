@@ -1,6 +1,6 @@
-<section class="scrapbooking container">
+<section class="scrapbooking">
     
-    <h1>Scrapbooking</h1>
+    <h1 class="container">Scrapbooking</h1>
     
     <article class="scrapGrid">
         <img src="/assets/image/scrapbooking/cadre1.jpg">
@@ -17,32 +17,41 @@
 
 </section>
 
-<section class="scrapbooking container">
+<section class="container">
+    
+    <h2>Boutique</h2>
+    
+    <div class="scrapbookingProduct">
 
     
     <% for(let produit of produits) { 
         if(produit.statut === "free") {%>
         
        <article id="<%= produit.id %>" class="product">
-           <img src="<%= produit.img %>" alt="<%= produit.nom %>" >
-           <div>
+            <div class="img">
+                <img src="<%= produit.img %>" alt="<%= produit.nom %>" >
+            </div>
+            <div class="content">
                
-                <h2><%= produit.nom %></h2>
+                <h3><%= produit.nom %></h3>
                 <p><%= produit.description %></p>
                 <p><%= produit.prix %> €</p>
             
+            
+        
+                <% if((locals.user.role === "client") && (produit.idUserPanier != locals.user.id)) { %>
+                
+                <button class="js-addProduit-button" data-addProduct = "<%= produit.id %>" data-addClient="<%= locals.user.id %>">Ajouter au panier</button>
+                
+                <% } %>
             </div>
-        
-        <% if((locals.user.role === "client") && (produit.idUserPanier != locals.user.id)) { %>
-        
-        <button class="js-addProduit-button" data-addProduct = "<%= produit.id %>" data-addClient="<%= locals.user.id %>">Ajouter au panier</button>
-        
-        <% } %>
     
     </article>
         <% }
     
     } %>
+    
+    </div>
     
 </section>
 
