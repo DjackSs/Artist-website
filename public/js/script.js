@@ -147,6 +147,51 @@ function fadeIn ()
 
 
 // ======================================================
+    // SLIDER SCRAPBOOKING
+// ======================================================
+
+const slider = document.querySelector("#slider");
+
+if(slider)
+{
+    
+    const products = document.querySelectorAll("#slider .product");
+    
+    if(products.length != 0)
+    {
+        
+        let productSize;
+        
+        // ------------this part get the gap in order to add it in the scroll value
+        let gap = window.getComputedStyle(slider).gap;
+        
+        gap = Number(gap.slice(0, -2));
+        
+    
+        const buttons = document.querySelectorAll(".shop button");
+        
+        buttons[0].addEventListener("click", ()=>
+        {
+            productSize = products[0].getBoundingClientRect();
+            
+            slider.scrollLeft -= productSize.width+gap;
+            
+        });
+        
+        buttons[1].addEventListener("click", ()=>
+        {
+            productSize = products[0].getBoundingClientRect();
+            
+            slider.scrollLeft += productSize.width+gap;
+            
+        });
+        
+    }
+    
+}
+
+
+// ======================================================
     // ADMIN FETCH 
 // ======================================================
 

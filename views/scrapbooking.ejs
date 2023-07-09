@@ -14,18 +14,28 @@
         <img src="/assets/image/scrapbooking/octopi.jpg">
         
     </article>
+    
+    <video autoplay muted loop>
+      <source src="/assets/video/CDPP_banniere.mp4" type="video/mp4">
+      Your browser does not support the video tag
+    </video>
 
 </section>
-
-<section class="container">
+<section class="container shop">
     
     <h2>Boutique</h2>
     
-    <div class="scrapbookingProduct">
-
+    <button class="sliderButton">&#171;</button>
+    <button class="sliderButton">&#187;</button>
+    
+    <div class="scrapbookingProduct" id="slider">
+        
+        
     
     <% for(let produit of produits) { 
         if(produit.statut === "free") {%>
+        
+            
         
        <article id="<%= produit.id %>" class="product">
             <div class="img">
@@ -35,7 +45,7 @@
                
                 <h3><%= produit.nom %></h3>
                 <p><%= produit.description %></p>
-                <p><%= produit.prix %> €</p>
+                <p class="priceTag"><%= produit.prix %> €</p>
             
             
         
