@@ -45,7 +45,8 @@
         
         <% if(prixPanier) { %>
         
-            <form method="post" action="/buy/<%= locals.user.id %>">
+            <form method="post" action="/card-checkout">
+                <input type="hidden" name="client" value="<%= locals.user.id%>">
                 <input type="submit" value="Acheter">
             </form>
         
@@ -72,7 +73,7 @@
                         <p><%= commande.devis %></p>
                         <p><%= commande.prixCommande %> €</p>
                         
-                        <form method="post" action="/buyCustom/<%= locals.user.id %>">
+                        <form method="post" action="/custom-checkout/<%= locals.user.id %>">
                             <input type="hidden" name="idCommande" value="<%= commande.id %>">
                             <input type="submit" value="Acheter">
                         </form>

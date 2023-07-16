@@ -13,7 +13,7 @@ const router = express.Router();
 
 import {home, art_page1, art_page2, inscriptionPost} from "../controllers/home.js";
 
-import {login, loginPost, profile, logout, shoppingAdd, shoppingDelete, customOrder, deleteCommande, editProfile, deleteProfile, dialogue, shoppingPay, customPay, downloadBill} from "../controllers/client.js";
+import {login, loginPost, profile, logout, shoppingAdd, shoppingDelete, customOrder, deleteCommande, editProfile, deleteProfile, dialogue, cardCheckout, shoppingPay, customCheckout, customPay, downloadBill} from "../controllers/client.js";
 
 import {profileAdmin, addProductPost, deleteProduit, editProduit, deleteClient, closeBuying, closeCustom, devis} from "../controllers/admin.js";
 
@@ -101,9 +101,13 @@ router.post("/order/:id", sessiontCheck, customOrder);
 
 router.delete("/deleteCommande/:id", sessiontCheck, deleteCommande);
 
-router.post("/buy/:id", sessiontCheck, shoppingPay);
+router.post("/card-checkout", sessiontCheck, cardCheckout);
 
-router.post("/buyCustom/:id", sessiontCheck, customPay);
+router.get("/buy/:id", sessiontCheck, shoppingPay);
+
+router.post("/custom-checkout/:id", sessiontCheck, customCheckout);
+
+router.get("/buyCustom/:id1/:id2", sessiontCheck, customPay);
 
 router.get("/downloadPDF/:id", sessiontCheck, downloadBill);
 

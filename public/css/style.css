@@ -999,7 +999,7 @@ select {
     
     
     border-radius: 1em;
-    box-shadow: 0 0.5em 1em rgba(0,0,0, 0.15);
+    /*box-shadow: 0 0.5em 1em rgba(0,0,0, 0.15);*/
     
     transition: 0.5s;
     

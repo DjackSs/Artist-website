@@ -20,6 +20,10 @@ import PDFDocument from "pdfkit";
 // -----------------------import the xss sanitation tools
 import xss from "xss";
 
+// -----------------------import the online payment tool: stripe
+import Stripe from "stripe";
+const stripe = new Stripe(process.env.STRIPE_SK);
+
 
 // ==============================================
 // CONTROLLERS
@@ -369,6 +373,66 @@ export const shoppingDelete = (req,res) =>
 
 // ----------------------------------------------------
 
+
+export const cardCheckout = async (req,res) =>
+{
+	// -------------------whith stripe, we are in async mode
+	
+	const idClient = xss(req.body.client);
+	
+	const panierStatus = "cree";
+	
+	const query1 = `select Produit.* from Produit inner join Produit_Panier on Produit.id = Produit_Panier.idProduit
+		inner join Panier on Produit_Panier.idPanier = Panier.id where Panier.idUserPanier = ? and Panier.statut = ?`;
+		
+	await pool.query(query1, [idClient, panierStatus], async function (error, products, fields)
+	{
+		if(error) console.log(error);
+		
+		let stripeProducts = [];
+		
+		// ----------------this part turn the datas in the right format for stripe
+		
+		for(let product of products)
+		{
+			stripeProducts.push(
+				{
+					price_data:
+					{
+						currency: "eur",
+						product_data:
+						{
+							name: product.nom
+						},
+						unit_amount: Number(product.prix)*100
+					},
+					quantity: "1"
+				});
+			
+		}
+		
+		// ---------------call to the stripe api checkout
+		
+		const session = await stripe.checkout.sessions.create(
+		{
+			line_items: stripeProducts,
+			mode:"payment",
+			success_url: `http://nathanhamon.ide.3wa.io:3000/buy/${idClient}`,
+			cancel_url: `http://nathanhamon.ide.3wa.io:3000/profile/${idClient}`,
+		});
+			
+		
+		res.redirect(303, session.url);
+			
+	
+		
+	});
+	
+	
+};
+
+// ----------------------------------------------------
+
 export const shoppingPay = (req,res) =>
 {
 	const idClient = xss(req.params.id);
@@ -540,11 +604,74 @@ export const deleteCommande = (req,res) =>
 
 // ----------------------------------------------------
 
+
+export const customCheckout = async (req,res) =>
+{
+	// -------------------whith stripe, we are in async mode
+	
+	const ids =
+	{
+		idClient: xss(req.params.id),
+		idCommande: xss(req.body.idCommande)
+	};
+	
+	
+	const query1 = `select Commande.* from Commande where id = ?`;
+		
+	await pool.query(query1, [ids.idCommande], async function (error, products, fields)
+	{
+		if(error) console.log(error);
+		
+		let stripeProducts = [];
+		
+		// ----------------this part turn datas in the right format for stripe
+		
+		for(let product of products)
+		{
+			stripeProducts.push(
+				{
+					price_data:
+					{
+						currency: "eur",
+						product_data:
+						{
+							name: product.devis
+						},
+						unit_amount: Number(product.prixCommande)*100
+					},
+					quantity: "1"
+				});
+			
+		}
+		
+		// ---------------call to the stripe api checkout
+		
+		const session = await stripe.checkout.sessions.create(
+		{
+			line_items: stripeProducts,
+			mode:"payment",
+			success_url: `http://nathanhamon.ide.3wa.io:3000/buyCustom/${ids.idClient}/${ids.idCommande}`,
+			cancel_url: `http://nathanhamon.ide.3wa.io:3000/profile/${ids.idClient}`,
+		});
+			
+		
+		res.redirect(303, session.url);
+			
+	
+		
+	});
+	
+	
+};
+
+
+// ----------------------------------------------------
+
 export const customPay = (req,res) =>
 {
-	const idClient = xss(req.params.id);
+	const idClient = xss(req.params.id1);
 	
-	const idCommande = xss(req.body.idCommande);
+	const idCommande = xss(req.params.id2);
 	
 	const statut = "paye";
 	
@@ -665,6 +792,7 @@ export const customPay = (req,res) =>
 	
 	
 };
+
 
 // ----------------------------------------------------
 
