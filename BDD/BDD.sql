@@ -31,6 +31,7 @@ CREATE TABLE `User` (
   `id` char(36) NOT NULL PRIMARY KEY,
   `pseudo` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `adress` varchar(255) NOT NULL,
   `dateInscription` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `mdp` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL

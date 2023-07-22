@@ -106,6 +106,7 @@ export const inscriptionPost = (req, res) =>
     // ----------------------------------------------------data's sanitation
     req.body.pseudo = xss(req.body.pseudo);
     req.body.email = xss(req.body.email);
+    req.body.adress = xss(req.body.adress);
     req.body.mdp = xss(req.body.mdp);
     
     // ----------------------------------------------------data's validation
@@ -128,7 +129,12 @@ export const inscriptionPost = (req, res) =>
     
     if(!req.body.email.trim() || !regexEmail.test(req.body.email))
     {
-        errorForm.email = "Address email invalide";
+        errorForm.email = "Adress email invalide";
+    }
+    
+    if(!req.body.adress.trim())
+    {
+        errorForm.adress = "Adress invalide";
     }
     
     if(!req.body.mdp.trim() || !regexMdp.test(req.body.mdp))
@@ -180,6 +186,7 @@ export const inscriptionPost = (req, res) =>
                         id: uuidv4(),
                         pseudo: req.body.pseudo,
                         email: req.body.email,
+                        adress:req.body.adress,
                         mdp: hash,
                         role: "client"
                     };
@@ -194,12 +201,12 @@ export const inscriptionPost = (req, res) =>
                 	};
                 	
                     
-                const query1 = "insert into User (id, pseudo, email, mdp, role, dateInscription) value (?, ?, ?, ?, ?, NOW())";
+                const query1 = "insert into User (id, pseudo, email, adress, mdp, role, dateInscription) value (?, ?, ?, ?, ?, ?, NOW())";
                 
                 const query2 =`insert into Panier (id, idUserPanier, prixPanier, statut, facturePanier, dateCreation) value (?, ?, ?, ?, ?, NOW())`;
         
         
-                pool.query( query1, [newClient.id, newClient.pseudo, newClient.email, newClient.mdp, newClient.role], function (error, result1, fields) 
+                pool.query( query1, [newClient.id, newClient.pseudo, newClient.email, newClient.adress, newClient.mdp, newClient.role], function (error, result1, fields) 
                 {
                     if(error) console.log(error); 
                     
@@ -212,6 +219,7 @@ export const inscriptionPost = (req, res) =>
     			                   id: newClient.id,
     			                   pseudo: newClient.pseudo,
     			                   email: newClient.email,
+    			                   adress: newClient.adress,
     			                   role: newClient.role,
     			                   error:""
     		                };

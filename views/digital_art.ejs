@@ -1,6 +1,75 @@
 
+
+
+<section class="art_numerique container">
+    
+    <h1>Art numérique</h1>
+
+        
+    <form class="selector">
+            
+        <div>
+            <input type="radio" name="art_selector" id="expression" checked>
+                
+            <label for="expression">
+                    
+                <img src="/assets/icone/gif/expression.gif">
+                    
+            </label>
+        </div>
+            
+        <div>
+            <input type="radio" name="art_selector" id="portrait">
+                
+            <label for="portrait">
+                    
+                <img src="/assets/icone/gif/portrait.gif">
+                    
+            </label>
+        </div>
+            
+    </form>
+    
+    <div class="art_parent">
+        
+        <article class="art_child expression">
+            
+            <div>
+                <img src="/assets/image/art_numerique/ouest.svg">
+            </div>
+            
+             <div>
+                <img src="/assets/image/art_numerique/pipe.svg">
+            </div>
+            
+             <div>
+                <img src="/assets/image/art_numerique/a_o.svg">
+            </div>
+            
+            
+            
+        </article>
+        
+    
+        <article class="art_child portrait" >
+            <div>
+                <img src="/assets/image/art_numerique/photo_moi.jpg">
+                <img src="/assets/image/art_numerique/portrait_moi.png">
+            </div>
+            
+            <div>
+                <img src="/assets/image/art_numerique/photo_marty.jpg">
+                <img src="/assets/image/art_numerique/portrait_marty.png">
+            </div>
+            
+        </article>
+    
+    </div>
+    
+</section>
+
 <section>
-    <h2>Art numérique</h2>
+    <h2>Boutique</h2>
     <% for(let produit of produits) {
         if(produit.statut === "free") {%>
     
@@ -24,7 +93,8 @@
 
 <% if(locals.user.role === "client") { %>
 
-<section>
+<section class="orderPrompt container">
+    
     <h2>Commande</h2>
     
     <form>

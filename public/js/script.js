@@ -192,6 +192,73 @@ if(slider)
 
 
 // ======================================================
+    // SELECTEUR ART_NUMERIQUE
+// ======================================================
+
+const art_buttons = document.querySelectorAll(`.selector div input[type="radio"]`);
+
+
+if(art_buttons.length != 0)
+{
+    const art_articles = document.querySelectorAll(".art_child");
+    
+    document.addEventListener("DOMContentLoaded", ()=>
+    {
+        for(let button of art_buttons)
+        {
+            
+            if(button.checked)
+            {
+                for(let article of art_articles)
+                {
+                    
+                    if(article.classList.contains(`${button.id}`))
+                    {
+                        article.style.position = "relative";
+                        
+                        article.style.opacity = 1;
+                    }
+                    else
+                    {
+                        article.style.position = "absolute";
+                        article.style.opacity = 0;
+                    }
+                }
+            }
+            
+        }
+    });
+    
+    for(let button of art_buttons)
+    {
+        button.addEventListener("click", ()=>
+        {
+            if(button.checked)
+            {
+                for(let article of art_articles)
+                {
+                    
+                    if(article.classList.contains(`${button.id}`))
+                    {
+                        article.style.position = "relative";
+                        
+                        article.style.opacity = 1;
+                    }
+                    else
+                    {
+                        article.style.position = "absolute";
+                        article.style.opacity = 0;
+                    }
+                
+                }
+            }
+            
+        });
+    }
+}
+
+
+// ======================================================
     // ADMIN FETCH 
 // ======================================================
 
@@ -925,7 +992,7 @@ if(dialogueButtons.length != 0)
                             }
                             
                             
-                        })
+                        });
                     }
                     else
                     {
@@ -990,7 +1057,9 @@ if(editProfileButton)
         
         const oldPseudo = document.querySelector(`article[id="${id}"] h2`);
         
-        const oldEmail = document.querySelector(`article[id="${id}"] h3`);
+        const oldEmail = document.querySelector(`article[id="${id}"] h3:nth-child(2)`);
+        
+        const oldAdress = document.querySelector(`article[id="${id}"] h3:nth-child(3)`);
         
         
         const newPseudo = document.createElement('input');
@@ -1000,8 +1069,13 @@ if(editProfileButton)
                     
         const newEmail = document.createElement('input');
             newEmail.type="text";
-            newEmail.name="editName";
+            newEmail.name="editEmail";
             newEmail.value= oldEmail.innerText;
+            
+        const newAdress = document.createElement('input');
+            newAdress.type="text";
+            newAdress.name="editAdress";
+            newAdress.value= oldAdress.innerText;
                     
         const newButton = document.createElement("input");
             newButton.type="submit";
@@ -1017,6 +1091,9 @@ if(editProfileButton)
         oldEmail.innerText="";
             oldEmail.append(newEmail);
             
+        oldAdress.innerText="";
+            oldAdress.append(newAdress);
+            
         article.removeChild(editProfileButton);
         
         article.append(newButton);
@@ -1031,7 +1108,8 @@ if(editProfileButton)
             const newProfile =
             {
                 pseudo: newPseudo.value,
-                email: newEmail.value
+                email: newEmail.value,
+                adress: newAdress.value
             };
                 
             const options = 
@@ -1063,6 +1141,11 @@ if(editProfileButton)
                             errorP.append(" "+data.email);
                         }
                         
+                        if(data.adress)
+                        {
+                            errorP.append(" "+data.adress);
+                        }
+                        
                         article.prepend(errorP);
                         
                     })
@@ -1074,6 +1157,9 @@ if(editProfileButton)
                                 
                     oldEmail.removeChild(newEmail);
                     oldEmail.append(newEmail.value);
+                    
+                    oldAdress.removeChild(newAdress);
+                    oldAdress.append(newAdress.value);
                                 
                                 
                     article.removeChild(newButton);

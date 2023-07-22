@@ -49,6 +49,12 @@
                     <div><%= errorForm.email %></div>
                 <% } %>
                 
+                <label for="adress">Adress </label>
+                <input type="text" name="adress" id="adress" autocomplete="on">
+                <% if(errorForm.adress) { %>
+                    <div><%= errorForm.adress %></div>
+                <% } %>
+                
                 <label for="mdp">Mot de passe:</label>
                 <input type="password" name="mdp" id="mdp" autocomplete="on">
                 <% if(errorForm.mdp) { %>

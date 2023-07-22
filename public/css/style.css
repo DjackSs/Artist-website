@@ -857,6 +857,9 @@ select {
         /*Art PAGES
 /*============================================================*/
 
+
+/*=======================================SCRAPBOOKING*/
+
 /*------------------scrapbooking grid*/
 
 .scrapbooking .scrapGrid {
@@ -1084,11 +1087,91 @@ select {
 }
 
 
+/*=======================================ART_NUMERIQUE*/
+
+
+.art_numerique .selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    gap: 5em;
+    
+    padding: 2em;
+}
+
+.selector div input[type="radio"] {
+    display: none;
+}
+
+.selector div label > img {
+    border-radius: 1em;
+    
+    transition:0.5s;
+    
+}
+
+.selector div label > img:hover {
+    transform: scale(1.1);
+    transition:0.5s;
+}
+
+.art_parent {
+    position: relative;
+    
+    overflow: hidden;
+    
+}
+
+.expression {
+    position: relative;
+    inset:0;
+    
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    gap: 2em;
+    
+    opacity: 1;
+}
+
+.expression div,
+portrait div {
+    flex-basis: 25%;
+}
+
+.portrait div img {
+    width:50%;
+    
+}
+
+.portrait {
+    position: absolute;
+    inset: 0;
+    
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    gap: 2em;
+    
+    
+    opacity: 0;
+}
 
 
 
 
-/*------------------scrapbooking order*/
+
+
+
+
+/*------------------order*/
 
 .orderPrompt form {
     display: flex;

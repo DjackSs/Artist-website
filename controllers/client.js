@@ -235,6 +235,7 @@ export const editProfile = (req,res) =>
 	// ----------------------------------------------------data's sanitation
     req.body.pseudo = xss(req.body.pseudo);
     req.body.email = xss(req.body.email);
+    req.body.adress = xss(req.body.adress);
     
     // ----------------------------------------------------data's validation
 	let errorForm = {};
@@ -251,7 +252,12 @@ export const editProfile = (req,res) =>
     
     if(!req.body.email.trim() || !regexEmail.test(req.body.email))
     {
-        errorForm.email = "Address email invalide";
+        errorForm.email = "Adress email invalide";
+    }
+    
+    if(!req.body.adress.trim())
+    {
+        errorForm.adress = "Adress invalide";
     }
     
      //  ------------------------------user already existe
@@ -282,17 +288,19 @@ export const editProfile = (req,res) =>
 	    {
 	        pseudo: req.body.pseudo,
 	        email: req.body.email,
+	        adress: req.body.adress
 	    };
 	
 	    const query = `update User set ? where id = ?`;
 	
 		pool.query(query, [editProfile, id], function (error, result, fields)
 		{
-		    if(error) console.log(error)
+		    if(error) console.log(error);
 		    
 		    // ---------------------------update the session's variable for ejs
 		    req.session.user.pseudo = editProfile.pseudo;
 		    req.session.user.email = editProfile.email;
+		    req.session.user.adress = editProfile.adress;
 		    
 		    res.status(204).send();
 	
@@ -519,14 +527,14 @@ export const shoppingPay = (req,res) =>
 						
 						doc
 						.fontSize(25)
-						.text("Client :", 100, 350);
+						.text(`Client :`, 100, 350);
 						
 						doc
 						.fontSize(15)
-						.text("Nom client", 250, 380);
+						.text(`${req.session.user.pseudo}`, 250, 380);
 						doc
 						.fontSize(15)
-						.text("Adress du client", 250, 400);
+						.text(`${req.session.user.adress}`, 250, 400);
 						doc
 						.fontSize(15)
 						.text("Code FEDEX", 250, 420);
@@ -731,10 +739,10 @@ export const customPay = (req,res) =>
 			
 			doc
 			.fontSize(15)
-			.text("Nom client", 250, 380);
+			.text(`${req.session.user.pseudo}`, 250, 380);
 			doc
 			.fontSize(15)
-			.text("Adress du client", 250, 400);
+			.text(`${req.session.user.adress}`, 250, 400);
 			doc
 			.fontSize(15)
 			.text("Code FEDEX", 250, 420);
