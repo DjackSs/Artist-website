@@ -31,20 +31,26 @@
         /*ROOT
 /*============================================================*/
 
-:root:has(#light:checked) {
+:root {
     
 /*--------------------light colors theme*/
     
     --main-color: rgb(53, 94, 167);
-    --second-color: rgb(90, 47, 134);
-    --accentuation-color: rgb(225, 41, 133);
+    --second-color: rgb(90, 47, 134); /*5A2F86*/
+    --accentuation-color: rgb(225, 41, 133); /*E12985*/
     --chicken-color: rgb(250, 184, 14);
     --black-color: rgb(0, 0, 0);
     --white-color: rgb(255,255,255);
     
+    
+    /*--------------------font*/
+    
+    --main-font: "RotisSerif", Sans-Serif;
+    --title-font: "WWW", Cursive;
+    
 }
 
-:root:has(#dark:checked) {
+.dark {
     
 /*--------------------light colors theme*/
     
@@ -57,17 +63,10 @@
     
 }
 
-/*--------------------font*/
-:root {
-
-    --main-font: "RotisSerif", Sans-Serif;
-    --title-font: "WWW", Cursive;
-
-}
 
 
 /*============================================================*/
-        /*LAYOUT
+        /*UTILITIES
 /*============================================================*/
 
 html {
@@ -85,10 +84,6 @@ body {
     color:var(--black-color);
 }
 
-.container {
-    max-width: 950px;
-    margin: auto;
-}
 
 h1,
 h2,
@@ -133,6 +128,52 @@ h3 {
   border-radius: 2em;
 }
 
+
+.container {
+    max-width: 950px;
+    margin: auto;
+}
+
+
+.fade {
+    opacity: 0;
+    
+    animation: fadeOut 1s;
+    
+}
+
+.fadeIn {
+    opacity: 1;
+    
+    animation: fadeIn 3s;
+    
+    
+}
+
+/*-----------------------animation*/
+
+@keyframes fadeIn {
+  0% { 
+      opacity: 0; 
+      
+  }
+  100% { 
+      opacity: 1; 
+      
+  }
+}
+
+@keyframes fadeOut {
+  0% { 
+      opacity: 1; 
+      
+  }
+  100% { 
+      opacity: 0; 
+      
+  }
+}
+
 /*==================HEADER*/
 
 header {
@@ -164,7 +205,7 @@ header > div:last-child {
     display: flex;
     justify-content: space-between;
     
-    padding: 2em;
+    /*padding: 2em;*/
 
     flex-direction: column;
     align-items: center;
@@ -224,9 +265,8 @@ header > div:last-child {
 header nav {
     display: flex;
     justify-content: space-between;
-    gap: 40%;
     
-    padding: 1em;
+    /*padding: 1em;*/
     
     position: relative;
     
@@ -257,7 +297,7 @@ header a:focus {
 
 
 .logo {
-    min-width: 10em;
+    min-width: 5em;
     padding: 0;
 
     border: none;
@@ -267,10 +307,56 @@ header a:focus {
 }
 
 .logo img {
-    width: 60%;
+    width: 100%;
     border-radius: 50%;
     
 }
+
+/*============================================================*/
+        /*RESPONSIVE HEADER
+/*============================================================*/
+
+
+@media screen and (min-width: 890px) {
+
+    .logo {
+        position: absolute;
+        top: -3em;
+        left: 50%;
+        z-index: 1;
+        
+        transform: translate(-50%);
+    
+        order: none;
+        
+    }
+
+    header nav a {
+        margin: 0;
+        width: fit-content;
+        border: none;
+    }
+
+
+    header nav {
+        align-items: flex-start;
+        flex-direction: row;
+         
+        padding: 1em;
+    
+    }
+    
+    .header-top {
+        align-items: flex-start;
+        flex-direction: row;
+        gap: 0;
+        
+        padding: 2em;
+    }
+    
+}
+
+
 
 
 
@@ -294,56 +380,11 @@ footer article div {
     justify-content: space-around;
     flex-wrap: wrap;
     gap: 1em;
-    width: 40%;
-    margin: auto;
 }
 
 footer article div img {
-    width: 15%;
-}
-
-
-
-
-/*==================MAIN*/
-
-
-
-.fade {
-    opacity: 0;
-    
-    animation: fadeOut 1s;
-    
-}
-
-.fadeIn {
-    opacity: 1;
-    
-    animation: fadeIn 3s;
-    
-    
-}
-
-@keyframes fadeIn {
-  0% { 
-      opacity: 0; 
-      
-  }
-  100% { 
-      opacity: 1; 
-      
-  }
-}
-
-@keyframes fadeOut {
-  0% { 
-      opacity: 1; 
-      
-  }
-  100% { 
-      opacity: 0; 
-      
-  }
+    flex: 0 0 15%;
+    width: 10em;
 }
 
 
@@ -356,10 +397,11 @@ footer article div img {
 /*-------------------carousel*/
 
 .carousel {
+    display: none;
     position: relative;
     
     margin-bottom: 2em;
-    min-height: 25em;
+    min-height: 30em;
 
 
 }
@@ -373,19 +415,19 @@ footer article div img {
 }
 
 .carousel ul li:first-child {
-    background-image: url("/assets/carousel/maison.jpg");
+    background-image: url("/assets/carousel/maison.webp");
 }
 
 .carousel ul li:nth-child(2) {
-    background-image: url("/assets/carousel/hoogie.jpg");
+    background-image: url("/assets/carousel/hoogie.webp");
 }
 
 .carousel ul li:nth-child(3) {
-    background-image: url("/assets/carousel/la_vie.jpg");
+    background-image: url("/assets/carousel/la_vie.webp");
 }
 
 .carousel ul li:nth-child(4) {
-    background-image: url("/assets/carousel/jars.jpg");
+    background-image: url("/assets/carousel/jars.webp");
 }
 
 .slide {
@@ -431,7 +473,7 @@ footer article div img {
 
 .intro {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 2em;
@@ -441,30 +483,43 @@ footer article div img {
 
 }
 
+.intro video {
+    min-width:40%;
+    border-radius: 1em;
+}
+
 .intro article {
-    flex-basis: none;
     display: grid;
     align-items: center;
     gap: 1em;
     grid-template-areas:
-    "h h"
-    "d p";
+    "h"
+    "d"
+    "p";
+    
+    padding: 1em;
+}
+
+.intro article > * {
+    justify-self: center;
 }
 
 .intro article h1 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
+    margin: 0;
     
     grid-area: h;
 }
 
-.intro article p {
-    margin: 0;
-    
+.intro article div:nth-child(3) {
     grid-area: p;
 }
 
-.intro div {
+.intro article div:nth-child(3) p {
+     margin: 0 0 0.5em 0;
+    
+}
+
+.intro article div:nth-child(2) {
     grid-area: d;
     width: 10em;
     min-height: 10em;
@@ -479,12 +534,627 @@ footer article div img {
     overflow: hidden;
 }
 
-.intro img {
-    width: 50%;
+.intro article img {
+    width: 60%;
 }
-.intro video {
-    min-width:40%;
+
+
+
+/*============================================================*/
+        /*RESPONSIVE HOME
+/*============================================================*/
+
+@media screen and (min-width: 500px) {
+    
+    .carousel {
+        display: block;
+    }
+    
+    .intro video {
+       min-width: 20em;
+    }
+    
+    /*.intro article {*/
+    /*    grid-template-areas:*/
+    /*    "h h"*/
+    /*    "d p";*/
+        
+    /*}*/
+
+}
+
+
+@media screen and (min-width: 890px) {
+    
+    .intro video {
+        flex-basis: 45%;
+     
+        border-radius: 1em;
+    }
+
+    .intro article {
+        flex-basis: 45%
+    }
+
+}
+
+
+
+
+
+
+/*============================================================*/
+        /*Art PAGES
+/*============================================================*/
+
+
+/*=======================================SCRAPBOOKING*/
+
+/*------------------scrapbooking grid*/
+
+.scrapbooking .scrapGrid {
+    display: grid;
+    grid-template-areas:
+    "a a" 
+    "b b"
+    "c c" 
+    "d d"
+    "e e"
+    "f f"
+    "h h"
+    "g g"
+    "i i";
+    gap: 1em;
+    padding: 2em;
+}
+
+.scrapGrid img {
+    width: 100%;
+    height: 100%;
+    object-position: center;
+    object-fit: cover;
+    
     border-radius: 1em;
+    transition: 0.5s;
+    
+}
+
+
+.scrapGrid img:nth-child(odd) {
+    border: 0.2em solid var(--second-color);
+}
+
+.scrapGrid img:nth-child(even) {
+    border: 0.2em solid var(--chicken-color);
+}
+
+
+.scrapGrid img:first-child {
+    grid-area: a;
+}
+
+.scrapGrid img:nth-child(2) {
+    grid-area: b;
+}
+
+.scrapGrid img:nth-child(3) {
+    grid-area: c;
+}
+
+.scrapGrid img:nth-child(4) {
+    grid-area: d;
+}
+
+.scrapGrid img:nth-child(5) {
+    grid-area: e;
+}
+
+.scrapGrid img:nth-child(6) {
+    grid-area: f;
+}
+
+.scrapGrid img:nth-child(7) {
+    grid-area: g;
+}
+
+.scrapGrid img:nth-child(8) {
+    grid-area: h;
+}
+
+.scrapGrid img:nth-child(9) {
+    grid-area: i;
+}
+
+.scrapbooking video {
+    width: 100%;
+    padding: 2em 0;
+    
+}
+
+/*------------------scrapbooking shop*/
+
+.shop {
+    position: relative;
+    z-index: 0;
+}
+
+.sliderButton {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+}
+
+.shop .sliderButton:nth-child(2) {
+    left: 0;
+}
+
+.shop .sliderButton:nth-child(3) {
+    right: 0;
+}
+
+
+.scrapbookingProduct {
+    width: 90%;
+    margin: auto;
+    
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    gap: 2em;
+    
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    
+    overflow-x: auto;
+    overflow-y: hidden;
+    
+    scroll-behavior: smooth;
+    
+    
+}
+
+
+.product {
+    position: relative;
+    z-index: 1;
+    
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /*---for overflow to succeed, gotta desable flewgrow and flewshrink*/
+    flex: 0 0 100%;
+    min-height: 15em;
+    
+    
+    border-radius: 1em;
+    /*box-shadow: 0 0.5em 1em rgba(0,0,0, 0.15);*/
+    
+    transition: 0.5s;
+    
+    
+}
+
+.product:hover {
+    min-height: 25em;
+    transition: 0.5s;
+}
+
+.product .img {
+    position: absolute;
+    top: 10%;
+    z-index: 2;
+    
+    width:100%;
+    min-height:15em;
+    border-radius: 1em;
+    
+    
+    
+    overflow: visible;
+    
+    transition: 0.5s;
+
+}
+
+.product:hover .img {
+    transform: scale(0.8);
+    min-height: 20em;
+    /*top: -5em;*/
+    
+    transition: 0.5s;
+    
+    cursor: pointer;
+    
+}
+
+.product .img img {
+    width: 100%;
+    
+    position: absolute;
+    inset: 0;
+    
+    overflow: hidden;
+    
+    border-radius: 1em;
+    
+    object-fit: cover;
+    object-position: center;
+}
+
+
+.content {
+    opacity: 0;
+    /*position: absolute;*/
+    /*top: 40%;*/
+    margin-top: 40%;
+    z-index: 1;
+    
+    width: 80%;
+    padding: 1em;
+    text-align: center;
+    
+    overflow: hidden;
+    
+    transition: 0.5s;
+}
+
+.product:hover .content {
+    opacity: 1;
+    
+    transition: 0.5s;
+}
+
+.priceTag {
+    width: fit-content;
+    margin: 0.5em auto;
+    padding: 0.5em;
+    background-color: var(--second-color);
+    color: var(--chicken-color);
+    border-radius: 1em;
+}
+
+.modal {
+    width: 80%;
+    height: 80%;
+    padding:0;
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    
+    border: 0.2em solid var(--second-color);
+}
+
+#artModal {
+    text-align: center;
+}
+
+#artModal h3 {
+    margin-top: 0.5em;
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(225,41,133,0.5);
+    
+    transition: 0.5s;
+    
+}
+
+#artModal h3:hover {
+    color: var(--accentuation-color);
+    text-shadow: none;
+    
+    transition: 0.5s;
+}
+
+
+
+/*============================================================*/
+        /*RESPONSIVE SCRAPBOOKING
+/*============================================================*/
+
+@media screen and (min-width: 500px) {
+    
+    .scrapbooking .scrapGrid {
+        grid-template-areas:
+        "a a b b"
+        "c c d d"
+        "e e f f"
+        "e e f f"
+        "h h h h"
+        "g g i i";
+    }
+    
+    
+}
+
+@media screen and (min-width: 890px) {
+    
+    .scrapbooking .scrapGrid {
+        grid-template-areas:
+        "a a b b c c"
+        "d e e e f f"
+        "d e e e f f"
+        "g h h h h i";
+    }
+    
+    
+    
+}
+
+
+
+
+/*=======================================ART_NUMERIQUE*/
+
+
+.art_numerique .selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    gap: 5em;
+    
+    padding: 2em;
+}
+
+.selector div input[type="radio"] {
+    display: none;
+}
+
+.selector div label {
+    position: relative;
+    display: block;
+    width: 10em;
+    height: 10em;
+    
+    border-radius: 1em;
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    
+    transition:0.5s;
+    
+}
+
+.selector div:first-child > label {
+    background-image: url("/assets/icone/expression.webp");
+    
+}
+
+.selector div:last-child > label {
+    background-image: url("/assets/icone/portrait.webp");
+    
+}
+
+.selector div label:hover {
+    cursor: pointer;
+    
+    transform: scale(1.1);
+    transition:0.5s;
+}
+
+.selector div:first-child > label:hover {
+    background-image: url("/assets/icone/gif/expression.gif");
+    
+}
+
+.selector div:last-child > label:hover {
+    background-image: url("/assets/icone/gif/portrait.gif");
+    
+}
+
+.selector div label > p {
+    position: absolute;
+    top: -2.5em;
+    left: 50%;
+    
+    transform: translateX(-50%);
+    
+    font-size: 1.5em;
+    font-family: var(--title-font);
+    color: var(--chicken-color);
+}
+
+
+.breakTop,
+.breakBot {
+    isolation: isolated;
+    z-index: -1;
+    aspect-ratio: 960/540;
+    width: 100%;
+    
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    /*--------------svg creator tool:*/
+    /*https://app.haikei.app/*/
+}
+
+.breakTop {
+    margin-top: -40%;
+    background-image:url("/assets/image/wave1.svg");
+}
+
+.breakBot {
+    margin-bottom: -40%;
+    background-image:url("/assets/image/wave2.svg");
+}
+
+.art_parent {
+    position: relative;
+    
+    background-color: #5A2F86;
+    
+    overflow: hidden;
+    
+}
+
+
+.expression {
+    position: relative;
+    z-index:3;
+    inset:0;
+    
+    padding: 1em;
+    
+    width: 100%;
+    
+    
+}
+
+.expression > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    gap: 2em;
+    
+}
+
+.expression div,
+.portrait div {
+    flex-basis: 25%;
+}
+
+.expression div img {
+    width: 100%;
+    border-radius: 1em;
+    
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.expression div img:hover {
+    outline: 0.2em solid var(--chicken-color);
+    
+    cursor: pointer;
+}
+
+.portrait div img {
+    width:50%;
+    
+}
+
+.portrait {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    
+    width: 100%;
+    
+}
+
+.portrait > div div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-bottom: 1em;
+    
+    border: 0.2em solid var(--chicken-color);
+    border-radius: 1em;
+    
+   
+}
+
+.portrait div img {
+    border-radius: 1em;
+}
+
+
+/*------------------Art shop*/
+
+.numericProduct {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.numericProduct > * {
+    flex: 1 1 45%;
+}
+
+
+
+.numericImg {
+    text-align: center;
+    
+    isolation: isolated;
+    z-index: 3;
+}
+
+.numericImg img {
+    opacity: 1;
+    
+    
+    
+    width: 100%;
+    border-radius: 1em;
+    
+    transform: translateX(50%);
+    
+    transition: 0.5s;
+    
+}
+
+
+
+.numericContent {
+    opacity: 0;
+    
+    isolation: isolated;
+    z-index: 0;
+    
+    text-align: center;
+    
+    transform: translateX(-50%);
+    
+    transition: 0.5s;
+}
+
+.numericProduct:hover .numericImg img,
+.numericProduct:hover .numericContent {
+    opacity: 1;
+    transform: translateX(0);
+    
+    transition: 0.5s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------order*/
+
+.orderPrompt form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    width: 80%;
+}
+
+.orderPrompt form textarea {
+    width: 80%;
+    height: 10em;
+    padding: 0.5em;
+    resize: none;
+    border-radius:1em;
 }
 
 /*============================================================*/
@@ -563,7 +1233,7 @@ input[type=file]::file-selector-button {
 
 input[type="submit"],
 button {
-    width: 100%;
+    width: fit-content;
     padding: 0.5em;
     background-color: var(--second-color);
     border: none;
@@ -853,343 +1523,6 @@ select {
     border-radius: 1em;
 }
 
-/*============================================================*/
-        /*Art PAGES
-/*============================================================*/
-
-
-/*=======================================SCRAPBOOKING*/
-
-/*------------------scrapbooking grid*/
-
-.scrapbooking .scrapGrid {
-    display: grid;
-    grid-template-areas:
-    "a a b b c c"
-    "d e e e f f"
-    "d e e e f f"
-    "g h h h h i";
-    gap: 0.5em;
-    padding: 2em;
-}
-
-.scrapGrid img {
-    width: 100%;
-    height: 100%;
-    object-position: center;
-    object-fit: cover;
-    
-    border-radius: 1em;
-    transition: 0.5s;
-    
-}
-
-.scrapGrid img:hover {
-    transform: scale(1.1);
-    z-index: 2;
-    
-}
-
-.scrapGrid img:nth-child(odd) {
-    border: 0.2em solid var(--second-color);
-}
-
-.scrapGrid img:nth-child(even) {
-    border: 0.2em solid var(--chicken-color);
-}
-
-
-.scrapGrid img:first-child {
-    grid-area: a;
-}
-
-.scrapGrid img:nth-child(2) {
-    grid-area: b;
-}
-
-.scrapGrid img:nth-child(3) {
-    grid-area: c;
-}
-
-.scrapGrid img:nth-child(4) {
-    grid-area: d;
-}
-
-.scrapGrid img:nth-child(5) {
-    grid-area: e;
-}
-
-.scrapGrid img:nth-child(6) {
-    grid-area: f;
-}
-
-.scrapGrid img:nth-child(7) {
-    grid-area: g;
-}
-
-.scrapGrid img:nth-child(8) {
-    grid-area: h;
-}
-
-.scrapGrid img:nth-child(9) {
-    grid-area: i;
-}
-
-.scrapbooking video {
-    width: 100%;
-    padding: 2em 0;
-    
-}
-
-/*------------------scrapbooking shop*/
-
-.shop {
-    position: relative;
-    z-index: 0;
-}
-
-.sliderButton {
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-}
-
-.shop .sliderButton:nth-child(2) {
-    left: 0;
-}
-
-.shop .sliderButton:nth-child(3) {
-    right: 0;
-}
-
-
-.scrapbookingProduct {
-    width: 90%;
-    margin: auto;
-    
-    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    gap: 2em;
-    
-    flex-wrap: nowrap;
-    white-space: nowrap;
-    
-    overflow-x: auto;
-    overflow-y: hidden;
-    
-    scroll-behavior: smooth;
-    
-    
-}
-
-
-
-
-
-.product {
-    position: relative;
-    z-index: 1;
-    
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /*---for overflow to succeed, gotta desable flewgrow and flewshrink*/
-    flex: 0 0 100%;
-    min-height: 15em;
-    
-    
-    border-radius: 1em;
-    /*box-shadow: 0 0.5em 1em rgba(0,0,0, 0.15);*/
-    
-    transition: 0.5s;
-    
-    
-}
-
-.product:hover {
-    min-height: 25em;
-    transition: 0.5s;
-}
-
-.product .img {
-    position: absolute;
-    top: 10%;
-    z-index: 2;
-    
-    width:100%;
-    min-height:15em;
-    border-radius: 1em;
-    
-    
-    
-    overflow: visible;
-    
-    transition: 0.5s;
-
-}
-
-.product:hover .img {
-    transform: scale(0.8);
-    min-height: 20em;
-    /*top: -5em;*/
-    
-    transition: 0.5s;
-    
-}
-
-.product .img img {
-    width: 100%;
-    
-    position: absolute;
-    inset: 0;
-    
-    overflow: hidden;
-    
-    border-radius: 1em;
-    
-    object-fit: cover;
-    object-position: center;
-}
-
-
-.content {
-    opacity: 0;
-    /*position: absolute;*/
-    /*top: 40%;*/
-    margin-top: 40%;
-    z-index: 1;
-    
-    width: 80%;
-    padding: 1em;
-    text-align: center;
-    
-    overflow: hidden;
-    
-    transition: 0.5s;
-}
-
-.product:hover .content {
-    opacity: 1;
-    
-    transition: 0.5s;
-}
-
-.priceTag {
-    width: fit-content;
-    margin: 0.5em auto;
-    padding: 0.5em;
-    background-color: var(--second-color);
-    color: var(--chicken-color);
-    border-radius: 1em;
-}
-
-
-/*=======================================ART_NUMERIQUE*/
-
-
-.art_numerique .selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    gap: 5em;
-    
-    padding: 2em;
-}
-
-.selector div input[type="radio"] {
-    display: none;
-}
-
-.selector div label > img {
-    border-radius: 1em;
-    
-    transition:0.5s;
-    
-}
-
-.selector div label > img:hover {
-    transform: scale(1.1);
-    transition:0.5s;
-}
-
-.art_parent {
-    position: relative;
-    
-    overflow: hidden;
-    
-}
-
-.expression {
-    position: relative;
-    inset:0;
-    
-    width: 100%;
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-    gap: 2em;
-    
-    opacity: 1;
-}
-
-.expression div,
-portrait div {
-    flex-basis: 25%;
-}
-
-.portrait div img {
-    width:50%;
-    
-}
-
-.portrait {
-    position: absolute;
-    inset: 0;
-    
-    width: 100%;
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-    gap: 2em;
-    
-    
-    opacity: 0;
-}
-
-
-
-
-
-
-
-
-/*------------------order*/
-
-.orderPrompt form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1em;
-    width: 80%;
-}
-
-.orderPrompt form textarea {
-    width: 80%;
-    height: 10em;
-    padding: 0.5em;
-    resize: none;
-    border-radius:1em;
-}
-
 
 
 
@@ -1202,56 +1535,12 @@ portrait div {
 
 @media screen and (min-width: 890px) {
 
-    .logo {
-        position: absolute;
-        top: -3em;
-        left: 50%;
-        z-index: 1;
-        
-        transform: translate(-50%);
-    
-        order: none;
-        
-    }
 
-    header nav a {
-        margin: 0;
-        width: fit-content;
-        border: none;
-    }
-
-
-    
-
-    header nav {
-        align-items: flex-start;
-        flex-direction: row; 
-    
-    }
-    
-
-    .header-top {
-        align-items: flex-start;
-        flex-direction: row;
-        gap: 0;
-    }
-
-    .intro video {
-        flex-basis: 48%;
-        min-width: 500px;
-     
-        border-radius: 1em;
-    }
-
-    .intro article {
-        flex-basis: 48%
-    }
-
-    input[type="submit"],
-    button {
-        width: fit-content;
+    /*input[type="submit"],*/
+    /*button {*/
+    /*    width: fit-content;*/
        
-    }
+    /*}*/
 
     input[type="text"],
     input[type="email"],

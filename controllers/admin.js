@@ -156,7 +156,7 @@ export const addProductPost = (req,res) =>
         // -----------------------max weight that can be upload, here is 5Mo
         const maxLoad = 5*1024*1024;
         
-        const acceptedMIME = ["text/csv","image/gif","image/jpeg","video/mpeg","video/ogg","image/png","application/pdf","video/webm","image/webp"];
+        const acceptedMIME = ["image/svg+xml","image/gif","image/jpeg","video/mpeg","image/png","application/pdf","image/webp"];
         
         if(files.image.size > maxLoad)
         {

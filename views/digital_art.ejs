@@ -1,83 +1,125 @@
 
 
 
-<section class="art_numerique container">
+<section class="art_numerique">
     
-    <h1>Art numérique</h1>
+    <div class="container">
+    
+        <h1>Art numérique</h1>
+        
+        <p></p>
+    
+    
+    </div>
 
         
-    <form class="selector">
+    <form class="selector container">
             
         <div>
             <input type="radio" name="art_selector" id="expression" checked>
                 
-            <label for="expression">
-                    
-                <img src="/assets/icone/gif/expression.gif">
-                    
-            </label>
+            <label for="expression"><p>Expression</p></label>
         </div>
             
         <div>
             <input type="radio" name="art_selector" id="portrait">
                 
-            <label for="portrait">
-                    
-                <img src="/assets/icone/gif/portrait.gif">
-                    
-            </label>
+            <label for="portrait"><p>Portrait</p></label>
         </div>
             
     </form>
     
+    
+    <div class="breakTop"></div>
+   
+    
     <div class="art_parent">
         
-        <article class="art_child expression">
+        
+        <article class="art_child expression container">
+            
+            <h2>Les expressions</h2>
+            
+            <p>
+                Mon terrain de jeu ! D’ailleurs, je vous invite (cordialement, on n’est pas des sauvages) à
+                essayer de deviner les expressions avant de les dévoiler .
+            </p>
             
             <div>
-                <img src="/assets/image/art_numerique/ouest.svg">
+            
+            
+                <div>
+                    <img src="/assets/image/art_numerique/expression/ouest.webp" alt="être à l'ouest">
+                </div>
+                
+                 <div>
+                    <img src="/assets/image/art_numerique/expression/pipe.webp" alt="Tailler une pipe">
+                </div>
+                
+                 <div>
+                    <img src="/assets/image/art_numerique/expression/a_o.webp" alt="L'Alpha et l'Omega">
+                </div>
+                
             </div>
             
-             <div>
-                <img src="/assets/image/art_numerique/pipe.svg">
-            </div>
-            
-             <div>
-                <img src="/assets/image/art_numerique/a_o.svg">
-            </div>
             
             
             
         </article>
         
     
-        <article class="art_child portrait" >
-            <div>
-                <img src="/assets/image/art_numerique/photo_moi.jpg">
-                <img src="/assets/image/art_numerique/portrait_moi.png">
-            </div>
+        <article class="art_child portrait container" >
+            
+            <h2>Les portraits</h2>
+            
+            
+             <p>
+                Je réalise des portrait à partir de photos. personnage de film avec réplique la plus « marquante » du film/perso et
+                portraits d’anonyme.
+            </p>
             
             <div>
-                <img src="/assets/image/art_numerique/photo_marty.jpg">
-                <img src="/assets/image/art_numerique/portrait_marty.png">
+            
+            
+                <div>
+                    <img src="/assets/image/art_numerique/portrait/photo_moi.webp">
+                    <img src="/assets/image/art_numerique/portrait/portrait_moi.webp">
+                </div>
+                
+                <div>
+                    <img src="/assets/image/art_numerique/portrait/photo_marty.webp">
+                    <img src="/assets/image/art_numerique/portrait/portrait_marty.webp">
+                </div>
+            
             </div>
             
         </article>
     
     </div>
     
+    <div class="breakBot"></div>
+    
 </section>
 
-<section>
+<section class="container shop">
+    
     <h2>Boutique</h2>
+    
+    
     <% for(let produit of produits) {
         if(produit.statut === "free") {%>
     
-    <article id="<%= produit.id %>">
-        <img src="<%= produit.img %>" alt="<% produit.nom %>" >
-        <p><%= produit.nom %></p>
+    <article id="<%= produit.id %>" class="numericProduct">
+        
+        <div class="numericImg">
+            <img src="<%= produit.img %>" alt="<% produit.nom %>" >
+        </div>
+        
+        <div class="numericContent">
+            
+        <h3><%= produit.nom %></h3>
         <p><%= produit.description %></p>
-        <p><%= produit.prix %></p>
+        <p class="priceTag"><%= produit.prix %> €</p>
         
         <% if(locals.user.role === "client" && (produit.idUserPanier != locals.user.id)){ %>
         
@@ -85,17 +127,31 @@
         
         <% } %>
         
+        </div>
+        
     </article>
+    
         <% }
     } %>
     
+    
 </section>
+
+<dialog class="modal container" id="artModal">
+    <h3></h3>
+</dialog>
 
 <% if(locals.user.role === "client") { %>
 
 <section class="orderPrompt container">
     
     <h2>Commande</h2>
+    
+    <p>
+        Ici, tu notes ce que tu voudrais, pourquoi elle est prévue, tes envies/souhaits, ce que tu ne
+        veux pas avec le plus de détail possible et puis je te recontacte. OK ?! (Aller, dis-moi que
+        tu l’as celle-là !)
+    </p>
     
     <form>
         <label for="orderDigitalArt">Faite une commande personalisée!</label>

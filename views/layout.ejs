@@ -35,7 +35,7 @@
                         
                     <a href="/profile/<%= locals.user.id %>">
                         
-                            <img src="/assets/image/Widget_profil.png" alt="icone de profile" />
+                            <img src="/assets/icone/profil.webp" alt="icone de profile" />
                             <p>Profile</p>
     
                     </a>
@@ -44,7 +44,7 @@
                 <% } else if(locals.user.role === "admin") { %>
                         
                     <a href="/admin">
-                        <img src="/assets/image/Widget_profil.png" alt="icone de profile" />
+                        <img src="/assets/icone/profil.webp" alt="icone de profile" />
                         <p>Profile</p></a>
                 
                 <% } else { %>
@@ -60,7 +60,7 @@
                 <a href="/scrapbooking">Scrapbooking</a>
                     
                 <a href="/" class="logo">
-                        <img src="/assets/image/CDP_officiel.png" alt="Logo de Cuisse De Poupou: un raton mange une cuisse de poulet!">
+                        <img src="/assets/image/CDP_logo.svg" alt="Logo de Cuisse De Poupou: un raton mange une cuisse de poulet!">
                 </a>
                     
                 <a href="/art_numerique">Art Numérique</a>
@@ -70,7 +70,7 @@
     </header>
     <script>
     // -----------------This allow the color theme to be loaded sooner to prevent light flashing with the dark theme
-        if(window.localStorage.getItem("theme") === "dark") document.querySelector(`.header-top input[type="radio"][id="dark"]`).checked = true;
+        if(window.localStorage.getItem("theme") === "dark") {document.querySelector(`.header-top input[type="radio"][id="dark"]`).checked = true; document.querySelector("body").classList.add("dark");}
     </script>
     
 
@@ -84,18 +84,22 @@
     </main>
 
     <footer>
+        
         <article class="container">
+            
             <h3>Contactez-moi :</h3>
+            
             <div>
                 <img src="/assets/icone/courriel.webp" alt="icone pour email">
-                <img src="/assets/icone/fb.png" alt="icone pour fb">
-                <img src="/assets/icone/linkdn.png" alt="icone pour linkdn">
-                <img src="/assets/icone/insta.png" alt="icone pour insta">
+                <img src="/assets/icone/fb.webp" alt="icone pour fb">
+                <img src="/assets/icone/linkdn.webp" alt="icone pour linkdn">
+                <img src="/assets/icone/insta.webp" alt="icone pour insta">
             </div>
 
         </article>
 
     </footer>
+    
     <!-- js script -->
     <script src="/js/script.js" type="text/javascript" defer></script>
 </body>

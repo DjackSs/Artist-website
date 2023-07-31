@@ -4,12 +4,12 @@
 
 const themeButtons = document.querySelectorAll(`.header-top input[type="radio"]`);
 
-// console.log(themeButtons);
-
 const activeTheme = window.localStorage.getItem("theme");
 
 if (themeButtons.length != 0)
 {
+    const body = document.querySelector("body");
+    
     for(let button of themeButtons)
     {
         if(button.id === activeTheme)
@@ -23,17 +23,16 @@ if (themeButtons.length != 0)
             if(button.id === "light")
             {
                 window.localStorage.setItem("theme", "light");
+                body.classList.remove("dark");
             }
             else if(button.id === "dark")
             {
                 window.localStorage.setItem("theme", "dark");
+                body.classList.add("dark");
             }
         });
     }
 }
-
-// https://www.youtube.com/watch?v=fyuao3G-2qg
-
 
 
 // ======================================================
@@ -152,17 +151,22 @@ function fadeIn ()
 
 const slider = document.querySelector("#slider");
 
+
 if(slider)
 {
     
     const products = document.querySelectorAll("#slider .product");
+    
+    
     
     if(products.length != 0)
     {
         
         let productSize;
         
-        // ------------this part get the gap in order to add it in the scroll value
+        let count = 0;
+        
+        // ------------this part get the gap, in order to add it in the scroll value
         let gap = window.getComputedStyle(slider).gap;
         
         gap = Number(gap.slice(0, -2));
@@ -172,23 +176,135 @@ if(slider)
         
         buttons[0].addEventListener("click", ()=>
         {
-            productSize = products[0].getBoundingClientRect();
+             
+            productSize = products[1].getBoundingClientRect();
             
             slider.scrollLeft -= productSize.width+gap;
+            
+            console.log(slider.scrollLeft);
+            
+            count -= 1;
+            
+            console.log(count);
+            
+            if(count < 0)
+            {
+                slider.scrollLeft += 9999999;
+                
+                count = products.length-1;
+            }
+           
+            
             
         });
         
         buttons[1].addEventListener("click", ()=>
         {
-            productSize = products[0].getBoundingClientRect();
+            
+            productSize = products[1].getBoundingClientRect();
             
             slider.scrollLeft += productSize.width+gap;
+            
+            console.log(slider.scrollLeft);
+            
+            count += 1;
+            
+            console.log(count);
+            
+            
+            if(count == products.length)
+            {
+                
+                slider.scrollLeft = 0;
+                
+                count = 0;
+                
+            }
+            
             
         });
         
     }
     
 }
+
+// ======================================================
+    // MODAL PRODUCT
+// ======================================================
+
+
+// ------------------------ modal for scrapbooking shop's product
+
+if(slider)
+{
+    const productImages = document.querySelectorAll(".product .img img");
+    
+    
+    const modal = document.querySelector("#modal");
+    
+    for(let image of productImages)
+    {
+        image.addEventListener("click", ()=>
+        {
+            const src = image.src;
+            
+            modal.style.backgroundImage = `url("${src}")`;
+            
+            modal.showModal();
+            
+            modal.addEventListener("click", ()=>
+            {
+                
+                modal.close();
+                
+            });
+
+            
+        });
+    }
+    
+}
+
+
+// ------------------------ modal digital art expression
+
+
+const expressionImg = document.querySelectorAll(".expression div img");
+
+if(expressionImg.length != 0)
+{
+    
+    const modal = document.querySelector("#artModal");
+    
+    for(let image of expressionImg)
+    {
+        image.addEventListener("click", ()=>
+        {
+            const src = image.src;
+            
+            const modalTitle = document.querySelector("#artModal h3");
+            
+            modal.style.backgroundImage = `url("${src}")`;
+            
+            modalTitle.innerText = image.alt;
+            
+            modal.showModal();
+            
+            modal.addEventListener("click", ()=>
+            {
+                
+                modal.close();
+                
+            });
+
+            
+        });
+    }
+    
+    
+    
+}
+
 
 
 // ======================================================
@@ -217,11 +333,16 @@ if(art_buttons.length != 0)
                         article.style.position = "relative";
                         
                         article.style.opacity = 1;
+                        
+                        article.classList.add("fadeIn");
                     }
                     else
                     {
                         article.style.position = "absolute";
+                        
                         article.style.opacity = 0;
+                        
+                        article.classList.remove("fadeIn");
                     }
                 }
             }
@@ -243,11 +364,16 @@ if(art_buttons.length != 0)
                         article.style.position = "relative";
                         
                         article.style.opacity = 1;
+                        
+                        article.classList.add("fadeIn");
                     }
                     else
                     {
                         article.style.position = "absolute";
+                        
                         article.style.opacity = 0;
+                        
+                        article.classList.remove("fadeIn");
                     }
                 
                 }
@@ -256,6 +382,10 @@ if(art_buttons.length != 0)
         });
     }
 }
+
+
+
+
 
 
 // ======================================================

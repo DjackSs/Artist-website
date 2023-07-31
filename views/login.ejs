@@ -12,16 +12,10 @@
             <legend>Connectez-vous à votre espace :</legend>
             
             <label for="loginEmail">Adresse mail:</label>
-            <input type="email" name="loginEmail" id="loginEmail" autocomplete="on">
-             <% if(errorForm.loginEmail) { %>
-                    <div><%= errorForm.loginEmail %></div>
-                <% } %>
+            <input type="email" name="loginEmail" id="loginEmail" autocomplete="on" placeholder="<% if(errorForm.loginEmail) { %><%= errorForm.loginEmail %> <% } %>" >
             
             <label for="loginMdp">Mot de passe:</label>
-            <input type="password" name="loginMdp" id="loginMdp" autocomplete="on">
-             <% if(errorForm.loginMdp) { %>
-                    <div><%= errorForm.loginMdp %></div>
-                <% } %>
+            <input type="password" name="loginMdp" id="loginMdp" autocomplete="on" placeholder="<% if(errorForm.loginMdp) { %><%= errorForm.loginMdp %> <% } %>" >
             
             <input type="submit" value="Valider">
             
@@ -38,27 +32,20 @@
             <legend> Pas de compte ?</legend>
             
                 <label for="pseudo">Nom:</label>
-                <input type="text" name="pseudo" id="pseudo" autocomplete="on">
-                <% if(errorForm.name) { %>
-                    <div><%= errorForm.name %></div>
-                <% } %>
+                <input type="text" name="pseudo" id="pseudo" autocomplete="on" placeholder="<% if(errorForm.name) { %><%= errorForm.name %> <% } %>" >
                 
                 <label for="email">Adresse mail:</label>
-                <input type="email" name="email" id="email" autocomplete="on">
-                <% if(errorForm.email) { %>
-                    <div><%= errorForm.email %></div>
-                <% } %>
+                <input type="email" name="email" id="email" autocomplete="on" placeholder="<% if(errorForm.email) { %><%= errorForm.email %> <% } %>" >
                 
                 <label for="adress">Adress </label>
-                <input type="text" name="adress" id="adress" autocomplete="on">
-                <% if(errorForm.adress) { %>
-                    <div><%= errorForm.adress %></div>
-                <% } %>
+                <p>Cette adresse sera utilisée pour la livraison de vos achâts</p>
+                <input type="text" name="adress" id="adress" autocomplete="on" placeholder="<% if(errorForm.adress) { %><%= errorForm.adress %> <% } %>" >
+                
                 
                 <label for="mdp">Mot de passe:</label>
-                <input type="password" name="mdp" id="mdp" autocomplete="on">
+                <input type="password" name="mdp" id="mdp" autocomplete="on" placeholder="<% if(errorForm.mdp) { %><%= errorForm.mdp %> <% } %>" >
                 <% if(errorForm.mdp) { %>
-                    <div><%= errorForm.mdp %></div>
+                    <p><%= "Mots de passe entre 6 et 15 lettres avec aux minimum 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale." %></p>
                 <% } %>
                 
                 <input type="submit" value="Valider">

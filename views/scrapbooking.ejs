@@ -3,15 +3,15 @@
     <h1 class="container">Scrapbooking</h1>
     
     <article class="scrapGrid">
-        <img src="/assets/image/scrapbooking/cadre1.jpg">
-        <img src="/assets/image/scrapbooking/hoogie.jpg">
-        <img src="/assets/image/scrapbooking/cadre2.jpg">
-        <img src="/assets/image/scrapbooking/jars.jpg">
-        <img src="/assets/image/scrapbooking/avion_licorn.jpg">
-        <img src="/assets/image/scrapbooking/noel_cart.jpg">
-        <img src="/assets/image/scrapbooking/spider_wire.jpg">
-        <img src="/assets/image/scrapbooking/noel.jpg">
-        <img src="/assets/image/scrapbooking/octopi.jpg">
+        <img src="/assets/image/scrapbooking/cadre1.webp">
+        <img src="/assets/image/scrapbooking/hoogie.webp">
+        <img src="/assets/image/scrapbooking/cadre2.webp">
+        <img src="/assets/image/scrapbooking/jars.webp">
+        <img src="/assets/image/scrapbooking/avion_licorn.webp">
+        <img src="/assets/image/scrapbooking/noel_cart.webp">
+        <img src="/assets/image/scrapbooking/spider_wire.webp">
+        <img src="/assets/image/scrapbooking/noel.webp">
+        <img src="/assets/image/scrapbooking/octopi.webp">
         
     </article>
     
@@ -38,6 +38,7 @@
             
         
        <article id="<%= produit.id %>" class="product">
+           
             <div class="img">
                 <img src="<%= produit.img %>" alt="<%= produit.nom %>" >
             </div>
@@ -64,6 +65,9 @@
     </div>
     
 </section>
+
+<dialog class="modal container" id="modal">
+</dialog>
 
 <% if(locals.user.role === "client") { %>
 
