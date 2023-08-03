@@ -119,16 +119,25 @@ export const addProductPost = (req,res) =>
     {
         // ----------------------------------------------------data's sanitation
         
-        field.name.forEach((name)=>{ name = xss(name)});
-        field.description.forEach((description)=>{ description = xss(description)});
-        field.name.forEach((price)=>{ price = xss(price)});
-        
-        files.image.forEach((image)=>
+        field.name = field.name.map((name)=>
         { 
-            image.originalFilename = xss(image.originalFilename);
-            image.filepath = xss(image.filepath);
-            image.newFilename = xss(image.newFilename);
-            image.mimetype = xss(image.mimetype);
+            name = xss(name);
+            return name;
+            
+        });
+        
+        field.description = field.description.map((description)=>
+        { 
+            description = xss(description); 
+            return description; 
+            
+        });
+        
+        field.price = field.price.map((price)=>
+        { 
+            price = xss(price); 
+            price = price.replace(/\s+/g,""); 
+            return price;
         });
          
         // ----------------------------------------------------data's validation
@@ -142,7 +151,7 @@ export const addProductPost = (req,res) =>
             errorForm.description = "Description invalide";
         }
         
-        if(!field.price[0].trim() || isNaN(field.price[0]))
+        if(!field.price[0].trim() || isNaN(field.price[0]) || field.price[0].trim() >= 999999)
         {
             errorForm.price = "Prix invalide";
         }
@@ -158,16 +167,38 @@ export const addProductPost = (req,res) =>
         
         const acceptedMIME = ["image/svg+xml","image/gif","image/jpeg","video/mpeg","image/png","application/pdf","image/webp"];
         
-        if(files.image.size > maxLoad)
+        if(files.image)
         {
-        	errorForm.size = "Image trop lourde";
+            
+            // ----------------------------------------------------data's sanitation
+        
+            files.image = files.image.map((image)=>
+            { 
+                image.originalFilename = xss(image.originalFilename);
+                image.filepath = xss(image.filepath);
+                image.newFilename = xss(image.newFilename);
+                image.mimetype = xss(image.mimetype);
+                
+                return image;
+            });
+            
+            
+            // ----------------------------------------------------data's validation
+            
+            
+            
+            if(files.image.size > maxLoad)
+            {
+            	errorForm.size = "Image trop lourde";
+            }
+            
+            if(!acceptedMIME.includes(files.image[0].mimetype))
+            {
+            	errorForm.mime = "Format non pris en charge";
+            }
+            
         }
         
-        if(!acceptedMIME.includes(files.image[0].mimetype))
-        {
-        	errorForm.mime = "Format non pris en charge";
-        }
-
         
         if(Object.keys(errorForm).length != 0)
         {
@@ -176,6 +207,7 @@ export const addProductPost = (req,res) =>
             return res.redirect("/admin");
             
         }
+        
         
         // -----------------------formatting the file's name
         const extention = "."+files.image[0].originalFilename.split(".").pop();
@@ -202,7 +234,7 @@ export const addProductPost = (req,res) =>
             
             pool.query(query,[newProduct], function(error, result, fields)
             {
-                if(error) console.log(error)
+                if(error) console.log(error);
                     
                 req.session.user.error = "";
                     
@@ -275,7 +307,7 @@ export const editProduit = (req,res) =>
     // ----------------------------------------------------data's sanitation
     req.body.nom = xss(req.body.nom);
     req.body.description = xss(req.body.description);
-    req.body.prix = xss(req.body.prix);
+    req.body.prix = xss(req.body.prix.replace(/\s+/g,""));
     
     // ----------------------------------------------------data's validation
     
@@ -293,7 +325,7 @@ export const editProduit = (req,res) =>
         errorForm.descri = "description invalide";
     }
     
-    if(!req.body.prix.trim() || isNaN(req.body.prix))
+    if(!req.body.prix.trim() || isNaN(req.body.prix) || req.body.prix >= 1000000)
     {
         errorForm.price = "Prix invalide";
     }
@@ -377,7 +409,7 @@ export const devis = (req,res)=>
 {
     // ----------------------------------------------------data's sanitation
     req.body.devis = xss(req.body.devis);
-    req.body.devisPrix = xss(req.body.devisPrix);
+    req.body.devisPrix = xss(req.body.devisPrix.replace(/\s+/g,""));
     
     // ----------------------------------------------------data's validation
     let errorForm = {};
@@ -387,7 +419,7 @@ export const devis = (req,res)=>
         errorForm.devis = "Intitulé invalide";
     }
     
-    if(!req.body.devisPrix.trim() || isNaN(req.body.devisPrix))
+    if(!req.body.devisPrix.trim() || isNaN(req.body.devisPrix) || req.body.devisPrix >= 1000000)
     {
         errorForm.price = "Prix invalide";
     }

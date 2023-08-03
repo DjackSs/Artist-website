@@ -11,7 +11,7 @@ const router = express.Router();
 // CONTROLLERS SET UP
 // ==============================================
 
-import {home, art_page1, art_page2, inscriptionPost} from "../controllers/home.js";
+import {home, art_page1, art_page2, inscriptionPost, legal, error} from "../controllers/home.js";
 
 import {login, loginPost, profile, logout, shoppingAdd, shoppingDelete, customOrder, deleteCommande, editProfile, deleteProfile, dialogue, cardCheckout, shoppingPay, customCheckout, customPay, downloadBill} from "../controllers/client.js";
 
@@ -67,6 +67,8 @@ router.get("/", home);
 router.get("/scrapbooking", art_page1);
 
 router.get("/art_numerique", art_page2);
+
+router.get("/legal", legal);
 
 
 //SIGN IN PAGE / LOGIN PAGE
@@ -130,6 +132,13 @@ router.put("/closeBuying/:id", adminCheck, closeBuying);
 router.put("/closeCustom/:id", adminCheck, closeCustom);
 
 router.post("/devisPost/:id", adminCheck, devis);
+
+
+
+//ERROR PAGE
+
+router.all("/*", error);
+
 
 
 

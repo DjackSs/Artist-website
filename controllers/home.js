@@ -239,11 +239,37 @@ export const inscriptionPost = (req, res) =>
     });
             
     
+};
+
+
+// ----------------------------------------------------
+
+
+export const error = (req, res) =>
+{
     
-    
-    
+    res.render('layout.ejs',
+    {
+        template: 'error.ejs'
+        
+    });
     
 };
+
+// ----------------------------------------------------
+
+
+export const legal = (req, res) =>
+{
+    
+    res.render('layout.ejs',
+    {
+        template: 'legal.ejs'
+        
+    });
+    
+};
+
 
 
 

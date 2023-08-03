@@ -1,19 +1,17 @@
 <h1 class="container">Admin page</h1>
 
-<section class="adminGrid container">
+<div class="adminGrid container">
     
     <section class="profileDetail">
         
-        <article id="<%= locals.user.id %>">
+        <div id="<%= locals.user.id %>">
             
             <h2><%= locals.user.pseudo %></h2>
             <h3><%= locals.user.email %></h3>
-            <h3><%= locals.user.adresse %></h3>
+            <h3><%= locals.user.adress %></h3>
             <button class="js-editProfile-button" data-profile="<%= locals.user.id %>">Edit Profile</button>
             
-        </article>
-        
-        
+        </div>
     
         <form method="post" action="/logout">
             <input type="submit" value="Deconnexion">
@@ -26,6 +24,7 @@
     <h2>Gestion des clients :</h2>
     
     <table id="clientTable">
+        
     		<thead>
     				<th>Nom</th>
     	            <th>Email</th>
@@ -62,20 +61,11 @@
         <form method="post" action="/addProductPost" enctype="multipart/form-data">
             
             <label for="name">Nom du produit</label>
-            <input type="text" name="name" id="name">
-            <% if(locals.user.error) { %>
-            
-                <div><%= locals.user.error.name %></div>
-                
-            <% } %>
+            <input type="text" name="name" id="name" placeholder="<% if(locals.user.error) { %> <%=locals.user.error.name%> <% } %> ">
             
             <label for="description">Description</label>
-            <input type="text" name="description" id="description">
-            <% if(locals.user.error) { %>
+            <input type="text" name="description" id="description" placeholder="<% if(locals.user.error) { %> <%=locals.user.error.description%> <% } %> ">
             
-                <div><%= locals.user.error.description %></div>
-                
-            <% } %>
             
             <label for="category">Catégorie</label>
             <select name="category" id="category">
@@ -84,20 +74,16 @@
             </select>
             
             <label for="price">Prix</label>
-            <input type="text" name="price" id="price">
-            <% if(locals.user.error) { %>
+            <input type="text" name="price" id="price" placeholder="<% if(locals.user.error) { %> <%=locals.user.error.price%> <% } %> ">
             
-                <div><%= locals.user.error.price %></div>
-                
-            <% } %>
             
             <label for="image">Ajouter une image :</label>
             <input type="file" name="image" id="image">
             
             <% if(locals.user.error) { %>
-                <div><%= locals.user.error.img %></div>
-                <div><%= locals.user.error.size %></div>
-                <div><%= locals.user.error.mime %></div>
+                <p class="errorForm"><%= locals.user.error.img %></p>
+                <p class="errorForm"><%= locals.user.error.size %></p>
+                <p class="errorForm"><%= locals.user.error.mime %></p>
             <% } %>
             
             <input type="submit" value="Ajouter">
@@ -160,17 +146,24 @@
                     
                      <% if(commande.devis != 0) { %>
                      
+                     <div class="devis">
+                     
                         <h3>Devis pour la commande :</h3>
                         <p><%= commande.devis %></p>
-                        <p><%= commande.prixCommande %></p>
+                        <p><%= commande.prixCommande %> €</p>
+                        
+                    </div>
                         
                     
                 <% } else { %>
                 
                     <form data-id="<%= commande.id %>">
                         
-                        <input type="text" name="devis" placeholder="intitulé pour le devis">
-                        <input type="text" name="devisPrix"  placeholder="prix de la commande">
+                        <label for="devis">Intitulé pour le devis</label>
+                        <input type="text" name="devis" id="devis">
+                        
+                        <label for="devisPrix">Prix de la commande</label>
+                        <input type="text" name="devisPrix" id="devisPrix">
                         
                         <button class="js-devis-button" data-commande="<%= commande.id %>">Générer un devis</button>
                         
@@ -214,7 +207,7 @@
             
         <h2>Gestion des achats :</h2>
         
-        <div>
+            
         <% for(let panier of achats) { %>
         
             <article id="<%= panier.idPanier %>">
@@ -250,10 +243,14 @@
             
         <% }
         } %>
-        </div>
+        
+        
     </section>
-    <section>
+    
+    <section class="adminArchive">
+        
         <h2>Historique des achats :</h2>
+        
         <article>
             <% for(let archive of archives) { %>
             
@@ -261,7 +258,8 @@
             
             <% } %>
         </article>
+        
     </section>
-</section>
+</div>
 
 

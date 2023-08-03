@@ -1,20 +1,18 @@
 <h1 class="container">Mon profil : </h1>
 
-<section class="profileGrid container">
+<div class="profileGrid container">
     
     <section class="profileDetail">
         
-        <article id="<%= locals.user.id %>">
+        <div id="<%= locals.user.id %>">
             
             <h2><%= locals.user.pseudo %></h2>
-           
             <h3><%= locals.user.email %></h3>
-            
-            <h3><%= locals.user.adresse %></h3>
+            <h3><%= locals.user.adress %></h3>
             
             <button class="js-editProfile-button" data-profile="<%= locals.user.id %>">Edit Profile</button>
             
-        </article>
+        </div>
         
     
         <form method="post" action="/logout">
@@ -28,6 +26,7 @@
     </section>
     
     <section class="profilePanier">
+    
         <H2>Panier</H2>
         
         <% for(let produit of produits) { 
@@ -35,11 +34,11 @@
             
             <article id="<%= produit.id %>" class="articlePanier">
                 
-            <h3><%= produit.nom %></h3>
-            <p><%= produit.prix %> €</p>
-            <p><button class="js-removeProduitPanier-button" data-produit="<%= produit.id %>">Retirer</button> </p>
-            
-        </article>
+                <h3><%= produit.nom %></h3>
+                <p><%= produit.prix %> €</p>
+                <p><button class="js-removeProduitPanier-button" data-produit="<%= produit.id %>">Retirer</button> </p>
+                
+            </article>
             <% }
         } %>
         
@@ -57,6 +56,7 @@
     </section>
     
     <section class="profileCommande">
+        
         <h2>Mes commandes</h2>
         
         <% for(let commande of commandes) {
@@ -69,16 +69,21 @@
                     
                     <% if(commande.devis != 0) { %>
                     
-                        
+                    <div class="devis">
+                            
                         <h3>Devis pour la commande :</h3>
-                    
+                        
                         <p><%= commande.devis %></p>
                         <p><%= commande.prixCommande %> €</p>
-                        
+                            
                         <form method="post" action="/custom-checkout/<%= locals.user.id %>">
+                            
                             <input type="hidden" name="idCommande" value="<%= commande.id %>">
                             <input type="submit" value="Acheter">
+                            
                         </form>
+                            
+                    </div>
                         
                     <% } %>
                 </div>
@@ -93,6 +98,7 @@
                             <p><%= dialogue.comment %></p>
                     <% }
                     } %>
+                    
                 </div>
             
                 <div>
@@ -115,7 +121,9 @@
     
     </section>
     <section class="profileAchats">
+        
         <h2>Mes achats</h2>
+        
         
             <% for(let panier of paniers) { 
                 if(panier.statut != "cree") { %>
@@ -160,4 +168,4 @@
             
         
     </section>
-</section>
+</div>

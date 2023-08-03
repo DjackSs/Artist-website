@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Come and discover the art of Couisse De Poupou !">
+    <meta name="description" content="Come and discover the art of Couisse De Poupou ! Scrapbooking and digital portraits can be purchased">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>L'Art de Cuisse De Poupou</title>
@@ -15,7 +16,7 @@
     
 </head>
 <body>
-    <header>
+    <header id="nav">
         <div class="header-top">
             
             <form>
@@ -35,8 +36,8 @@
                         
                     <a href="/profile/<%= locals.user.id %>">
                         
-                            <img src="/assets/icone/profil.webp" alt="icone de profile" />
-                            <p>Profile</p>
+                            <img src="/assets/icone/profil.webp" alt="profile icon" />
+                            <p>Profil</p>
     
                     </a>
                         
@@ -44,8 +45,8 @@
                 <% } else if(locals.user.role === "admin") { %>
                         
                     <a href="/admin">
-                        <img src="/assets/icone/profil.webp" alt="icone de profile" />
-                        <p>Profile</p></a>
+                        <img src="/assets/icone/profil.webp" alt="profile icon" />
+                        <p>Profil</p></a>
                 
                 <% } else { %>
                     
@@ -56,11 +57,11 @@
             </div>
         </div>
         <div>
-            <nav class="container">
+            <nav>
                 <a href="/scrapbooking">Scrapbooking</a>
                     
                 <a href="/" class="logo">
-                        <img src="/assets/image/CDP_logo.svg" alt="Logo de Cuisse De Poupou: un raton mange une cuisse de poulet!">
+                        <img src="/assets/image/CDP_logo.svg" alt="Cuisse De Poupou's logo: a raccoon eats a chicken leg!">
                 </a>
                     
                 <a href="/art_numerique">Art Numérique</a>
@@ -75,6 +76,8 @@
     
 
     <main>
+        <a href="#nav" class="flyNav"><button >&#171;</button></a>
+        
         <img src="/assets/image/Banniere_haut.svg" alt="Border in chicken's hips" id="stickyImg">
         
      
@@ -90,17 +93,21 @@
             <h3>Contactez-moi :</h3>
             
             <div>
-                <img src="/assets/icone/courriel.webp" alt="icone pour email">
-                <img src="/assets/icone/fb.webp" alt="icone pour fb">
-                <img src="/assets/icone/linkdn.webp" alt="icone pour linkdn">
-                <img src="/assets/icone/insta.webp" alt="icone pour insta">
+                <a href="" target="_blank"><img src="/assets/icone/courriel.webp" alt="email icon"></a>
+                <a href="" target="_blank"><img src="/assets/icone/fb.webp" alt="facebook icon"></a>
+                <a href="" target="_blank"><img src="/assets/icone/linkdn.webp" alt="linkedin icon"></a>
+                <a href="" target="_blank"><img src="/assets/icone/insta.webp" alt="instagrame icon"></a>
             </div>
+            
+            <a href="/legal">Mentions légales</a>
 
         </article>
+        
+        
 
     </footer>
     
     <!-- js script -->
-    <script src="/js/script.js" type="text/javascript" defer></script>
+    <script src="/js/script.js" defer></script>
 </body>
 </html>

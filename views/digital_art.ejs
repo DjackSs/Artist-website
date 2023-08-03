@@ -16,15 +16,24 @@
     <form class="selector container">
             
         <div>
+            
+            <p>Expression</p>
+            
             <input type="radio" name="art_selector" id="expression" checked>
                 
-            <label for="expression"><p>Expression</p></label>
+            <label for="expression"></label>
+            
+            
         </div>
             
         <div>
+            
+            <p>Portrait</p>
+            
             <input type="radio" name="art_selector" id="portrait">
                 
-            <label for="portrait"><p>Portrait</p></label>
+            <label for="portrait"></label>
+            
         </div>
             
     </form>
@@ -40,16 +49,21 @@
             
             <h2>Les expressions</h2>
             
+            <p>« Une image vaut mille mots ».</p>
+            
             <p>
-                Mon terrain de jeu ! D’ailleurs, je vous invite (cordialement, on n’est pas des sauvages) à
-                essayer de deviner les expressions avant de les dévoiler .
+                La langue française possède beaucoup d’expression imagée et j’ai souhaité exploiter ce
+                « terrain de jeu » au pied de la lettre.
+                Sur les images ci-dessous, vous pouvez essayer de retrouver l’expression correspondant à
+                l’illustration. La solution est disponible en passant votre curseur sur la zone floutée.
+                PS Certaines expressions sont plus coquinous que les autres, attention au jeune public …
             </p>
             
             <div>
             
             
                 <div>
-                    <img src="/assets/image/art_numerique/expression/ouest.webp" alt="être à l'ouest">
+                    <img src="/assets/image/art_numerique/expression/ouest.webp" alt="Être à l'ouest">
                 </div>
                 
                  <div>
@@ -57,7 +71,7 @@
                 </div>
                 
                  <div>
-                    <img src="/assets/image/art_numerique/expression/a_o.webp" alt="L'Alpha et l'Omega">
+                    <img src="/assets/image/art_numerique/expression/h2o_vin.webp" alt="Mettre de l'eau dans son vin">
                 </div>
                 
             </div>
@@ -74,21 +88,20 @@
             
             
              <p>
-                Je réalise des portrait à partir de photos. personnage de film avec réplique la plus « marquante » du film/perso et
-                portraits d’anonyme.
+                Je créer des portraits à partir de photo. Je dessine des anonymes et des personnages de film des années 90
             </p>
             
             <div>
             
             
                 <div>
-                    <img src="/assets/image/art_numerique/portrait/photo_moi.webp">
-                    <img src="/assets/image/art_numerique/portrait/portrait_moi.webp">
+                    <img src="/assets/image/art_numerique/portrait/photo_moi.webp" alt="Cuisse De Poupou photo">
+                    <img src="/assets/image/art_numerique/portrait/portrait_moi.webp" alt="Cuisse De Poupou picture">
                 </div>
                 
                 <div>
-                    <img src="/assets/image/art_numerique/portrait/photo_marty.webp">
-                    <img src="/assets/image/art_numerique/portrait/portrait_marty.webp">
+                    <img src="/assets/image/art_numerique/portrait/photo_marty.webp" alt="Marty McFly photo from Back to the future 3">
+                    <img src="/assets/image/art_numerique/portrait/portrait_marty.webp" alt="Marty McFly picture">
                 </div>
             
             </div>
@@ -117,15 +130,15 @@
         
         <div class="numericContent">
             
-        <h3><%= produit.nom %></h3>
-        <p><%= produit.description %></p>
-        <p class="priceTag"><%= produit.prix %> €</p>
-        
-        <% if(locals.user.role === "client" && (produit.idUserPanier != locals.user.id)){ %>
-        
-        <button class="js-addProduit-button" data-addProduct = "<%= produit.id %>" data-addClient="<%= locals.user.id %>">Ajouter au panier</button>
-        
-        <% } %>
+            <h3><%= produit.nom %></h3>
+            <p><%= produit.description %></p>
+            <p class="priceTag"><%= produit.prix %> €</p>
+            
+            <% if(locals.user.role === "client" && (produit.idUserPanier != locals.user.id)){ %>
+            
+                <button class="js-addProduit-button" data-addProduct = "<%= produit.id %>" data-addClient="<%= locals.user.id %>">Ajouter au panier</button>
+            
+            <% } %>
         
         </div>
         
@@ -138,7 +151,6 @@
 </section>
 
 <dialog class="modal container" id="artModal">
-    <h3></h3>
 </dialog>
 
 <% if(locals.user.role === "client") { %>
@@ -148,9 +160,8 @@
     <h2>Commande</h2>
     
     <p>
-        Ici, tu notes ce que tu voudrais, pourquoi elle est prévue, tes envies/souhaits, ce que tu ne
-        veux pas avec le plus de détail possible et puis je te recontacte. OK ?! (Aller, dis-moi que
-        tu l’as celle-là !)
+        Ici, tu me précises ta demande : pour qui est le portrait, tes couleurs préférés.
+        (L’envoi de la photo sera fait dans un second temps)
     </p>
     
     <form>

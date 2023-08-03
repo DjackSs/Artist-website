@@ -2,19 +2,21 @@
 <section class="container">
     <h2>Connexion</h2>
     
-    <% if(errorForm.loginFail) { %>
-        <div><%= errorForm.loginFail %></div>
-    <% } %>
+    
     
     <form method="post" action="/login/post" autocomplete="on">
         
         <fieldset>
             <legend>Connectez-vous à votre espace :</legend>
             
-            <label for="loginEmail">Adresse mail:</label>
+            <% if(errorForm.loginFail) { %>
+                <p class="errorForm"><%= errorForm.loginFail %></p>
+            <% } %>
+            
+            <label for="loginEmail">Adresse mail :</label>
             <input type="email" name="loginEmail" id="loginEmail" autocomplete="on" placeholder="<% if(errorForm.loginEmail) { %><%= errorForm.loginEmail %> <% } %>" >
             
-            <label for="loginMdp">Mot de passe:</label>
+            <label for="loginMdp">Mot de passe :</label>
             <input type="password" name="loginMdp" id="loginMdp" autocomplete="on" placeholder="<% if(errorForm.loginMdp) { %><%= errorForm.loginMdp %> <% } %>" >
             
             <input type="submit" value="Valider">
@@ -31,18 +33,19 @@
         <fieldset>
             <legend> Pas de compte ?</legend>
             
-                <label for="pseudo">Nom:</label>
+                <label for="pseudo">Nom :</label>
                 <input type="text" name="pseudo" id="pseudo" autocomplete="on" placeholder="<% if(errorForm.name) { %><%= errorForm.name %> <% } %>" >
                 
-                <label for="email">Adresse mail:</label>
+                <label for="email">Adresse mail :</label>
                 <input type="email" name="email" id="email" autocomplete="on" placeholder="<% if(errorForm.email) { %><%= errorForm.email %> <% } %>" >
                 
-                <label for="adress">Adress </label>
-                <p>Cette adresse sera utilisée pour la livraison de vos achâts</p>
+                <label for="adress">Adress :</label>
+                
                 <input type="text" name="adress" id="adress" autocomplete="on" placeholder="<% if(errorForm.adress) { %><%= errorForm.adress %> <% } %>" >
+                <p>Cette adresse sera utilisée pour la livraison de vos achâts</p>
                 
                 
-                <label for="mdp">Mot de passe:</label>
+                <label for="mdp">Mot de passe :</label>
                 <input type="password" name="mdp" id="mdp" autocomplete="on" placeholder="<% if(errorForm.mdp) { %><%= errorForm.mdp %> <% } %>" >
                 <% if(errorForm.mdp) { %>
                     <p><%= "Mots de passe entre 6 et 15 lettres avec aux minimum 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale." %></p>

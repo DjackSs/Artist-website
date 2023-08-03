@@ -111,6 +111,7 @@ export const loginPost = (req, res) =>
 			        	id: user[0].id,
 			            pseudo: user[0].pseudo,
 			            email: user[0].email,
+			            adress: user[0].adress,
 			            role: user[0].role
 		            };
 	            		// -----------------Setting up session's profile for each role:
@@ -535,9 +536,7 @@ export const shoppingPay = (req,res) =>
 						doc
 						.fontSize(15)
 						.text(`${req.session.user.adress}`, 250, 400);
-						doc
-						.fontSize(15)
-						.text("Code FEDEX", 250, 420);
+						doc;
 						
 						produitPaye.forEach((item)=>
 						{
@@ -743,9 +742,7 @@ export const customPay = (req,res) =>
 			doc
 			.fontSize(15)
 			.text(`${req.session.user.adress}`, 250, 400);
-			doc
-			.fontSize(15)
-			.text("Code FEDEX", 250, 420);
+			doc;
 			
 			
 			commandePaye.forEach((item)=>
@@ -774,7 +771,7 @@ export const customPay = (req,res) =>
 			const newArchive =
 						{
 							id: uuidv4(),
-							category: "boutique",
+							category: "comande",
 							facture: newBill
 						};
 						

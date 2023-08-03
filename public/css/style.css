@@ -71,6 +71,7 @@
 
 html {
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -82,7 +83,10 @@ body {
     
     background-color: var(--white-color);
     color:var(--black-color);
+    
+    
 }
+
 
 
 h1,
@@ -130,25 +134,80 @@ h3 {
 
 
 .container {
-    max-width: 950px;
+    max-width: 1200px;
     margin: auto;
+    
+    padding: 1em;
 }
 
 
 .fade {
     opacity: 0;
     
-    animation: fadeOut 1s;
+    animation: fadeOut 0.5s;
     
 }
 
 .fadeIn {
     opacity: 1;
     
-    animation: fadeIn 3s;
+    animation: fadeIn 1s;
     
     
 }
+
+.errorForm {
+    color: red;
+    font-weight: bold;
+}
+
+
+
+
+
+
+.flyNav {
+    position: fixed;
+    right: 3%;
+    bottom: 10%;
+    z-index: 5;
+    
+    text-decoration: none;
+    color: var(--white-color);
+    
+    
+    transform: translateX(50em);
+    
+    transition: 0.5s;
+    
+    
+}
+
+
+
+.quick_nav {
+    transform: translateX(0);
+}
+
+@media (pointer:coarse) {
+    
+    .quick_nav {
+        transform: translateX(0) rotate(90deg);
+    }
+    
+}
+
+@media (hover:hover) {
+    
+    .flyNav:hover {
+        transform: rotate(90deg);
+        
+        
+        transition: 0.5s;
+    }
+    
+}
+
 
 /*-----------------------animation*/
 
@@ -202,20 +261,24 @@ header > div:last-child {
 }
 
 .header-top {
+    max-width: 1200px;
+    margin: auto;
+    
     display: flex;
     justify-content: space-between;
-    
-    /*padding: 2em;*/
 
     flex-direction: column;
     align-items: center;
     gap: 1em;
+    
+    
 }
 
 .header-top form {
     display: flex;
     align-items: center;
-    gap: 1em
+    gap: 1em;
+    
 }
 
 .header-top form label {
@@ -263,10 +326,11 @@ header > div:last-child {
 }
 
 header nav {
+    max-width: 900px;
+    margin: auto;
+    
     display: flex;
     justify-content: space-between;
-    
-    /*padding: 1em;*/
     
     position: relative;
     
@@ -371,7 +435,12 @@ footer {
 
 footer article {
     padding: 1em;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    
 }
 
 footer article div {
@@ -387,9 +456,30 @@ footer article div img {
     width: 10em;
 }
 
+footer article a {
+    text-decoration: none;
+    font-family: var(--title-font);
+    color: var(--second-color);
+}
+
 
 /*============================================================*/
-        /*HOME
+        /*ERROR PAGE
+/*============================================================*/
+
+.error {
+    text-align: center;
+}
+
+
+.error img {
+    width: 50%;
+}
+
+
+
+/*============================================================*/
+        /*HOME PAGE
 /*============================================================*/
 
 
@@ -471,11 +561,16 @@ footer article div img {
     left: 5%;
 }
 
+
+/*---------------------- */
+
 .intro {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-areas:
+    "h1"
+    "d1"
+    "v1";
+    
     gap: 2em;
     
     padding:1em;
@@ -483,44 +578,39 @@ footer article div img {
 
 }
 
+.intro > * {
+    justify-self: center;
+}
+
+.intro h1 {
+    grid-area: h1;
+    margin: 0;
+}
+
 .intro video {
-    min-width:40%;
+    grid-area: v1;
+    align-self: center;
+    
+    width:100%;
     border-radius: 1em;
 }
 
-.intro article {
-    display: grid;
+.intro > div {
+    grid-area: d1;
+    
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1em;
-    grid-template-areas:
-    "h"
-    "d"
-    "p";
+    
+   
     
     padding: 1em;
 }
 
-.intro article > * {
-    justify-self: center;
-}
 
-.intro article h1 {
-    margin: 0;
-    
-    grid-area: h;
-}
-
-.intro article div:nth-child(3) {
-    grid-area: p;
-}
-
-.intro article div:nth-child(3) p {
-     margin: 0 0 0.5em 0;
-    
-}
-
-.intro article div:nth-child(2) {
-    grid-area: d;
+.intro div > div:first-child {
     width: 10em;
     min-height: 10em;
     border: 0.2em solid var(--chicken-color);
@@ -534,9 +624,19 @@ footer article div img {
     overflow: hidden;
 }
 
-.intro article img {
-    width: 60%;
+.intro div > div:first-child img {
+    width: 100%;
 }
+
+.intro article div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+
 
 
 
@@ -550,36 +650,21 @@ footer article div img {
         display: block;
     }
     
-    .intro video {
-       min-width: 20em;
-    }
     
-    /*.intro article {*/
-    /*    grid-template-areas:*/
-    /*    "h h"*/
-    /*    "d p";*/
-        
-    /*}*/
 
 }
 
 
 @media screen and (min-width: 890px) {
     
-    .intro video {
-        flex-basis: 45%;
-     
-        border-radius: 1em;
-    }
-
-    .intro article {
-        flex-basis: 45%
+    .intro {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+        "v1 h1"
+        "v1 d1";
     }
 
 }
-
-
-
 
 
 
@@ -679,6 +764,7 @@ footer article div img {
 }
 
 .sliderButton {
+    display: none;
     position: absolute;
     top: 50%;
     z-index: 2;
@@ -693,25 +779,7 @@ footer article div img {
 }
 
 
-.scrapbookingProduct {
-    width: 90%;
-    margin: auto;
-    
-    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    gap: 2em;
-    
-    flex-wrap: nowrap;
-    white-space: nowrap;
-    
-    overflow-x: auto;
-    overflow-y: hidden;
-    
-    scroll-behavior: smooth;
-    
-    
-}
+
 
 
 .product {
@@ -729,7 +797,6 @@ footer article div img {
     
     
     border-radius: 1em;
-    /*box-shadow: 0 0.5em 1em rgba(0,0,0, 0.15);*/
     
     transition: 0.5s;
     
@@ -761,7 +828,6 @@ footer article div img {
 .product:hover .img {
     transform: scale(0.8);
     min-height: 20em;
-    /*top: -5em;*/
     
     transition: 0.5s;
     
@@ -786,8 +852,6 @@ footer article div img {
 
 .content {
     opacity: 0;
-    /*position: absolute;*/
-    /*top: 40%;*/
     margin-top: 40%;
     z-index: 1;
     
@@ -825,28 +889,10 @@ footer article div img {
     background-size: contain;
     
     border: 0.2em solid var(--second-color);
+    border-radius: 2em;
 }
 
-#artModal {
-    text-align: center;
-}
 
-#artModal h3 {
-    margin-top: 0.5em;
-    font-size: 2em;
-    color: transparent;
-    text-shadow: 0 0 10px rgba(225,41,133,0.5);
-    
-    transition: 0.5s;
-    
-}
-
-#artModal h3:hover {
-    color: var(--accentuation-color);
-    text-shadow: none;
-    
-    transition: 0.5s;
-}
 
 
 
@@ -864,6 +910,30 @@ footer article div img {
         "e e f f"
         "h h h h"
         "g g i i";
+    }
+    
+    .sliderButton {
+        display: block;
+    }
+    
+    .scrapbookingProduct {
+        width: 90%;
+        margin: auto;
+        
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        gap: 2em;
+        
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        
+        overflow-x: auto;
+        overflow-y: hidden;
+        
+        scroll-behavior: smooth;
+        
+        
     }
     
     
@@ -884,6 +954,18 @@ footer article div img {
 }
 
 
+/*----------------------detect touch screen = detect mobile devices*/
+
+@media (pointer:coarse) {
+    
+    /*------for desktop, each product's content is hidden behin a onHover interaction, here it's reveal by default for mobile devices*/
+    .content {
+        opacity: 1;
+    }
+    
+}
+
+
 
 
 /*=======================================ART_NUMERIQUE*/
@@ -891,6 +973,7 @@ footer article div img {
 
 .art_numerique .selector {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     
@@ -899,12 +982,15 @@ footer article div img {
     padding: 2em;
 }
 
+.selector div {
+    text-align: center;
+}
+
 .selector div input[type="radio"] {
     display: none;
 }
 
 .selector div label {
-    position: relative;
     display: block;
     width: 10em;
     height: 10em;
@@ -946,13 +1032,7 @@ footer article div img {
     
 }
 
-.selector div label > p {
-    position: absolute;
-    top: -2.5em;
-    left: 50%;
-    
-    transform: translateX(-50%);
-    
+.selector div > p {
     font-size: 1.5em;
     font-family: var(--title-font);
     color: var(--chicken-color);
@@ -1011,6 +1091,7 @@ footer article div img {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     
     gap: 2em;
     
@@ -1018,7 +1099,7 @@ footer article div img {
 
 .expression div,
 .portrait div {
-    flex-basis: 25%;
+    flex-basis: 90%;
 }
 
 .expression div img {
@@ -1032,6 +1113,32 @@ footer article div img {
     outline: 0.2em solid var(--chicken-color);
     
     cursor: pointer;
+}
+
+#artModal {
+    width: 60%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#artModal h3 {
+    margin-bottom: 0.3em;
+    
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(225,41,133,0.5);
+    
+    transition: 0.5s;
+    
+}
+
+#artModal h3:hover {
+    color: var(--accentuation-color);
+    text-shadow: none;
+    
+    transition: 0.5s;
 }
 
 .portrait div img {
@@ -1064,6 +1171,8 @@ footer article div img {
 .portrait div img {
     border-radius: 1em;
 }
+
+
 
 
 /*------------------Art shop*/
@@ -1126,21 +1235,10 @@ footer article div img {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /*------------------order*/
 
 .orderPrompt form {
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1157,15 +1255,77 @@ footer article div img {
     border-radius:1em;
 }
 
+
+
+/*============================================================*/
+        /*RESPONSIVE DIGITAL_ART
+/*============================================================*/
+
+@media screen and (min-width: 500px) {
+    
+    .art_numerique .selector {
+        flex-direction: row;
+    }
+    
+    .expression div,
+    .portrait div {
+        flex-basis: 45%;
+    }
+    
+    
+}
+
+@media screen and (min-width: 890px) {
+    
+    .expression div,
+    .portrait div {
+        flex-basis: 25%;
+    }
+    
+    
+    
+    
+}
+
+
+/*----------------------detect touch screen = detect mobile devices*/
+
+@media (pointer:coarse) {
+    
+    /*------for desktop, each product's content is hidden behin a onHover interaction, here it's reveal by default for mobile devices*/
+    .numericProduct .numericImg img,
+    .numericProduct .numericContent {
+        opacity: 1;
+        transform: translateX(0);
+        
+        transition: 0.5s;
+    }
+    
+    #artModal h3 {
+        color: var(--accentuation-color);
+        text-shadow: none;
+        
+    }
+
+    
+    
+    
+}
+
+
 /*============================================================*/
         /*SIGN IN / LOGIN
 /*============================================================*/
 
-.container form {
-    max-width: 80%;
+form {
     padding: 1em;
-    margin: auto;
     
+}
+
+form p {
+    margin: 0;
+    text-align: center;
+    font-style: italic;
 }
 
 fieldset {
@@ -1204,6 +1364,16 @@ input[type="password"] {
     
 }
 
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    font-size: 0.6em;
+    font-weight: bold;
+    color: red;
+    opacity: 0.8;
+    
+}
+
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
@@ -1213,9 +1383,7 @@ input[type="password"]:focus {
 input[type="file"] {
     width: fit-content;
     color: #444;
-    padding: 1em;
     border-radius: 0.5em;
-    border: 0.15em solid var(--second-color);
 }
 
 input[type=file]::file-selector-button {
@@ -1240,7 +1408,7 @@ button {
     border-radius: 3em;
     cursor: pointer;
     
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-family:var(--title-font);
     color: var(--white-color);
     transition: all 0.5s;
@@ -1253,6 +1421,50 @@ button:hover {
     transition: all 0.5s;
     
 }
+
+
+/*============================================================*/
+        /*RESPONSIVE SIGN IN / LOGIN
+/*============================================================*/
+
+
+
+@media screen and (min-width: 500px) {
+    
+    
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="password"]::placeholder {
+        font-size: 1em;
+        
+    }
+    
+    input[type="file"] {
+        padding: 1em;
+        border: 0.15em solid var(--second-color);
+    }
+    
+}
+    
+@media screen and (min-width: 890px) {
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: fit-content;
+        padding: 0.5em;
+        font-size: 1em;
+    
+        
+    }
+
+
+
+
+}
+        
+    
+
 
 
 /*============================================================*/
@@ -1270,9 +1482,10 @@ button:hover {
 .profileGrid {
     display: grid;
     grid-template-areas:
-    "d p"
-    "c c"
-    "a a";
+    "d"
+    "p"
+    "c"
+    "a";
     gap: 1em;
     
 }
@@ -1288,7 +1501,6 @@ button:hover {
 
 .profileDetail {
     grid-area: d;
-    /*height: fit-content;*/
     
 }
 
@@ -1316,9 +1528,11 @@ button:hover {
 
 .articlePanier {
     width: 70%;
-    margin: auto;
+    margin: 1em auto;
     padding: 0.5em;
+    
     background-color: var(--chicken-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 1em;
 }
 
@@ -1327,19 +1541,35 @@ button:hover {
     align-items: start;
     justify-items: center;
     grid-template-areas:
-    "co di"
-    "an ta";
+    "co"
+    "an"
+    "di"
+    "ta";
     gap: 0.5em;
     
     margin: 1em;
     padding: 1em;
     
-    border: 0.2em solid var(--chicken-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 1em;
+
 }
 
-.articleCommande div:first-child {
+.articleCommande > div:first-child {
     grid-area: co;
+    
+    padding:0.5em;
+    
+    text-align: center;
+}
+
+.devis {
+    padding: 1em;
+    
+    background-color: var(--chicken-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 1em;
+    
 }
 
 
@@ -1350,12 +1580,16 @@ button:hover {
     font-size: 2em;
 }
 
-.articleCommande div:nth-child(2) {
+.articleCommande > div:nth-child(2) {
     grid-area: di;
-    justify-self: stretch;
-    padding: 1em 2em;
+    justify-self: center;
+    
+    width: 60%;
     min-height: 5em;
-    /*max-height: 10em;*/
+    max-height: 20em;
+    
+    padding: 1em 2em;
+    
     overflow: scroll;
     
     border: 0.2em solid var(--accentuation-color);
@@ -1364,7 +1598,7 @@ button:hover {
 
 
 
-.articleCommande div:nth-child(2) p:nth-child(odd) {
+.articleCommande > div:nth-child(2) p:nth-child(odd) {
     padding: 0.5em;
     border-top: 0.1em solid var(--chicken-color);
     color: var(--second-color);
@@ -1373,8 +1607,11 @@ button:hover {
 }
 
 
-.articleCommande div:nth-child(3) {
+.articleCommande > div:nth-child(3) {
     grid-area: ta;
+    
+    width: 60%;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1385,12 +1622,13 @@ button:hover {
 
 .articleCommande button {
     grid-area: an;
+    
     align-self: center;
 }
 
 .articleCommande textArea {
     resize: none;
-    width: 80%;
+    width: 100%;
     min-height: 5em;
     
     padding: 0.5em;
@@ -1406,6 +1644,51 @@ button:hover {
     
 }
 
+.profileAchats article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    
+    gap: 0.5em;
+    
+    margin: 1em;
+    
+   border-bottom: 0.2em solid var(--accentuation-color);
+    
+}
+
+
+/*============================================================*/
+        /*RESPONSIVE PROFILE
+/*============================================================*/
+
+
+@media screen and (min-width: 500px) {
+    
+    .profileAchats article {
+        flex-direction: row;
+    }
+        
+    
+
+}
+
+@media screen and (min-width: 700px) {
+    
+    .profileGrid {
+        grid-template-areas:
+        "d p"
+        "c c"
+        "a a";
+        
+    }
+    
+
+}
+
+
+
 
 /*============================================================*/
         /*ADMIN PROFILE
@@ -1414,11 +1697,13 @@ button:hover {
 .adminGrid {
     display: grid;
     grid-template-areas:
-    "d u"
-    "a a"
-    "e e"
-    "c c"
-    "b b";
+    "d"
+    "u"
+    "a"
+    "e"
+    "c"
+    "b"
+    "ar";
     gap: 1em;
 }
 
@@ -1436,13 +1721,33 @@ button:hover {
     width: 90%;
     margin: auto;
     text-align: center;
+    
 }
+
+.adminGrid table tr {
+    border: 0.2em solid var(--chicken-color);
+    
+}
+
 
 .adminGrid table th,
 .adminGrid table td {
-    border: 0.2em solid var(--chicken-color);
     height: 2.5em;
     padding: 0.5em;
+}
+
+.adminGrid table td {
+    display: block;
+}
+
+.adminGrid table td:not(:last-child) {
+     border-bottom: 0.2em solid var(--second-color);
+    
+}
+
+
+.adminGrid table th {
+    display: none;
 }
 
 .adminGrid thead {
@@ -1452,11 +1757,15 @@ button:hover {
 
 .users {
     grid-area: u;
+    
+     overflow-x: auto;
+    
+    padding: 1em;
 }
 
 
 .addProduct {
-    grid-area:a;
+    grid-area: a;
 }
 
 .addProduct form {
@@ -1492,10 +1801,12 @@ select {
 
 .editProduct {
     grid-area: e;
+    padding: 1em;
 }
 
 .adminAchats {
     grid-area: b;
+    padding: 1em;
     
 }
 
@@ -1508,12 +1819,17 @@ select {
 }
     
 
-.adminAchats div {
+.adminAchats article {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1em;
+    justify-content: space-around;
+    
+    gap: 0.5em;
+    
+    margin: 1em;
+    
+   border-bottom: 0.2em solid var(--accentuation-color);
     
 }
 
@@ -1523,34 +1839,78 @@ select {
     border-radius: 1em;
 }
 
-
-
-
-
-
-
-/*============================================================*/
-        /*RESPONSIVE
-/*============================================================*/
-
-@media screen and (min-width: 890px) {
-
-
-    /*input[type="submit"],*/
-    /*button {*/
-    /*    width: fit-content;*/
-       
-    /*}*/
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        width: fit-content;
-        padding: 0.5em;
-        font-size: 1em;
+.adminArchive {
+    grid-area: ar;
     
+}
+
+
+
+/*============================================================*/
+        /*RESPONSIVE ADMIN
+/*============================================================*/
+
+
+@media screen and (min-width: 500px) {
+    
+    .adminAchats article {
+        flex-direction: row;
         
     }
+    
+    .adminGrid table tr {
+        border: none;
+        
+    }
+    
+    .adminGrid table th,
+    .adminGrid table td,
+    .adminGrid table td:not(:last-child) {
+        border: 0.2em solid var(--chicken-color);
+    }
+    
+    .adminGrid table td {
+        display: table-cell;
+    }
+
+    .adminGrid table th {
+        display: table-cell;
+    }
+        
+
+}
+
+@media screen and (min-width: 700px) {
+    
+    .adminGrid {
+        grid-template-areas:
+        "d u"
+        "a a"
+        "e e"
+        "c c"
+        "b b"
+        "ar ar";
+        gap: 1em;
+    }
+    
+    
+    
+
+}
+
+
+@media screen and (min-width: 890px) {
+    
+    .adminGrid {
+        grid-template-areas:
+        "d u"
+        "a a"
+        "e e"
+        "c c"
+        "ar b";
+        gap: 1em;
+    }
+    
 
 
 

@@ -36,6 +36,34 @@ if (themeButtons.length != 0)
 
 
 // ======================================================
+    // QUICK NAV
+// ======================================================
+
+const fixedNav = document.querySelector(".flyNav");
+
+const headerNav = document.querySelector("#nav");
+
+window.addEventListener("scroll", quickNav);
+
+function quickNav () 
+{
+    if(headerNav.getBoundingClientRect().bottom <= 0)
+    {
+        fixedNav.classList.add("quick_nav");
+    }
+    else
+    {
+        
+        fixedNav.classList.remove("quick_nav");
+        
+    }
+    
+}
+
+
+
+
+// ======================================================
     // CAROUSEL
 // ======================================================
 
@@ -163,8 +191,7 @@ if(slider)
     {
         
         let productSize;
-        
-        let count = 0;
+       
         
         // ------------this part get the gap, in order to add it in the scroll value
         let gap = window.getComputedStyle(slider).gap;
@@ -181,18 +208,6 @@ if(slider)
             
             slider.scrollLeft -= productSize.width+gap;
             
-            console.log(slider.scrollLeft);
-            
-            count -= 1;
-            
-            console.log(count);
-            
-            if(count < 0)
-            {
-                slider.scrollLeft += 9999999;
-                
-                count = products.length-1;
-            }
            
             
             
@@ -205,21 +220,7 @@ if(slider)
             
             slider.scrollLeft += productSize.width+gap;
             
-            console.log(slider.scrollLeft);
             
-            count += 1;
-            
-            console.log(count);
-            
-            
-            if(count == products.length)
-            {
-                
-                slider.scrollLeft = 0;
-                
-                count = 0;
-                
-            }
             
             
         });
@@ -227,6 +228,8 @@ if(slider)
     }
     
 }
+
+
 
 // ======================================================
     // MODAL PRODUCT
@@ -282,11 +285,16 @@ if(expressionImg.length != 0)
         {
             const src = image.src;
             
-            const modalTitle = document.querySelector("#artModal h3");
+            const modalTitle = document.createElement("h3");
+                modalTitle.innerText = image.alt;
             
             modal.style.backgroundImage = `url("${src}")`;
             
-            modalTitle.innerText = image.alt;
+            modal.style.display = "flex";
+            
+            modal.firstChild.remove();
+            
+            modal.append(modalTitle);
             
             modal.showModal();
             
@@ -294,6 +302,8 @@ if(expressionImg.length != 0)
             {
                 
                 modal.close();
+                
+                modal.style.display = "none";
                 
             });
 
@@ -477,7 +487,7 @@ if (deleteClientButtons.length != 0)
     
 }
 
-// PUT PRODUCT FETCH
+// EDIT PRODUCT FETCH
 
 const editProductButtons = document.querySelectorAll(".js-editProduit-button");
 
@@ -539,7 +549,6 @@ if (editProductButtons.length != 0)
                 newButton.type="submit";
                 newButton.name="Enregistrer";
                 
-            const errorP = document.createElement("p");
                 
                 
             oldName.innerHTML="";
@@ -586,34 +595,33 @@ if (editProductButtons.length != 0)
                 fetch(url, options)
                 .then(res =>
                 {
-                    errorP.innerText = "";
                     // --------------------if bad input, check res.json
                     if(!res.ok)
                     {
                         res.json()
                         .then(data =>
                         {
-                            console.log(data);
                             
                             if(data.name)
                             {
-                                errorP.append(" "+data.name);
-                                
+                                newName.value= "";
+                                newName.placeholder = data.name;
                             }
                             
                             if(data.descri)
                             {
-                                errorP.append(" "+data.descri);
+                                newDescription.value = "";
+                                newDescription.placeholder = data.descri;
                             }
                             
                             if(data.price)
                             {
-                                errorP.append(" "+data.price);
+                                newPrice.value = "";
+                                newPrice.placeholder = data.price;
                             }
                             
-                            productSection.append(errorP);
                             
-                        })
+                        });
                     }
                     else
                     {
@@ -770,7 +778,9 @@ if(devisButtons.length != 0)
             
             const pPrice = document.createElement("p");
             
-            const errorP = document.createElement("p");
+            const divDevis = document.createElement("div");
+                divDevis.classList.add("devis");
+            
             
             // ----------------------
             
@@ -778,7 +788,7 @@ if(devisButtons.length != 0)
             
             pDevis.innerText = inputDevis.value;
             
-            pPrice.innerText = inputPrice.value;
+            pPrice.innerText = inputPrice.value+" €";
             
             
             // ----------------------fecth settings
@@ -805,7 +815,6 @@ if(devisButtons.length != 0)
             .then(res =>
             {
                 
-                errorP.innerText = "";
                     // --------------------if bad input, check res.json
                     if(!res.ok)
                     {
@@ -815,28 +824,31 @@ if(devisButtons.length != 0)
                             
                             if(data.devis)
                             {
-                                errorP.append(" "+data.devis);
+                                inputDevis.value = "";
+                                inputDevis.placeholder = data.devis;
                                 
                             }
                             
                             if(data.price)
                             {
-                                errorP.append(" "+data.price);
+                                inputPrice.value = "";
+                                inputPrice.placeholder = data.price;
                             }
                             
-                            divCommande.append(errorP);
                             
-                        })
+                        });
                     }
                     else
                     {
                         formDevis.remove();
                 
-                        divCommande.append(hDevis);
+                        divDevis.append(hDevis);
                         
-                        divCommande.append(pDevis);
+                        divDevis.append(pDevis);
                         
-                        divCommande.append(pPrice);
+                        divDevis.append(pPrice);
+                        
+                        divCommande.append(divDevis);
                 
                         
                     }
@@ -899,11 +911,14 @@ if(addProductButtons.length != 0)
             .then(res =>
             {
                 
-                const articleProduit = document.getElementById(`${idProduct}`);
+                const articleProduitContent = document.querySelector(`article[id="${idProduct}"] div:last-child`);
                 
                 button.remove();
                 
-                articleProduit.append("Ajouté!");
+                const popUp = document.createElement("p");
+                    popUp.innerText = "Ajouté!";
+                
+                articleProduitContent.append(popUp);
                 
                
                 
@@ -1004,13 +1019,13 @@ if(customOrderButton)
                     }
                             
                             
-                })
+                });
             }
             else
             {
         
                 textArea.value = "";
-                textArea.placeholder = "formulez votre souhait"
+                textArea.placeholder = "formulez votre souhait";
             }
                 
         })
@@ -1129,11 +1144,11 @@ if(dialogueButtons.length != 0)
                         textArea.value = "";
                         textArea.placeholder ="";
                         
-                        const dialogueDiv = document.querySelector(`article[id="${id}"]  div:nth-child(2)`);
+                        const dialogueDiv = document.querySelector(`article[id="${id}"] > div:nth-child(2)`);
                         
                         
                         const pseudoP = document.createElement("p");
-                        const pseudo = document.querySelector(`.profileDetail article h2`).innerText;
+                        const pseudo = document.querySelector(`.profileDetail div h2`).innerText;
                         
                         pseudoP.append(pseudo);
                         
@@ -1183,13 +1198,13 @@ if(editProfileButton)
         
         // ----------------------DOM settings
         
-        const article = document.querySelector(`article[id="${id}"]`);
+        const article = document.querySelector(`div[id="${id}"]`);
         
-        const oldPseudo = document.querySelector(`article[id="${id}"] h2`);
+        const oldPseudo = document.querySelector(`div[id="${id}"] h2`);
         
-        const oldEmail = document.querySelector(`article[id="${id}"] h3:nth-child(2)`);
+        const oldEmail = document.querySelector(`div[id="${id}"] h3:nth-child(2)`);
         
-        const oldAdress = document.querySelector(`article[id="${id}"] h3:nth-child(3)`);
+        const oldAdress = document.querySelector(`div[id="${id}"] h3:nth-child(3)`);
         
         
         const newPseudo = document.createElement('input');

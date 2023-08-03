@@ -1,19 +1,25 @@
-<section class="scrapbooking">
+<section class="scrapbooking container">
     
-    <h1 class="container">Scrapbooking</h1>
+    <h1>Scrapbooking</h1>
     
-    <article class="scrapGrid">
-        <img src="/assets/image/scrapbooking/cadre1.webp">
-        <img src="/assets/image/scrapbooking/hoogie.webp">
-        <img src="/assets/image/scrapbooking/cadre2.webp">
-        <img src="/assets/image/scrapbooking/jars.webp">
-        <img src="/assets/image/scrapbooking/avion_licorn.webp">
-        <img src="/assets/image/scrapbooking/noel_cart.webp">
-        <img src="/assets/image/scrapbooking/spider_wire.webp">
-        <img src="/assets/image/scrapbooking/noel.webp">
-        <img src="/assets/image/scrapbooking/octopi.webp">
+    <p>
+        Le scrapbooking, où l’art d’associer des choses ensemble et qui rendent bien, est une de
+        mes passions. Je privilégie les bannières à thème.
+        Ici chaque modèle est unique.
+    </p>
+    
+    <div class="scrapGrid">
+        <img src="/assets/image/scrapbooking/cadre1.webp" alt="happy birthday card with an airplane">
+        <img src="/assets/image/scrapbooking/hoogie.webp" alt="hoogie bead lamp for Halloween">
+        <img src="/assets/image/scrapbooking/cadre2.webp" alt="card with flowers and 'the magic of simple moments' written on it">
+        <img src="/assets/image/scrapbooking/jars.webp" alt="small card in the shape of a jar with glitter stars inside">
+        <img src="/assets/image/scrapbooking/avion_licorn.webp" alt="card with an airplane next to a card with a unicorn">
+        <img src="/assets/image/scrapbooking/noel_cart.webp" alt="christmas card with a reindeer and a sleigh">
+        <img src="/assets/image/scrapbooking/spider_wire.webp" alt="wire in the shape of a spider">
+        <img src="/assets/image/scrapbooking/noel.webp" alt="collection of christmas socks">
+        <img src="/assets/image/scrapbooking/octopi.webp" alt="carte avec des petit poulpe et écrit 'you octopi my heart'">
         
-    </article>
+    </div>
     
     <video autoplay muted loop>
       <source src="/assets/video/CDPP_banniere.mp4" type="video/mp4">
@@ -42,6 +48,7 @@
             <div class="img">
                 <img src="<%= produit.img %>" alt="<%= produit.nom %>" >
             </div>
+            
             <div class="content">
                
                 <h3><%= produit.nom %></h3>
@@ -52,7 +59,7 @@
         
                 <% if((locals.user.role === "client") && (produit.idUserPanier != locals.user.id)) { %>
                 
-                <button class="js-addProduit-button" data-addProduct = "<%= produit.id %>" data-addClient="<%= locals.user.id %>">Ajouter au panier</button>
+                    <button class="js-addProduit-button" data-addProduct = "<%= produit.id %>" data-addClient="<%= locals.user.id %>">Ajouter au panier</button>
                 
                 <% } %>
             </div>
@@ -74,6 +81,12 @@
 <section class="orderPrompt container">
     
     <h2>Commande</h2>
+    
+    <p>
+        Ici, tu notes ce que tu voudrais, pourquoi elle est prévue, tes envies/souhaits, ce
+        que tu ne veux pas avec le plus de détail possible et puis je te recontacte.
+        (L’envoi de photos, images d’inspiration est prévu pour un deuxième temps)
+    </p>
     
     <form>
         
