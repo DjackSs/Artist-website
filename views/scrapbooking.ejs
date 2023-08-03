@@ -3,9 +3,11 @@
     <h1>Scrapbooking</h1>
     
     <p>
-        Le scrapbooking, où l’art d’associer des choses ensemble et qui rendent bien, est une de
-        mes passions. Je privilégie les bannières à thème.
-        Ici chaque modèle est unique.
+        Le <span><strong>scrapbooking</strong></span>, où l’art d’associer des choses ensemble et qui rendent bien, est une de
+        mes <span>passions</span>. Je privilégie les bannières à thème.
+    </P>
+    <p>
+        Chaque modèle est <span>unique</span>.
     </p>
     
     <div class="scrapGrid">
@@ -78,26 +80,28 @@
 
 <% if(locals.user.role === "client") { %>
 
-<section class="orderPrompt container">
-    
-    <h2>Commande</h2>
-    
-    <p>
-        Ici, tu notes ce que tu voudrais, pourquoi elle est prévue, tes envies/souhaits, ce
-        que tu ne veux pas avec le plus de détail possible et puis je te recontacte.
-        (L’envoi de photos, images d’inspiration est prévu pour un deuxième temps)
-    </p>
-    
-    <form>
+    <section class="orderPrompt container">
         
-        <label for="orderScrapbooking">Faite une commande personalisée!</label>
-        <textarea name="orderScrapbooking" id="orderScrapbooking" placeholder="formulez votre souhait" class="customOrderArea"></textarea>
+        <h2>Commande</h2>
         
-        <input type="submit" value="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
+        <p>
+            Ici, tu notes ce que tu voudrais, pourquoi elle est prévue, tes envies/souhaits, ce
+            que tu ne veux pas avec le plus de détail possible et puis je te recontacte.
+        </p>
+        <p>
+            (L’envoi de photos, images d’inspiration est prévu pour un deuxième temps)
+        </p>
         
-    </form>
-    
-</section>
+        <form>
+            
+            <label for="orderScrapbooking"><p><span>Faite une commande personnalisée!</span></p></label>
+            <textarea name="orderScrapbooking" id="orderScrapbooking" placeholder="formulez votre souhait" class="customOrderArea"></textarea>
+            
+            <input type="submit" value="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
+            
+        </form>
+        
+    </section>
 
 <% } %>
 

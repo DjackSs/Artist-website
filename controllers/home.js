@@ -129,17 +129,17 @@ export const inscriptionPost = (req, res) =>
     
     if(!req.body.email.trim() || !regexEmail.test(req.body.email))
     {
-        errorForm.email = "Adress email invalide";
+        errorForm.email = "Adresse email invalide";
     }
     
     if(!req.body.adress.trim())
     {
-        errorForm.adress = "Adress invalide";
+        errorForm.adress = "Adresse invalide";
     }
     
     if(!req.body.mdp.trim() || !regexMdp.test(req.body.mdp))
     {
-        errorForm.mdp = "Mots de passe invalide";
+        errorForm.mdp = "Mot de passe invalide";
     }
     
     

@@ -10,11 +10,31 @@ if (themeButtons.length != 0)
 {
     const body = document.querySelector("body");
     
+    const waveTop = document.querySelector(".breakTop");
+    
+    const waveBot = document.querySelector(".breakBot");
+    
     for(let button of themeButtons)
     {
         if(button.id === activeTheme)
         {
             button.checked = true;
+            
+            if(button.id === "light" && waveTop)
+            {
+                
+                waveBot.style.backgroundImage = `url("/assets/image/wave2.svg")`;
+                waveTop.style.backgroundImage = `url("/assets/image/wave1.svg")`;
+              
+                
+            }
+            else if(button.id === "dark" && waveTop)
+            {
+
+                waveBot.style.backgroundImage = `url("/assets/image/wave2.2.svg")`;
+                waveTop.style.backgroundImage = `url("/assets/image/wave1.2.svg")`;
+                
+            }
         }
         
         button.addEventListener("click", ()=>
@@ -24,11 +44,26 @@ if (themeButtons.length != 0)
             {
                 window.localStorage.setItem("theme", "light");
                 body.classList.remove("dark");
+                
+                if(waveTop)
+                {
+                    waveBot.style.backgroundImage = `url("/assets/image/wave2.svg")`;
+                    waveTop.style.backgroundImage = `url("/assets/image/wave1.svg")`;
+                }
+                
             }
             else if(button.id === "dark")
             {
                 window.localStorage.setItem("theme", "dark");
                 body.classList.add("dark");
+                
+                if(waveTop)
+                {
+                    waveBot.style.backgroundImage = `url("/assets/image/wave2.2.svg")`;
+                    waveTop.style.backgroundImage = `url("/assets/image/wave1.2.svg")`;
+                    
+                }
+                
             }
         });
     }
@@ -58,6 +93,65 @@ function quickNav ()
         
     }
     
+}
+
+
+// ======================================================
+    // LOGO ANIMATION
+// ======================================================
+
+
+// ------------this scrit is based on : https://armandocanals.com/posts/CSS-transform-rotating-a-3D-object-perspective-based-on-mouse-position.html
+
+if(!window.matchMedia("(pointer: coarse)").matches && window.innerWidth >= 890) {
+    // this animation is not operating on touchscreen devices nor on small screen devices
+    
+    const container1 = document.querySelector("header");
+
+
+    const element1 = document.querySelector(".logo");
+    
+    
+    container1.addEventListener("mousemove", (e)=>
+    {
+        window.requestAnimationFrame(()=>
+        {
+            translateElement(element1, e.clientX, e.clientY);
+        });
+    });
+    
+    
+    container1.addEventListener("mouseleave", (e)=>
+    {
+        window.requestAnimationFrame(()=>
+        {
+            backIdle(element1);
+            
+        });
+    });
+    
+}
+
+
+
+function translateElement(element, x, y)
+{
+    const max = 50;
+    
+    let box = element.getBoundingClientRect();
+    
+    let calcX = (x - box.x - (box.width / 2)) / max;
+    let calcY = (y - box.y - (box.height / 2)) / max;
+    
+    element.style.transform = `translateX(${calcX-50}%) translateY(${calcY}%) scale3d(1.05, 1.05, 1.05)`;
+    
+    element.style.transition = "0.3 linear";
+}
+
+function backIdle (element)
+{
+    element.style.transform = "scale3d(1, 1, 1) translateX(-50%) translateY(0)";
+    element.style.transition = "0.5s linear";
 }
 
 
@@ -1226,8 +1320,6 @@ if(editProfileButton)
             newButton.type="submit";
             newButton.value="Modifier";
             
-            
-        const errorP = document.createElement("p");
         
         
         oldPseudo.innerText="";
@@ -1267,7 +1359,6 @@ if(editProfileButton)
             fetch(url, options)
             .then((res) =>
             {
-                errorP.innerText = "";
                 // --------------------if bad input, check res.json
                 if(!res.ok)
                 {
@@ -1277,23 +1368,25 @@ if(editProfileButton)
                         
                         if(data.name)
                         {
-                            errorP.append(" "+data.name);
+                            newPseudo.value = "";
+                            newPseudo.placeholder = data.name;
                             
                         }
                         
                         if(data.email)
                         {
-                            errorP.append(" "+data.email);
+                            newEmail.value = "";
+                            newEmail.placeholder = data.email;
                         }
                         
                         if(data.adress)
                         {
-                            errorP.append(" "+data.adress);
+                            newAdress.value= "";
+                            newAdress.placeholder = data.adress;
                         }
                         
-                        article.prepend(errorP);
                         
-                    })
+                    });
                 }
                 else
                 {

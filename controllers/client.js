@@ -62,7 +62,7 @@ export const loginPost = (req, res) =>
     
     if(!req.body.loginMdp.trim())
     {
-        errorForm.loginMdp = "Mots de passe invalide";
+        errorForm.loginMdp = "Mot de passe invalide";
     }
     
     

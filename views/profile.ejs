@@ -10,7 +10,7 @@
             <h3><%= locals.user.email %></h3>
             <h3><%= locals.user.adress %></h3>
             
-            <button class="js-editProfile-button" data-profile="<%= locals.user.id %>">Edit Profile</button>
+            <button class="js-editProfile-button" data-profile="<%= locals.user.id %>">Modifier le Profil</button>
             
         </div>
         
@@ -20,7 +20,7 @@
         </form>
         
         <form method="post" action="/deleteProfile/<%= locals.user.id %>">
-            <input type="submit" value="Suprimer le compte">
+            <input type="submit" value="Supprimer le compte">
         </form>
     
     </section>
@@ -105,7 +105,7 @@
                
                     <label for="commandeDialogueClient">Dialoguer avec l'artiste :</label>
                             
-                    <textarea name="commandeDialogueClient" id="commandeDialogueClient"></textarea>
+                    <textarea name="commandeDialogueClient" id="commandeDialogueClient" placeholder="Votre message ici"></textarea>
                             
                     <button class="js-dialogue-button"  data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
                 

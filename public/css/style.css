@@ -36,9 +36,9 @@
 /*--------------------light colors theme*/
     
     --main-color: rgb(53, 94, 167);
-    --second-color: rgb(90, 47, 134); /*5A2F86*/
-    --accentuation-color: rgb(225, 41, 133); /*E12985*/
-    --chicken-color: rgb(250, 184, 14);
+    --second-color: rgb(90, 47, 134); /*#5A2F86*/
+    --accentuation-color: rgb(225, 41, 133); /*#E12985*/
+    --chicken-color: rgb(250, 184, 14); /*#FAB80E*/
     --black-color: rgb(0, 0, 0);
     --white-color: rgb(255,255,255);
     
@@ -119,6 +119,18 @@ h3 {
     color: var(--accentuation-color);
     font-weight: normal;
     
+}
+
+p {
+    color: var(--second-color);
+}
+
+span {
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family:var(--title-font);
+    
+    /*color: var(--chicken-color);*/
 }
 
 ::-webkit-scrollbar {
@@ -368,6 +380,11 @@ header a:focus {
     border-radius: 50%;
     order: 3;
     
+    transform-origine: 50% 50%;
+    transform-style: preserve-3d;
+    
+    transition: 0.5s linear;
+    
 }
 
 .logo img {
@@ -460,6 +477,12 @@ footer article a {
     text-decoration: none;
     font-family: var(--title-font);
     color: var(--second-color);
+    transition: 0.5s;
+}
+
+footer article a:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
 }
 
 
@@ -569,6 +592,7 @@ footer article a {
     grid-template-areas:
     "h1"
     "d1"
+    "p1"
     "v1";
     
     gap: 2em;
@@ -578,12 +602,12 @@ footer article a {
 
 }
 
-.intro > * {
-    justify-self: center;
-}
+
 
 .intro h1 {
     grid-area: h1;
+    align-self: center;
+    justify-self: center;
     margin: 0;
 }
 
@@ -595,25 +619,15 @@ footer article a {
     border-radius: 1em;
 }
 
-.intro > div {
+
+
+.intro div {
     grid-area: d1;
-    
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1em;
-    
-   
-    
-    padding: 1em;
-}
-
-
-.intro div > div:first-child {
+    justify-self: center;
+     
     width: 10em;
     min-height: 10em;
-    border: 0.2em solid var(--chicken-color);
+    border: 0.2em solid var(--accentuation-color);
     border-radius: 50%;
     
     background-image:url("/assets/image/portrait.svg");
@@ -624,16 +638,24 @@ footer article a {
     overflow: hidden;
 }
 
-.intro div > div:first-child img {
+.intro div img {
     width: 100%;
 }
 
-.intro article div:last-child {
+.intro article {
+    grid-area: p1;
+    
+    
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+.intro article p {
+    margin: 0 auto;
+    width: 80%;
+    
+}
 
 
 
@@ -658,13 +680,20 @@ footer article a {
 @media screen and (min-width: 890px) {
     
     .intro {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 55% 22% 23%;
         grid-template-areas:
-        "v1 h1"
-        "v1 d1";
+        "v1 h1 d1"
+        "v1 p1 p1";
     }
+    
+    .intro h1 {
+        align-self: center;
+    }
+    
+    .intro div {
+        justify-self: start;
 
-}
+    }
 
 
 
@@ -674,6 +703,10 @@ footer article a {
 
 
 /*=======================================SCRAPBOOKING*/
+
+.scrapbooking > p {
+    margin-left: 5em;
+}
 
 /*------------------scrapbooking grid*/
 
@@ -710,7 +743,7 @@ footer article a {
 }
 
 .scrapGrid img:nth-child(even) {
-    border: 0.2em solid var(--chicken-color);
+    border: 0.2em solid var(--accentuation-color);
 }
 
 
@@ -970,6 +1003,10 @@ footer article a {
 
 /*=======================================ART_NUMERIQUE*/
 
+.art_numerique > div:first-child > p {
+    margin-left: 5em;
+}
+
 
 .art_numerique .selector {
     display: flex;
@@ -1033,9 +1070,10 @@ footer article a {
 }
 
 .selector div > p {
+    margin-bottom: 0.5em;
     font-size: 1.5em;
     font-family: var(--title-font);
-    color: var(--chicken-color);
+    color: var(--accentuation-color);
 }
 
 
@@ -1056,7 +1094,7 @@ footer article a {
 }
 
 .breakTop {
-    margin-top: -40%;
+    margin-top: -55%;
     background-image:url("/assets/image/wave1.svg");
 }
 
@@ -1065,13 +1103,19 @@ footer article a {
     background-image:url("/assets/image/wave2.svg");
 }
 
+
 .art_parent {
     position: relative;
     
-    background-color: #5A2F86;
+    background-color: var(--second-color);
     
     overflow: hidden;
     
+}
+
+.art_child p {
+    margin-left: 5em;
+    color:var(--chicken-color);
 }
 
 
@@ -1088,6 +1132,7 @@ footer article a {
 }
 
 .expression > div {
+    margin-top: 2em;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1134,6 +1179,7 @@ footer article a {
     
 }
 
+
 #artModal h3:hover {
     color: var(--accentuation-color);
     text-shadow: none;
@@ -1151,7 +1197,7 @@ footer article a {
     inset: 0;
     z-index: 0;
     
-    width: 100%;
+    width: 60%;
     
 }
 
@@ -1162,7 +1208,7 @@ footer article a {
     
     margin-bottom: 1em;
     
-    border: 0.2em solid var(--chicken-color);
+    border: 0.2em solid var(--accentuation-color);
     border-radius: 1em;
     
    
@@ -1202,7 +1248,7 @@ footer article a {
     
     
     
-    width: 100%;
+    width: 60%;
     border-radius: 1em;
     
     transform: translateX(50%);
@@ -1236,6 +1282,10 @@ footer article a {
 
 
 /*------------------order*/
+
+.orderPrompt p {
+    margin-left: 5em;
+}
 
 .orderPrompt form {
     margin: auto;
@@ -1332,7 +1382,7 @@ fieldset {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2em;
+    gap: 1em;
     
     padding: 2em;
     
