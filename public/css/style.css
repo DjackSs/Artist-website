@@ -288,6 +288,8 @@ header > div:last-child {
 }
 
 .header-top form {
+    padding: 0;
+    
     display: flex;
     align-items: center;
     gap: 1em;
