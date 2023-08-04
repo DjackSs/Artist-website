@@ -125,6 +125,8 @@
     
     <h2>Boutique</h2>
     
+    <p>Voici les articles mis en ventes. Il est également possible de passer une <span>commande personnalisée</span> : RDV dans votre espace client !</p>
+    
     
     <% for(let produit of produits) {
         if(produit.statut === "free") {%>
@@ -160,24 +162,40 @@
 <dialog class="modal container" id="artModal">
 </dialog>
 
+<dialog class="modal container" id="modal">
+</dialog>
+
 <% if(locals.user.role === "client") { %>
 
 <section class="orderPrompt container">
     
     <h2>Commande</h2>
     
+    <% if (!userCommande) { %> 
+    
     <p>
         Je peux réaliser un <strong><span>portrait sur demande</span></strong>. Formulez votre <span>souhait</span>, précisez vos couleurs préférés.
         Nous échangerons pour les détails.
     </p>
     
-    <form>
-        <label for="orderDigitalArt"><p><span>Faite une commande personnalisée!</span></p></label>
-        <textarea name="orderDigitalArt" id="orderDigitalArt" placeholder="formulez votre souhait" class="customOrderArea"></textarea>
+    
+    
+        <form>
+            <label for="orderDigitalArt"><p><span>Faite une commande personnalisée!</span></p></label>
+            <textarea name="orderDigitalArt" id="orderDigitalArt" placeholder="formulez votre souhait" class="customOrderArea"></textarea>
+            
+            <input type="submit" lavue="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
+            
+        </form>
+    
+    <% } else { %>
         
-        <input type="submit" lavue="Envoyer" class="js-customOrder-button" data-userId="<%= locals.user.id %>">
+        <h3>Vous avez déja une commande en cours</h3>
         
-    </form>
+        <p>Rendez-vous sur votre <a href="/profile/<%= locals.user.id %>"><span>page profil</span></a> pour suivre son évolution.</p>
+        
+    <% } %>
+        
 </section>
 
 <% } %>

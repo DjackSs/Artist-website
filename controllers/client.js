@@ -55,12 +55,12 @@ export const loginPost = (req, res) =>
      // ----------------------------------------------------data's validation
     let errorForm = {};
     
-    if(!req.body.loginEmail.trim())
+    if(!req.body.loginEmail.trim() || req.body.loginEmail.trim().length >= 100)
     {
         errorForm.loginEmail = "email invalide";
     }
     
-    if(!req.body.loginMdp.trim())
+    if(!req.body.loginMdp.trim() || req.body.loginMdp.trim().length >= 50)
     {
         errorForm.loginMdp = "Mot de passe invalide";
     }
@@ -246,17 +246,17 @@ export const editProfile = (req,res) =>
     
     //  ------------------------------empty fields or invalid with regex
     
-    if(!req.body.pseudo.trim())
+    if(!req.body.pseudo.trim() || req.body.pseudo.trim().length >= 50)
     {
         errorForm.name = "Nom invalide";
     }
     
-    if(!req.body.email.trim() || !regexEmail.test(req.body.email))
+    if(!req.body.email.trim() || !regexEmail.test(req.body.email) || req.body.email.trim().length >= 100)
     {
         errorForm.email = "Adress email invalide";
     }
     
-    if(!req.body.adress.trim())
+    if(!req.body.adress.trim() || req.body.adress.trim().length >= 100)
     {
         errorForm.adress = "Adress invalide";
     }
@@ -519,7 +519,7 @@ export const shoppingPay = (req,res) =>
 						.text("Cuisse de Poupou",250 , 280);
 						doc
 						.fontSize(15)
-						.text("Adress du vendeur", 250, 300);
+						.text("Adresse du vendeur", 250, 300);
 						doc
 						.fontSize(15)
 						.text("44000 Nantes", 250, 320);
@@ -725,7 +725,7 @@ export const customPay = (req,res) =>
 			.text("Cuisse de Poupou",250 , 280);
 			doc
 			.fontSize(15)
-			.text("Adress du vendeur", 250, 300);
+			.text("Adresse du vendeur", 250, 300);
 			doc
 			.fontSize(15)
 			.text("44000 Nantes", 250, 320);
@@ -815,6 +815,13 @@ export const customOrder = (req,res) =>
         errorForm.commande = "Commande invalide";
     }
     
+    if(req.body.commande.trim().length >= 200)
+    {
+    	
+    	errorForm.commande = "Commande trop longue";
+    	
+    }
+    
     if(Object.keys(errorForm).length != 0)
     {
         return res.status(400).send(errorForm);
@@ -850,7 +857,7 @@ export const dialogue = (req,res) =>
 	// ----------------------------------------------------data's sanitation
 	req.body.comment = xss(req.body.comment);
 	req.body.idTransmitter = xss(req.body.idTransmitter);
-	req.params.id = xss(req.params.id)
+	req.params.id = xss(req.params.id);
 	
 	// ----------------------------------------------------data's validation
 	let errorForm = {};
@@ -858,6 +865,12 @@ export const dialogue = (req,res) =>
 	if(!req.body.comment.trim())
     {
         errorForm.comment = "Commentaire invalide";
+    }
+    
+    if(req.body.comment.trim().length >= 100)
+    {
+    	errorForm.comment = "Commentaire trop long";
+    	
     }
     
     if(Object.keys(errorForm).length != 0)

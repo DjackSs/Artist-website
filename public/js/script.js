@@ -103,32 +103,79 @@ function quickNav ()
 
 // ------------this scrit is based on : https://armandocanals.com/posts/CSS-transform-rotating-a-3D-object-perspective-based-on-mouse-position.html
 
-if(!window.matchMedia("(pointer: coarse)").matches && window.innerWidth >= 890) {
-    // this animation is not operating on touchscreen devices nor on small screen devices
+if(!window.matchMedia("(pointer: coarse)").matches)
+{
+    // this animation is not operating on touchscreen devices nor on small screen
+    
+    let windowWidth = window.innerWidth;
+    
     
     const container1 = document.querySelector("header");
-
-
+    
+    
     const element1 = document.querySelector(".logo");
     
     
-    container1.addEventListener("mousemove", (e)=>
+    // -----On large screen size the logo is in absolute position (left: 50% / translateX 50%), in order to prevent to see the repositioning on loading, the transition is apply after with js.
+    element1.style.transition = 0.3+"s";
+
+    
+     window.addEventListener("resize", ()=>
     {
-        window.requestAnimationFrame(()=>
-        {
-            translateElement(element1, e.clientX, e.clientY);
-        });
+            
+            windowWidth = window.innerWidth;
+            
+            if(windowWidth >= 890)
+            {
+                element1.style.transform = "translateX(-50%)";
+                
+            }
+            else
+            {
+                
+                element1.style.transform = "translateX(0)";
+                
+            }
+            
+            
     });
     
     
-    container1.addEventListener("mouseleave", (e)=>
-    {
-        window.requestAnimationFrame(()=>
+        container1.addEventListener("mousemove", (e)=>
         {
-            backIdle(element1);
+            
+            if(windowWidth >= 890)
+            {
+            
+                window.requestAnimationFrame(()=>
+                {
+                    translateElement(element1, e.clientX, e.clientY);
+                });
+                
+            }
+                
             
         });
-    });
+        
+        
+        container1.addEventListener("mouseleave", ()=>
+        {
+            if(windowWidth >= 890)
+            {
+            
+                window.requestAnimationFrame(()=>
+                {
+                    backIdle(element1);
+                    
+                });
+            }
+            
+                
+            
+            
+        });
+        
+    
     
 }
 
@@ -145,7 +192,7 @@ function translateElement(element, x, y)
     
     element.style.transform = `translateX(${calcX-50}%) translateY(${calcY}%) scale3d(1.05, 1.05, 1.05)`;
     
-    element.style.transition = "0.3 linear";
+    element.style.transition = "0.3s linear";
 }
 
 function backIdle (element)
@@ -330,36 +377,76 @@ if(slider)
 // ======================================================
 
 
-// ------------------------ modal for scrapbooking shop's product
 
-if(slider)
+const modal = document.querySelector("#modal");
+
+if(modal)
 {
+    // ------------------------ modal for scrapbooking shop's product
     const productImages = document.querySelectorAll(".product .img img");
     
-    
-    const modal = document.querySelector("#modal");
-    
-    for(let image of productImages)
+    if(productImages.length != 0)
     {
-        image.addEventListener("click", ()=>
+        
+        for(let image of productImages)
         {
-            const src = image.src;
-            
-            modal.style.backgroundImage = `url("${src}")`;
-            
-            modal.showModal();
-            
-            modal.addEventListener("click", ()=>
+            image.addEventListener("click", ()=>
             {
+                const src = image.src;
                 
-                modal.close();
+                modal.style.backgroundImage = `url("${src}")`;
+                
+                modal.showModal();
+                
+                modal.addEventListener("click", ()=>
+                {
+                    
+                    modal.close();
+                    
+                });
+    
                 
             });
-
-            
-        });
+        
+        }
+    
+    
     }
     
+    // ------------------------ modal for digital art shop's product
+    const numericArtImg = document.querySelectorAll(".numericImg > img");
+    
+    if(numericArtImg.length != 0)
+    {
+        
+        for(let image of numericArtImg)
+        {
+            image.addEventListener("click", ()=>
+            {
+                const src = image.src;
+                
+                modal.style.backgroundImage = `url("${src}")`;
+                
+                modal.classList.add("modal_portrait");
+                
+                modal.showModal();
+                
+                modal.addEventListener("click", ()=>
+                {
+                    
+                    modal.close();
+                    modal.classList.remove("modal_portrait");
+                    
+                });
+    
+                
+            });
+        
+        }
+    
+    
+    }
+
 }
 
 
@@ -368,6 +455,7 @@ if(slider)
 
 const expressionImg = document.querySelectorAll(".expression div img");
 
+
 if(expressionImg.length != 0)
 {
     
@@ -375,31 +463,34 @@ if(expressionImg.length != 0)
     
     for(let image of expressionImg)
     {
+        
         image.addEventListener("click", ()=>
         {
-            const src = image.src;
-            
-            const modalTitle = document.createElement("h3");
-                modalTitle.innerText = image.alt;
-            
-            modal.style.backgroundImage = `url("${src}")`;
-            
-            modal.style.display = "flex";
-            
-            modal.firstChild.remove();
-            
-            modal.append(modalTitle);
-            
-            modal.showModal();
-            
-            modal.addEventListener("click", ()=>
-            {
                 
-                modal.close();
+                const src = image.src;
                 
-                modal.style.display = "none";
+                const modalTitle = document.createElement("h3");
+                    modalTitle.innerText = image.alt;
                 
-            });
+                modal.style.backgroundImage = `url("${src}")`;
+                
+                modal.style.display = "flex";
+                
+                modal.firstChild.remove();
+                
+                modal.append(modalTitle);
+                
+                modal.showModal();
+                
+                modal.addEventListener("click", ()=>
+                {
+                    
+                    modal.close();
+                    
+                    modal.style.display = "none";
+                    
+                });
+            
 
             
         });
@@ -422,6 +513,7 @@ if(art_buttons.length != 0)
 {
     const art_articles = document.querySelectorAll(".art_child");
     
+    
     document.addEventListener("DOMContentLoaded", ()=>
     {
         for(let button of art_buttons)
@@ -429,6 +521,7 @@ if(art_buttons.length != 0)
             
             if(button.checked)
             {
+                
                 for(let article of art_articles)
                 {
                     
@@ -439,6 +532,8 @@ if(art_buttons.length != 0)
                         article.style.opacity = 1;
                         
                         article.classList.add("fadeIn");
+                        
+                        
                     }
                     else
                     {
@@ -447,6 +542,7 @@ if(art_buttons.length != 0)
                         article.style.opacity = 0;
                         
                         article.classList.remove("fadeIn");
+                        
                     }
                 }
             }
@@ -460,6 +556,7 @@ if(art_buttons.length != 0)
         {
             if(button.checked)
             {
+                
                 for(let article of art_articles)
                 {
                     
@@ -470,6 +567,8 @@ if(art_buttons.length != 0)
                         article.style.opacity = 1;
                         
                         article.classList.add("fadeIn");
+                        
+                        article.style.display = "block";
                     }
                     else
                     {
@@ -478,6 +577,8 @@ if(art_buttons.length != 0)
                         article.style.opacity = 0;
                         
                         article.classList.remove("fadeIn");
+                        
+                        article.style.display = "none";
                     }
                 
                 }
@@ -1108,6 +1209,7 @@ if(customOrderButton)
                             
                     if(data.commande)
                     {
+                        textArea.value = "";
                         textArea.placeholder = data.commande.toString();
                                 
                     }
@@ -1117,9 +1219,11 @@ if(customOrderButton)
             }
             else
             {
+                
+                customOrderButton.style.display = "none";
         
-                textArea.value = "";
-                textArea.placeholder = "formulez votre souhait";
+                textArea.value = "Merci pour votre commande ! Rendez-vous dans votre page profil pour suivre son évolution.";
+                
             }
                 
         })
@@ -1226,6 +1330,7 @@ if(dialogueButtons.length != 0)
                             
                             if(data.comment)
                             {
+                                textArea.value = "";
                                 textArea.placeholder = data.comment.toString();
                                 
                             }

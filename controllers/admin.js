@@ -141,12 +141,12 @@ export const addProductPost = (req,res) =>
         });
          
         // ----------------------------------------------------data's validation
-        if(!field.name[0].trim())
+        if(!field.name[0].trim() || field.name[0].trim().length >= 50)
         {
             errorForm.name = "Nom invalide";
         }
         
-        if(!field.description[0].trim())
+        if(!field.description[0].trim() || field.description[0].trim().length >= 100)
         {
             errorForm.description = "Description invalide";
         }
@@ -315,12 +315,12 @@ export const editProduit = (req,res) =>
     
     //  ------------------------------empty fields or invalid
     
-    if(!req.body.nom.trim() || req.body.nom.length > 35)
+    if(!req.body.nom.trim() || req.body.nom.trim().length >= 50)
     {
         errorForm.name = "Nom invalide";
     }
     
-    if(!req.body.description.trim())
+    if(!req.body.description.trim() || req.body.description.trim().length >= 100)
     {
         errorForm.descri = "description invalide";
     }
@@ -414,7 +414,7 @@ export const devis = (req,res)=>
     // ----------------------------------------------------data's validation
     let errorForm = {};
     
-    if(!req.body.devis.trim() || req.body.devis.length > 35)
+    if(!req.body.devis.trim() || req.body.devis.trim().length > 50)
     {
         errorForm.devis = "Intitulé invalide";
     }
@@ -453,7 +453,7 @@ export const devis = (req,res)=>
 
 
 
-// ----------------------------------------------------This function process query on Produit.* / Panier.* where statut is "paye". It allow to regroupe  all product in the Card that they bellong per client.
+// ----------------------------------------------------This function process query on Produit.* / Panier.* where statut is "paye". It allow to regroupe  all product in the Card they bellong per client.
 
 
 

@@ -41,7 +41,10 @@ export const art_page1 = (req, res) =>
     if(req.session.user)
     {
         query = `select Produit.*, Panier.idUserPanier from Produit left join Produit_Panier on idProduit = Produit.id left join Panier on Produit_Panier.idPanier = Panier.id where category in ("scrapbooking") order by Produit.nom`;
+        
     }
+    
+    const query2 = `select * from Commande where Commande.idUser = ? and Commande.statut = "cree"`;
 
     
     pool.query(query, function(error, produits, fields)
@@ -50,14 +53,42 @@ export const art_page1 = (req, res) =>
         
         let sortedProduits = produits;
         
-        if(req.session.user)    sortedProduits = processData (produits, req.session.idClient);
- 
-        res.render('layout.ejs',
+        if(req.session.user)
         {
-            template: 'scrapbooking.ejs',
-            produits: sortedProduits
+            sortedProduits = processData (produits, req.session.idClient);
+            
+            pool.query(query2, [req.session.user.id], function(error, commande, fields)
+            {
+                if(error) console.log(error);
+                
+                let userCommande;
+                
+                commande.length != 0 ? userCommande = true : userCommande = false;
+                
+                
+                res.render('layout.ejs',
+                {
+                    template: 'scrapbooking.ejs',
+                    produits: sortedProduits,
+                    userCommande: userCommande
+                
+                });
+                
+                
+            });
+        }
+        else
+        {
+            res.render('layout.ejs',
+            {
+                template: 'scrapbooking.ejs',
+                produits: sortedProduits
+            
+            });
+            
+        }
+ 
         
-        });
         
     });
     
@@ -78,23 +109,50 @@ export const art_page2 = (req, res) =>
         query = `select Produit.*, Panier.idUserPanier from Produit left join Produit_Panier on idProduit = Produit.id left join Panier on Produit_Panier.idPanier = Panier.id where category in ("digital_art") order by Produit.nom`;
     }
     
+    const query2 = `select * from Commande where Commande.idUser = ? and Commande.statut = "cree"`;
+    
     pool.query(query, function(error, produits, fields)
     {
         if(error) console.log(error);
         
         let sortedProduits = produits;
         
-        if(req.session.user) sortedProduits = processData (produits, req.session.idClient);
-
-        
-        res.render('layout.ejs',
+        if(req.session.user)
         {
-            template: 'digital_art.ejs',
-            produits: sortedProduits
-        
-        });
-        
+            sortedProduits = processData (produits, req.session.idClient);
+            
+            pool.query(query2, [req.session.user.id], function(error, commande, fields)
+            {
+                if(error) console.log(error);
+                
+                let userCommande;
+                
+                commande.length != 0 ? userCommande = true : userCommande = false;
+                
+                
+                res.render('layout.ejs',
+                {
+                    template: 'digital_art.ejs',
+                    produits: sortedProduits,
+                    userCommande: userCommande
+                
+                });
+                
+                
+            });
+        }
+        else
+        {
+            res.render('layout.ejs',
+            {
+                template: 'digital_art.ejs',
+                produits: sortedProduits
+            
+            });
+            
+        }
     });
+
 };
 
 
@@ -122,22 +180,22 @@ export const inscriptionPost = (req, res) =>
     
     //  ------------------------------empty fields or invalid with regex
     
-    if(!req.body.pseudo.trim())
+    if(!req.body.pseudo.trim() || req.body.pseudo.trim().length >= 50)
     {
         errorForm.name = "Nom invalide";
     }
     
-    if(!req.body.email.trim() || !regexEmail.test(req.body.email))
+    if(!req.body.email.trim() || !regexEmail.test(req.body.email) || req.body.email.trim().length >= 100)
     {
         errorForm.email = "Adresse email invalide";
     }
     
-    if(!req.body.adress.trim())
+    if(!req.body.adress.trim() || req.body.adress.trim().length >= 100)
     {
         errorForm.adress = "Adresse invalide";
     }
     
-    if(!req.body.mdp.trim() || !regexMdp.test(req.body.mdp))
+    if(!req.body.mdp.trim() || !regexMdp.test(req.body.mdp) || req.body.pseudo.trim().length >= 50)
     {
         errorForm.mdp = "Mot de passe invalide";
     }

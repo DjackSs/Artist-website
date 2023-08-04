@@ -35,7 +35,6 @@
     
 /*--------------------light colors theme*/
     
-    --main-color: rgb(53, 94, 167);
     --second-color: rgb(90, 47, 134); /*#5A2F86*/
     --accentuation-color: rgb(225, 41, 133); /*#E12985*/
     --chicken-color: rgb(250, 184, 14); /*#FAB80E*/
@@ -54,7 +53,6 @@
     
 /*--------------------light colors theme*/
     
-    --main-color: rgb(53, 94, 167);
     --chicken-color: rgb(90, 47, 134);
     --accentuation-color: rgb(225, 41, 133);
     --second-color: rgb(250, 184, 14);
@@ -76,7 +74,7 @@ html {
 
 body {
     margin: 0;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 24px;
     font-family: var(--main-font);
     font-variant-ligatures: contextual;
@@ -130,7 +128,6 @@ span {
     font-weight: bold;
     font-family:var(--title-font);
     
-    /*color: var(--chicken-color);*/
 }
 
 ::-webkit-scrollbar {
@@ -174,18 +171,21 @@ span {
 }
 
 
-
-
-
-
 .flyNav {
     position: fixed;
     right: 3%;
     bottom: 10%;
     z-index: 5;
     
+    font-size: 1.5em;
+    
+    padding: 0.5em;
+    
     text-decoration: none;
     color: var(--white-color);
+    
+    background-color: var(--second-color);
+    border-radius: 2em;
     
     
     transform: translateX(50em);
@@ -212,6 +212,7 @@ span {
 @media (hover:hover) {
     
     .flyNav:hover {
+        color: var(--chicken-color);
         transform: rotate(90deg);
         
         
@@ -373,6 +374,7 @@ header a:focus {
 
 
 .logo {
+    width: 80%;
     min-width: 5em;
     padding: 0;
 
@@ -380,16 +382,13 @@ header a:focus {
     border-radius: 50%;
     order: 3;
     
-    transform-origine: 50% 50%;
+    transform-origin: 50% 50%;
     transform-style: preserve-3d;
-    
-    transition: 0.5s linear;
     
 }
 
 .logo img {
     width: 100%;
-    border-radius: 50%;
     
 }
 
@@ -401,6 +400,7 @@ header a:focus {
 @media screen and (min-width: 890px) {
 
     .logo {
+        width: 35%;
         position: absolute;
         top: -3em;
         left: 50%;
@@ -694,6 +694,8 @@ footer article a:hover {
         justify-self: start;
 
     }
+    
+}
 
 
 
@@ -703,10 +705,6 @@ footer article a:hover {
 
 
 /*=======================================SCRAPBOOKING*/
-
-.scrapbooking > p {
-    margin-left: 5em;
-}
 
 /*------------------scrapbooking grid*/
 
@@ -796,6 +794,8 @@ footer article a:hover {
     z-index: 0;
 }
 
+
+
 .sliderButton {
     display: none;
     position: absolute;
@@ -810,9 +810,6 @@ footer article a:hover {
 .shop .sliderButton:nth-child(3) {
     right: 0;
 }
-
-
-
 
 
 .product {
@@ -925,6 +922,11 @@ footer article a:hover {
     border-radius: 2em;
 }
 
+.modal_portrait {
+    width: 60%;
+    height: 90%;
+}
+
 
 
 
@@ -934,6 +936,11 @@ footer article a:hover {
 /*============================================================*/
 
 @media screen and (min-width: 500px) {
+    
+    .scrapbooking > p,
+    .shop > p {
+        margin-left: 5em;
+    }
     
     .scrapbooking .scrapGrid {
         grid-template-areas:
@@ -1003,9 +1010,7 @@ footer article a:hover {
 
 /*=======================================ART_NUMERIQUE*/
 
-.art_numerique > div:first-child > p {
-    margin-left: 5em;
-}
+
 
 
 .art_numerique .selector {
@@ -1114,7 +1119,6 @@ footer article a:hover {
 }
 
 .art_child p {
-    margin-left: 5em;
     color:var(--chicken-color);
 }
 
@@ -1160,6 +1164,7 @@ footer article a:hover {
     cursor: pointer;
 }
 
+
 #artModal {
     width: 60%;
     display: none;
@@ -1197,7 +1202,7 @@ footer article a:hover {
     inset: 0;
     z-index: 0;
     
-    width: 60%;
+    width: 90%;
     
 }
 
@@ -1246,14 +1251,14 @@ footer article a:hover {
 .numericImg img {
     opacity: 1;
     
-    
-    
-    width: 60%;
+    width: 90%;
     border-radius: 1em;
     
     transform: translateX(50%);
     
     transition: 0.5s;
+    
+    cursor: pointer;
     
 }
 
@@ -1283,9 +1288,7 @@ footer article a:hover {
 
 /*------------------order*/
 
-.orderPrompt p {
-    margin-left: 5em;
-}
+
 
 .orderPrompt form {
     margin: auto;
@@ -1313,6 +1316,14 @@ footer article a:hover {
 
 @media screen and (min-width: 500px) {
     
+    .art_numerique > div:first-child > p {
+        margin-left: 5em;
+    }
+    
+    .art_child p {
+        margin-left: 5em;
+    }
+    
     .art_numerique .selector {
         flex-direction: row;
     }
@@ -1320,6 +1331,10 @@ footer article a:hover {
     .expression div,
     .portrait div {
         flex-basis: 45%;
+    }
+    
+    .orderPrompt p {
+        margin-left: 5em;
     }
     
     
@@ -1332,6 +1347,16 @@ footer article a:hover {
         flex-basis: 25%;
     }
     
+    .portrait {
+        width: 60%;
+        
+    }
+    
+    .numericImg img {
+        width: 60%;
+        
+    }
+        
     
     
     
@@ -1704,8 +1729,10 @@ button:hover {
     
     margin: 1em;
     
-   border-bottom: 0.2em solid var(--accentuation-color);
-    
+}
+
+.profileAchats article:not(:last-child) {
+    border-bottom: 0.2em solid var(--accentuation-color);
 }
 
 
@@ -1879,7 +1906,14 @@ select {
     
     margin: 1em;
     
-   border-bottom: 0.2em solid var(--accentuation-color);
+    overflow-x: auto;
+    
+  
+    
+}
+
+.adminAchats article:not(:last-child) {
+     border-bottom: 0.2em solid var(--accentuation-color);
     
 }
 
@@ -1957,7 +1991,8 @@ select {
         "a a"
         "e e"
         "c c"
-        "ar b";
+        "b b"
+        "ar ar";
         gap: 1em;
     }
     

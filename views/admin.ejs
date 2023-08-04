@@ -185,9 +185,9 @@
                 } %>
                 </div>
                 <div>
-                    <label for="commandeDialogue">Dialoguer avec votre client :</label>
+                    <label for="commandeDialogue<%= commande.id %>">Dialoguer avec votre client :</label>
                 
-                    <textarea name="commandeDialogue" id="commandeDialogue"></textarea>
+                    <textarea name="commandeDialogue" id="commandeDialogue<%= commande.id %>"></textarea>
                 
                     <button class="js-dialogue-button" data-transmitter="<%= locals.user.id %>" data-commande="<%= commande.id %>" data-client="<%= commande.idUser %>">Envoi</button>
                     
@@ -212,16 +212,13 @@
         
             <article id="<%= panier.idPanier %>">
                 
-                <h3><%= panier.pseudoClient %></h3>
-                <p><%= panier.email %></p>
+                <h3><%= panier.pseudoClient %><span class="timeStamp"><%= panier.email %></span></h3>
                 
                 <% for(let produit of panier.produits) { %>
-                    <p><%= produit.nom %></p>
-                    <p><%= produit.category %></p>
-                    <p><%= produit.prix %></p>
+                        <p><%= produit.nom %></p>
                 <% } %>
                 
-                <p>Prix total : <%= panier.prixPanier %></p>
+                <p>Prix total : <%= panier.prixPanier %>€</p>
                 
                 <button class="js-closeBuying-button" data-card="<%= panier.idPanier %>">Achats livrés</button>
                 
@@ -235,7 +232,7 @@
             <article id="<%= commande.id %>">
                 <h3><%= commande.pseudo %><span class="timeStamp"><%= commande.email %></span></h3>
                 <p><%= commande.devis %></p>
-                <p><%= commande.prix %></p>
+                <p><%= commande.prixCommande %> €</p>
                 
                 <button class="js-closeCustom-button" data-custom="<%= commande.id %>">Commande livrés</button>
                 
