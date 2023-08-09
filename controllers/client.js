@@ -91,7 +91,7 @@ export const loginPost = (req, res) =>
             
             if(!user.length)
             {
-            	errorForm.loginFail = "Utilisateur inconue";
+            	errorForm.loginFail = "Identifiants invalides";
 	            		
 	            return res.render('layout.ejs',
 				{
@@ -130,7 +130,7 @@ export const loginPost = (req, res) =>
 	            }
 	            else
 	            {
-	            	errorForm.loginFail = "Mot de passe incorrecte";
+	            	errorForm.loginFail = "Identifiants invalides";
 	            		
 	            	res.render('layout.ejs',
 				    {
@@ -238,6 +238,8 @@ export const editProfile = (req,res) =>
     req.body.email = xss(req.body.email);
     req.body.adress = xss(req.body.adress);
     
+    const id = xss(req.params.id);
+    
     // ----------------------------------------------------data's validation
 	let errorForm = {};
 	
@@ -269,7 +271,7 @@ export const editProfile = (req,res) =>
     {
         if(error) console.log(error);
         
-        if(userCheck.length != 0 && userCheck[0].email != req.body.email) 
+        if(userCheck.length != 0 && userCheck[0].id != id) 
         {
             errorForm.email = "Ce compte existe déja";
         }
@@ -283,7 +285,7 @@ export const editProfile = (req,res) =>
             
         }
     
-	    let id = xss(req.params.id);
+	    
 	    
 	    const editProfile =
 	    {

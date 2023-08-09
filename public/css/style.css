@@ -941,6 +941,7 @@ footer article a:hover {
     
     .scrapbooking > p,
     .shop > p {
+        text-align: center;
         margin-left: 5em;
     }
     
