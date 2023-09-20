@@ -31,7 +31,7 @@ Custom order:
 
 installation:
 
-`git clone https://github.com/DjackSs/Project.git`
+`git clone https://github.com/DjackSs/Artist-website`
 
 
 `npm init`
