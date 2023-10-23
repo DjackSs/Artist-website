@@ -34,7 +34,7 @@ installation:
 `git clone https://github.com/DjackSs/Artist-website`
 
 
-`npm init`
+`npm install`
 
 Run the application with:
 
